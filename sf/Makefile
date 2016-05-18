@@ -65,7 +65,7 @@ COQCHK?="$(COQBIN)coqchk"
 #                    #
 ######################
 
-VFILES:=Symbols.v\
+RVFILES:=Symbols.v\
   Preface.v\
   Basics.v\
   Induction.v\
@@ -104,6 +104,9 @@ VFILES:=Symbols.v\
   UseAuto.v\
   PE.v\
   Postscript.v
+
+reverse = $(if $(wordlist 2,2,$(1)),$(call reverse,$(wordlist 2,$(words $(1)),$(1))) $(firstword $(1)),$(1))
+VFILES:=$(call reverse,$(RVFILES))
 
 -include $(addsuffix .d,$(VFILES))
 .SECONDARY: $(addsuffix .d,$(VFILES))
@@ -147,7 +150,7 @@ all.ps: $(VFILES)
 all-gal.ps: $(VFILES)
 	$(COQDOC) -toc $(COQDOCFLAGS) -ps -g $(COQDOCLIBS) -o $@ `$(COQDEP) -sort -suffix .v $^`
 
-all.pdf: $(VFILES)
+all.pdf: $(filter-out Symbols.v,$(VFILES))
 	$(COQDOC) -toc $(COQDOCFLAGS) -pdf $(COQDOCLIBS) -o $@ `$(COQDEP) -sort -suffix .v $^`
 
 all-gal.pdf: $(VFILES)
