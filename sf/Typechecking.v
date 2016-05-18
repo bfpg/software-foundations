@@ -1,6 +1,10 @@
 (** * MoreStlc: A Typechecker for STLC *)
 
-Require Export Stlc.
+Require Import Coq.Bool.Bool.
+
+Require Import SfLib.
+Require Import Maps.
+Require Import Stlc.
 
 (** The [has_type] relation of the STLC defines what it means for a
     term to belong to a type (in some context).  But it doesn't, by
@@ -24,11 +28,11 @@ Import STLC.
 
 Fixpoint beq_ty (T1 T2:ty) : bool :=
   match T1,T2 with
-  | TBool, TBool => 
+  | TBool, TBool =>
       true
-  | TArrow T11 T12, TArrow T21 T22 => 
+  | TArrow T11 T12, TArrow T21 T22 =>
       andb (beq_ty T11 T21) (beq_ty T12 T22)
-  | _,_ => 
+  | _,_ =>
       false
   end.
 
@@ -47,10 +51,10 @@ Lemma beq_ty__eq : forall T1 T2,
   beq_ty T1 T2 = true -> T1 = T2.
 Proof with auto.
   intros T1. induction T1; intros T2 Hbeq; destruct T2; inversion Hbeq.
-  Case "T1=TBool".
+  - (* T1=TBool *)
     reflexivity.
-  Case "T1=TArrow T1_1 T1_2".
-    apply andb_true in H0. inversion H0 as [Hbeq1 Hbeq2].
+  - (* T1=TArrow T1_1 T1_2 *)
+    rewrite andb_true_iff in H0. inversion H0 as [Hbeq1 Hbeq2].
     apply IHT1_1 in Hbeq1. apply IHT1_2 in Hbeq2. subst...  Qed.
 
 (* ###################################################################### *)
@@ -68,7 +72,7 @@ Proof with auto.
 Fixpoint type_check (Gamma:context) (t:tm) : option ty :=
   match t with
   | tvar x => Gamma x
-  | tabs x T11 t12 => match type_check (extend Gamma x T11) t12 with
+  | tabs x T11 t12 => match type_check (update Gamma x T11) t12 with
                           | Some T12 => Some (TArrow T11 T12)
                           | _ => None
                         end
@@ -80,7 +84,7 @@ Fixpoint type_check (Gamma:context) (t:tm) : option ty :=
   | ttrue => Some TBool
   | tfalse => Some TBool
   | tif x t f => match type_check Gamma x with
-                     | Some TBool => 
+                     | Some TBool =>
                        match type_check Gamma t, type_check Gamma f with
                          | Some T1, Some T2 =>
                            if beq_ty T1 T2 then Some T1 else None
@@ -102,9 +106,9 @@ Theorem type_checking_sound : forall Gamma t T,
   type_check Gamma t = Some T -> has_type Gamma t T.
 Proof with eauto.
   intros Gamma t. generalize dependent Gamma.
-  t_cases (induction t) Case; intros Gamma T Htc; inversion Htc.
-  Case "tvar"...
-  Case "tapp".
+  induction t; intros Gamma T Htc; inversion Htc.
+  - (* tvar *) eauto.
+  - (* tapp *)
     remember (type_check Gamma t1) as TO1.
     remember (type_check Gamma t2) as TO2.
     destruct TO1 as [T1|]; try solve by inversion;
@@ -114,15 +118,15 @@ Proof with eauto.
     try solve by inversion.
     apply beq_ty__eq in Heqb.
     inversion H0; subst...
-  Case "tabs".
+  - (* tabs *)
     rename i into y. rename t into T1.
-    remember (extend Gamma y T1) as G'.
+    remember (update Gamma y T1) as G'.
     remember (type_check G' t0) as TO2.
     destruct TO2; try solve by inversion.
     inversion H0; subst...
-  Case "ttrue"...
-  Case "tfalse"...
-  Case "tif".
+  - (* ttrue *) eauto.
+  - (* tfalse *) eauto.
+  - (* tif *)
     remember (type_check Gamma t1) as TOc.
     remember (type_check Gamma t2) as TO1.
     remember (type_check Gamma t3) as TO2.
@@ -134,25 +138,24 @@ Proof with eauto.
     try solve by inversion.
     apply beq_ty__eq in Heqb.
     inversion H0. subst. subst...
-Qed.    
+Qed.
 
 Theorem type_checking_complete : forall Gamma t T,
   has_type Gamma t T -> type_check Gamma t = Some T.
 Proof with auto.
   intros Gamma t T Hty.
-  has_type_cases (induction Hty) Case; simpl.
-  Case "T_Var"...
-  Case "T_Abs". rewrite IHHty...
-  Case "T_App".
+  induction Hty; simpl.
+  - (* T_Var *) eauto.
+  - (* T_Abs *) rewrite IHHty...
+  - (* T_App *)
     rewrite IHHty1. rewrite IHHty2.
     rewrite (beq_ty_refl T11)...
-  Case "T_True"...
-  Case "T_False"...
-  Case "T_If". rewrite IHHty1. rewrite IHHty2.
+  - (* T_True *) eauto.
+  - (* T_False *) eauto.
+  - (* T_If *) rewrite IHHty1. rewrite IHHty2.
     rewrite IHHty3. rewrite (beq_ty_refl T)...
 Qed.
 
 End STLCChecker.
 
-(** $Date: 2014-12-31 11:17:56 -0500 (Wed, 31 Dec 2014) $ *)
-
+(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)

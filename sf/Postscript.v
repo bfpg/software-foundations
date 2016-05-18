@@ -16,8 +16,8 @@
         software engineering       mechanical/civil engineering
 >>
 
-          - inductively defined sets and relations 
-          - inductive proofs 
+          - inductively defined sets and relations
+          - inductive proofs
           - proof objects *)
 
 (**
@@ -28,7 +28,7 @@
 *)
 
 (**
-     - _Foundations of programming languages_ 
+     - _Foundations of programming languages_
 
            - notations and definitional techniques for precisely specifying
                 - abstract syntax
@@ -53,7 +53,7 @@
 
 (** Some good places to go for more...
 
-       - Several optional chapters of _Software Foundations_ 
+       - Several optional chapters of _Software Foundations_
 
        - Cutting-edge conferences on programming languages and formal
          verification:
@@ -82,9 +82,9 @@
               Harper.  Forthcoming from MIT Press.  Manuscript available
               from his web page.
             - Foundations for Programming Languages, by John C. Mitchell.
-              MIT Press, 1996. 
- 
-       - More on Coq: 
+              MIT Press, 1996.
+
+       - More on Coq:
            - Certified Programming with Dependent Types, by Adam
              Chlipala.  A draft textbook on practical proof
              engineering with Coq, available from his web page.
@@ -102,5 +102,4 @@
 
 *)
 
-(* $Date: 2014-08-23 15:24:59 -0400 (Sat, 23 Aug 2014) $ *)
-
+(* $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)

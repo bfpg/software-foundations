@@ -8,10 +8,6 @@ type 'a option =
 | Some of 'a
 | None
 
-type sumbool =
-| Left
-| Right
-
 (** val plus : int -> int -> int **)
 
 let rec plus = ( + )
@@ -37,67 +33,44 @@ let rec minus n m =
       m)
     n
 
-(** val eq_nat_dec : int -> int -> sumbool **)
+(** val leb : int -> int -> bool **)
 
-let rec eq_nat_dec n m =
+let rec leb m x =
   (fun zero succ n ->
       if n=0 then zero () else succ (n-1))
     (fun _ ->
+    true)
+    (fun m' ->
     (fun zero succ n ->
       if n=0 then zero () else succ (n-1))
       (fun _ ->
-      Left)
-      (fun m0 ->
-      Right)
-      m)
-    (fun n0 ->
-    (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-      (fun _ ->
-      Right)
-      (fun m0 ->
-      eq_nat_dec n0 m0)
-      m)
-    n
+      false)
+      (fun n' ->
+      leb m' n')
+      x)
+    m
 
 (** val beq_nat : int -> int -> bool **)
 
 let rec beq_nat = ( = )
 
-(** val ble_nat : int -> int -> bool **)
-
-let rec ble_nat n m =
-  (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-    (fun _ ->
-    true)
-    (fun n' ->
-    (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-      (fun _ ->
-      false)
-      (fun m' ->
-      ble_nat n' m')
-      m)
-    n
-
 type id =
   int
   (* singleton inductive, whose constructor was Id *)
 
-(** val eq_id_dec : id -> id -> sumbool **)
+(** val beq_id : id -> id -> bool **)
 
-let eq_id_dec id1 id2 =
-  eq_nat_dec id1 id2
+let beq_id id1 id2 =
+  beq_nat id1 id2
 
-type state = id -> int
+type 'a total_map = id -> 'a
 
-(** val update : state -> id -> int -> state **)
+(** val t_update : 'a1 total_map -> id -> 'a1 -> id -> 'a1 **)
 
-let update st x n x' =
-  match eq_id_dec x x' with
-  | Left -> n
-  | Right -> st x'
+let t_update m x v x' =
+  if beq_id x x' then v else m x'
+
+type state = int total_map
 
 type aexp =
 | ANum of int
@@ -129,7 +102,7 @@ let rec beval st = function
 | BTrue -> true
 | BFalse -> false
 | BEq (a1, a2) -> beq_nat (aeval st a1) (aeval st a2)
-| BLe (a1, a2) -> ble_nat (aeval st a1) (aeval st a2)
+| BLe (a1, a2) -> leb (aeval st a1) (aeval st a2)
 | BNot b1 -> negb (beval st b1)
 | BAnd (b1, b2) -> if beval st b1 then beval st b2 else false
 
@@ -150,7 +123,7 @@ let rec ceval_step st c i =
     (fun i' ->
     match c with
     | CSkip -> Some st
-    | CAss (l, a1) -> Some (update st l (aeval st a1))
+    | CAss (l, a1) -> Some (t_update st l (aeval st a1))
     | CSeq (c1, c2) ->
       (match ceval_step st c1 i' with
        | Some st' -> ceval_step st' c2 i'

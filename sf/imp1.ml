@@ -16,10 +16,6 @@ type 'a option =
 | Some of 'a
 | None
 
-type sumbool =
-| Left
-| Right
-
 (** val plus : nat -> nat -> nat **)
 
 let rec plus n m =
@@ -44,18 +40,15 @@ let rec minus n m =
      | O -> n
      | S l -> minus k l)
 
-(** val eq_nat_dec : nat -> nat -> sumbool **)
+(** val leb : nat -> nat -> bool **)
 
-let rec eq_nat_dec n m =
-  match n with
-  | O ->
-    (match m with
-     | O -> Left
-     | S m0 -> Right)
-  | S n0 ->
-    (match m with
-     | O -> Right
-     | S m0 -> eq_nat_dec n0 m0)
+let rec leb m x =
+  match m with
+  | O -> True
+  | S m' ->
+    (match x with
+     | O -> False
+     | S n' -> leb m' n')
 
 (** val beq_nat : nat -> nat -> bool **)
 
@@ -70,33 +63,25 @@ let rec beq_nat n m =
      | O -> False
      | S m1 -> beq_nat n1 m1)
 
-(** val ble_nat : nat -> nat -> bool **)
-
-let rec ble_nat n m =
-  match n with
-  | O -> True
-  | S n' ->
-    (match m with
-     | O -> False
-     | S m' -> ble_nat n' m')
-
 type id =
   nat
   (* singleton inductive, whose constructor was Id *)
 
-(** val eq_id_dec : id -> id -> sumbool **)
+(** val beq_id : id -> id -> bool **)
 
-let eq_id_dec id1 id2 =
-  eq_nat_dec id1 id2
+let beq_id id1 id2 =
+  beq_nat id1 id2
 
-type state = id -> nat
+type 'a total_map = id -> 'a
 
-(** val update : state -> id -> nat -> state **)
+(** val t_update : 'a1 total_map -> id -> 'a1 -> id -> 'a1 **)
 
-let update st x n x' =
-  match eq_id_dec x x' with
-  | Left -> n
-  | Right -> st x'
+let t_update m x v x' =
+  match beq_id x x' with
+  | True -> v
+  | False -> m x'
+
+type state = nat total_map
 
 type aexp =
 | ANum of nat
@@ -128,7 +113,7 @@ let rec beval st = function
 | BTrue -> True
 | BFalse -> False
 | BEq (a1, a2) -> beq_nat (aeval st a1) (aeval st a2)
-| BLe (a1, a2) -> ble_nat (aeval st a1) (aeval st a2)
+| BLe (a1, a2) -> leb (aeval st a1) (aeval st a2)
 | BNot b1 -> negb (beval st b1)
 | BAnd (b1, b2) ->
   (match beval st b1 with
@@ -149,7 +134,7 @@ let rec ceval_step st c = function
 | S i' ->
   (match c with
    | CSkip -> Some st
-   | CAss (l, a1) -> Some (update st l (aeval st a1))
+   | CAss (l, a1) -> Some (t_update st l (aeval st a1))
    | CSeq (c1, c2) ->
      (match ceval_step st c1 i' with
       | Some st' -> ceval_step st' c2 i'

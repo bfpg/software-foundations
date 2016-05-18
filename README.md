@@ -1,7 +1,6 @@
 # Software Foundations
 
-This is a mirror of the [Software Foundations][SF] course material,
-starting with upstream version 3.2 (January 2015).
+This is a mirror of the [Software Foundations][SF] course material.
+The current version is 4.0beta (8 Mar 2016).
 
-[SF]: http://www.cis.upenn.edu/~bcpierce/sf/current/index.html
-
+[SF]: http://www.cis.upenn.edu/~bcpierce/sf/sf-4.0/

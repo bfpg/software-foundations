@@ -54,6 +54,10 @@ val minus : int -> int -> int
 
 val nat_iter : int -> ('a1 -> 'a1) -> 'a1 -> 'a1
 
+val leb : int -> int -> bool
+
+val beq_nat : int -> int -> bool
+
 type positive =
 | XI of positive
 | XO of positive
@@ -592,10 +596,6 @@ module N :
   val min_dec : n -> n -> bool
  end
 
-val eq_nat_dec : int -> int -> bool
-
-val beq_nat : int -> int -> bool
-
 val rev : 'a1 list -> 'a1 list
 
 val map : ('a1 -> 'a2) -> 'a1 list -> 'a2 list
@@ -606,33 +606,21 @@ val fold_right : ('a2 -> 'a1 -> 'a1) -> 'a1 -> 'a2 list -> 'a1
 
 val forallb : ('a1 -> bool) -> 'a1 list -> bool
 
-val n_of_digits : bool list -> n
-
-val n_of_ascii : char -> n
-
-val nat_of_ascii : char -> int
-
-type string =
-| EmptyString
-| String of char * string
-
-val string_dec : string -> string -> bool
-
-val append : string -> string -> string
-
-val ble_nat : int -> int -> bool
-
 type id =
   int
   (* singleton inductive, whose constructor was Id *)
 
-val eq_id_dec : id -> id -> bool
+val beq_id : id -> id -> bool
 
-type state = id -> int
+type 'a total_map = id -> 'a
+
+val t_empty : 'a1 -> 'a1 total_map
+
+val t_update : 'a1 total_map -> id -> 'a1 -> id -> 'a1
+
+type state = int total_map
 
 val empty_state : state
-
-val update : state -> id -> int -> state
 
 type aexp =
 | ANum of int
@@ -661,6 +649,20 @@ type com =
 | CWhile of bexp * com
 
 val ceval_step : state -> com -> int -> state option
+
+val n_of_digits : bool list -> n
+
+val n_of_ascii : char -> n
+
+val nat_of_ascii : char -> int
+
+type string =
+| EmptyString
+| String of char * string
+
+val string_dec : string -> string -> bool
+
+val append : string -> string -> string
 
 val isWhite : char -> bool
 

@@ -29,29 +29,31 @@
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <span class="id" type="keyword">Types</span>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Smallstep.html#"><span class="id" type="library">Smallstep</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <span class="id" type="keyword">Types</span>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab661"></a><h1 class="section">The Simply Typed Lambda-Calculus</h1>
+<a name="lab555"></a><h1 class="section">The Simply Typed Lambda-Calculus</h1>
 
 <div class="paragraph"> </div>
 
- The simply typed lambda-calculus (STLC) is a tiny core calculus
-    embodying the key concept of <i>functional abstraction</i>, which shows
-    up in pretty much every real-world programming language in some
-    form (functions, procedures, methods, etc.).
+ The simply typed lambda-calculus (STLC) is a tiny core
+    calculus embodying the key concept of <i>functional abstraction</i>,
+    which shows up in pretty much every real-world programming
+    language in some form (functions, procedures, methods, etc.).
 
 <div class="paragraph"> </div>
 
-    We will follow exactly the same pattern as in the previous
-    chapter when formalizing this calculus (syntax, small-step
-    semantics, typing rules) and its main properties (progress and
-    preservation).  The new technical challenges (which will take some
-    work to deal with) all arise from the mechanisms of <i>variable
-    binding</i> and <i>substitution</i>. 
+    We will follow exactly the same pattern as in the previous chapter
+    when formalizing this calculus (syntax, small-step semantics,
+    typing rules) and its main properties (progress and preservation).
+    The new technical challenges all arise from the mechanisms of
+    <i>variable binding</i> and <i>substitution</i>.  It which will take some
+    work to deal with these. 
 </div>
 <div class="code code-tight">
 
@@ -59,22 +61,24 @@
 </div>
 
 <div class="doc">
-<a name="lab662"></a><h2 class="section">Overview</h2>
+<a name="lab556"></a><h2 class="section">Overview</h2>
 
 <div class="paragraph"> </div>
 
- The STLC is built on some collection of <i>base types</i> &mdash; booleans,
-    numbers, strings, etc.  The exact choice of base types doesn't
-    matter &mdash; the construction of the language and its theoretical
-    properties work out pretty much the same &mdash; so for the sake of
-    brevity let's take just <span class="inlinecode"><span class="id" type="var">Bool</span></span> for the moment.  At the end of the
-    chapter we'll see how to add more base types, and in later
-    chapters we'll enrich the pure STLC with other useful constructs
-    like pairs, records, subtyping, and mutable state.
+ The STLC is built on some collection of <i>base types</i> &mdash;
+    booleans, numbers, strings, etc.  The exact choice of base types
+    doesn't matter much &mdash; the construction of the language and its
+    theoretical properties work out the same no matter what we
+    choose &mdash; so for the sake of brevity let's take just <span class="inlinecode"><span class="id" type="var">Bool</span></span> for
+    the moment.  At the end of the chapter we'll see how to add more
+    base types, and in later chapters we'll enrich the pure STLC with
+    other useful constructs like pairs, records, subtyping, and
+    mutable state.
 
 <div class="paragraph"> </div>
 
-    Starting from the booleans, we add three things:
+    Starting from boolean constants and conditionals, we add three
+    things:
 
 <div class="paragraph"> </div>
 
@@ -93,7 +97,7 @@
 <div class="paragraph"> </div>
 
     This gives us the following collection of abstract syntax
-    constructors (written out here in informal BNF notation &mdash; we'll
+    constructors (written out first in informal BNF notation &mdash; we'll
     formalize it below).
 
 <div class="paragraph"> </div>
@@ -101,13 +105,12 @@
 
 <div class="paragraph"> </div>
 
- Informal concrete syntax: 
 
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">t</span>&nbsp;::=&nbsp;<span class="id" type="var">x</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">variable</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>1</sub>.t<sub>2</sub></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">abstraction</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>1</sub>.t2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">abstraction</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="var">t<sub>2</sub></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">application</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<span class="id" type="var">true</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">constant</span>&nbsp;<span class="id" type="var">true</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<span class="id" type="var">false</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">constant</span>&nbsp;<span class="id" type="var">false</span><br/>
@@ -118,12 +121,12 @@
 
 <div class="paragraph"> </div>
 
- The <span class="inlinecode">\</span> symbol (backslash, in ascii) in a function abstraction
-    <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>1</sub>.t<sub>2</sub></span></span> is generally written as a greek letter "lambda" (hence
-    the name of the calculus).  The variable <span class="inlinecode"><span class="id" type="var">x</span></span> is called the
-    <i>parameter</i> to the function; the term <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> is its <i>body</i>.  The
-    annotation <span class="inlinecode">:<span class="id" type="var">T</span></span> specifies the type of arguments that the function
-    can be applied to. 
+ The <span class="inlinecode">\</span> symbol in a function abstraction <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>1</sub>.t2</span></span> is generally
+    written as a greek letter "lambda" (hence the name of the
+    calculus).  The variable <span class="inlinecode"><span class="id" type="var">x</span></span> is called the <i>parameter</i> to the
+    function; the term <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> is its <i>body</i>.  The annotation <span class="inlinecode">:<span class="id" type="var">T<sub>1</sub></span></span>
+    specifies the type of arguments that the function can be applied
+    to. 
 <div class="paragraph"> </div>
 
  Some examples:
@@ -229,7 +232,7 @@
  As the last several examples show, the STLC is a language of
     <i>higher-order</i> functions: we can write down functions that take
     other functions as arguments and/or return other functions as
-    results.  
+    results.
 
 <div class="paragraph"> </div>
 
@@ -237,7 +240,7 @@
     primitive syntax for defining <i>named</i> functions &mdash; all functions
     are "anonymous."  We'll see in chapter <span class="inlinecode"><span class="id" type="var">MoreStlc</span></span> that it is easy
     to add named functions to what we've got &mdash; indeed, the
-    fundamental naming and binding mechanisms are exactly the same.  
+    fundamental naming and binding mechanisms are exactly the same.
 
 <div class="paragraph"> </div>
 
@@ -279,7 +282,7 @@
 
 
 </li>
-<li> <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span>.</span> <span class="inlinecode">\<span class="id" type="var">y</span>:<span class="id" type="var">Bool</span>.</span> <span class="inlinecode"><span class="id" type="var">x</span></span> has type <span class="inlinecode"><span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span></span> (i.e. <span class="inlinecode"><span class="id" type="var">Bool</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode">(<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>)</span>)
+<li> <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span>.</span> <span class="inlinecode">\<span class="id" type="var">y</span>:<span class="id" type="var">Bool</span>.</span> <span class="inlinecode"><span class="id" type="var">x</span></span> has type <span class="inlinecode"><span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span></span> (i.e., <span class="inlinecode"><span class="id" type="var">Bool</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode">(<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>)</span>)
 
 <div class="paragraph"> </div>
 
@@ -303,55 +306,45 @@
 </div>
 
 <div class="doc">
-<a name="lab663"></a><h2 class="section">Syntax</h2>
+<a name="lab557"></a><h2 class="section">Syntax</h2>
 
 </div>
 <div class="code code-space">
 
 <br/>
-<span class="id" type="keyword">Module</span> <span class="id" type="var">STLC</span>.<br/>
+<span class="id" type="keyword">Module</span> <a name="STLC"><span class="id" type="module">STLC</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab664"></a><h3 class="section">Types</h3>
+<a name="lab558"></a><h3 class="section">Types</h3>
 
 </div>
 <div class="code code-space">
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">ty</span> : <span class="id" type="keyword">Type</span> := <br/>
-&nbsp;&nbsp;| <span class="id" type="var">TBool</span>  : <span class="id" type="var">ty</span> <br/>
-&nbsp;&nbsp;| <span class="id" type="var">TArrow</span> : <span class="id" type="var">ty</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">ty</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">ty</span>.<br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.ty"><span class="id" type="inductive">ty</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.TBool"><span class="id" type="constructor">TBool</span></a>  : <a class="idref" href="Stlc.html#ty"><span class="id" type="inductive">ty</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> : <a class="idref" href="Stlc.html#ty"><span class="id" type="inductive">ty</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#ty"><span class="id" type="inductive">ty</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#ty"><span class="id" type="inductive">ty</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab665"></a><h3 class="section">Terms</h3>
+<a name="lab559"></a><h3 class="section">Terms</h3>
 
 </div>
 <div class="code code-space">
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">tm</span> : <span class="id" type="keyword">Type</span> :=<br/>
-&nbsp;&nbsp;| <span class="id" type="var">tvar</span> : <span class="id" type="var">id</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tapp</span> : <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tabs</span> : <span class="id" type="var">id</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">ty</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ttrue</span> : <span class="id" type="var">tm</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tfalse</span> : <span class="id" type="var">tm</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tif</span> : <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span>.<br/>
-
-<br/>
-<div class="togglescript" id="proofcontrol1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')"><span class="show"></span></div>
-<div class="proofscript" id="proof1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')">
-<span class="id" type="keyword">Tactic Notation</span> "t_cases" <span class="id" type="var">tactic</span>(<span class="id" type="var">first</span>) <span class="id" type="var">ident</span>(<span class="id" type="var">c</span>) :=<br/>
-&nbsp;&nbsp;<span class="id" type="var">first</span>;<br/>
-&nbsp;&nbsp;[ <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "tvar" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "tapp" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "tabs" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ttrue" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "tfalse" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "tif" ].<br/>
-</div>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.tm"><span class="id" type="inductive">tm</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.tvar"><span class="id" type="constructor">tvar</span></a> : <a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.tapp"><span class="id" type="constructor">tapp</span></a> : <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.tabs"><span class="id" type="constructor">tabs</span></a> : <a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.ty"><span class="id" type="inductive">ty</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> : <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.tfalse"><span class="id" type="constructor">tfalse</span></a> : <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.tif"><span class="id" type="constructor">tif</span></a> : <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#tm"><span class="id" type="inductive">tm</span></a>.<br/>
 
 <br/>
 </div>
@@ -369,14 +362,14 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">x</span> := (<span class="id" type="var">Id</span> 0).<br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">y</span> := (<span class="id" type="var">Id</span> 1).<br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">z</span> := (<span class="id" type="var">Id</span> 2).<br/>
-<div class="togglescript" id="proofcontrol2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')"><span class="show"></span></div>
-<div class="proofscript" id="proof2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')">
-<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <span class="id" type="var">x</span>.<br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <span class="id" type="var">y</span>.<br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <span class="id" type="var">z</span>.<br/>
+<span class="id" type="keyword">Definition</span> <a name="STLC.x"><span class="id" type="definition">x</span></a> := (<a class="idref" href="Maps.html#Id"><span class="id" type="constructor">Id</span></a> 0).<br/>
+<span class="id" type="keyword">Definition</span> <a name="STLC.y"><span class="id" type="definition">y</span></a> := (<a class="idref" href="Maps.html#Id"><span class="id" type="constructor">Id</span></a> 1).<br/>
+<span class="id" type="keyword">Definition</span> <a name="STLC.z"><span class="id" type="definition">z</span></a> := (<a class="idref" href="Maps.html#Id"><span class="id" type="constructor">Id</span></a> 2).<br/>
+<div class="togglescript" id="proofcontrol1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')"><span class="show"></span></div>
+<div class="proofscript" id="proof1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')">
+<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="keyword">Unfold</span> <a class="idref" href="Stlc.html#STLC.z"><span class="id" type="definition">z</span></a>.<br/>
 </div>
 
 <br/>
@@ -388,8 +381,8 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">idB</span> := <br/>
-&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>)).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.idB"><span class="id" type="abbreviation">idB</span></a> :=<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>)).<br/>
 
 <br/>
 </div>
@@ -400,8 +393,8 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">idBB</span> := <br/>
-&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>)).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> :=<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>)).<br/>
 
 <br/>
 </div>
@@ -412,10 +405,10 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">idBBBB</span> :=<br/>
-&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> (<span class="id" type="var">TArrow</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>)) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>)).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.idBBBB"><span class="id" type="abbreviation">idBBBB</span></a> :=<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>)).<br/>
 
 <br/>
 </div>
@@ -426,7 +419,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">k</span> := (<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tabs</span> <span class="id" type="var">y</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>))).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.k"><span class="id" type="abbreviation">k</span></a> := (<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>))).<br/>
 
 <br/>
 </div>
@@ -437,7 +430,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">notB</span> := (<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tif</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) <span class="id" type="var">tfalse</span> <span class="id" type="var">ttrue</span>)).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.notB"><span class="id" type="abbreviation">notB</span></a> := (<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a>)).<br/>
 
 <br/>
 </div>
@@ -452,7 +445,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 </div>
 
 <div class="doc">
-<a name="lab666"></a><h2 class="section">Operational Semantics</h2>
+<a name="lab560"></a><h2 class="section">Operational Semantics</h2>
 
 <div class="paragraph"> </div>
 
@@ -468,7 +461,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 </div>
 
 <div class="doc">
-<a name="lab667"></a><h3 class="section">Values</h3>
+<a name="lab561"></a><h3 class="section">Values</h3>
 
 <div class="paragraph"> </div>
 
@@ -491,7 +484,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="paragraph"> </div>
 
 <ul class="doclist">
-<li> We can say that <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T.t<sub>1</sub></span></span> is a value only when <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> is a
+<li> We can say that <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T.t1</span></span> is a value only when <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> is a
         value &mdash; i.e., only if the function's body has been
         reduced (as much as it can be without knowing what argument it
         is going to be applied to).
@@ -500,7 +493,7 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 
 
 </li>
-<li> Or we can say that <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T.t<sub>1</sub></span></span> is always a value, no matter
+<li> Or we can say that <span class="inlinecode">\<span class="id" type="var">x</span>:<span class="id" type="var">T.t1</span></span> is always a value, no matter
         whether <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> is one or not &mdash; in other words, we can say that
         reduction stops at abstractions.
 
@@ -515,11 +508,11 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">Eval</span>&nbsp;<span class="id" type="tactic">simpl</span>&nbsp;<span class="id" type="keyword">in</span>&nbsp;(<span class="id" type="keyword">fun</span>&nbsp;<span class="id" type="var">x</span>:<span class="id" type="var">bool</span>&nbsp;⇒&nbsp;3&nbsp;+&nbsp;4)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">Compute</span>&nbsp;(<span class="id" type="keyword">fun</span>&nbsp;<span class="id" type="var">x</span>:<span class="id" type="var">bool</span>&nbsp;⇒&nbsp;3&nbsp;+&nbsp;4)
 <div class="paragraph"> </div>
 
 </div>
-    yields <span class="inlinecode"><span class="id" type="keyword">fun</span></span> <span class="inlinecode"><span class="id" type="var">x</span>:<span class="id" type="var">bool</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode">7</span>.  
+    yields <span class="inlinecode"><span class="id" type="keyword">fun</span></span> <span class="inlinecode"><span class="id" type="var">x</span>:<span class="id" type="var">bool</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode">7</span>.
 
 <div class="paragraph"> </div>
 
@@ -531,16 +524,16 @@ Note that an abstraction <span class="inlinecode">\<span class="id" type="var">x
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">value</span> : <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;| <span class="id" type="var">v_abs</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">value</span> (<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t</span>)<br/>
-&nbsp;&nbsp;| <span class="id" type="var">v_true</span> : <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">value</span> <span class="id" type="var">ttrue</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">v_false</span> : <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">value</span> <span class="id" type="var">tfalse</span>.<br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.value"><span class="id" type="inductive">value</span></a> : <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.v_abs"><span class="id" type="constructor">v_abs</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#value"><span class="id" type="inductive">value</span></a> (<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a> <a class="idref" href="Stlc.html#t"><span class="id" type="variable">t</span></a>)<br/>
+&nbsp;&nbsp;| <a name="STLC.v_true"><span class="id" type="constructor">v_true</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#value"><span class="id" type="inductive">value</span></a> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.v_false"><span class="id" type="constructor">v_false</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#value"><span class="id" type="inductive">value</span></a> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a>.<br/>
 
 <br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <span class="id" type="var">value</span>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Stlc.html#value"><span class="id" type="inductive">value</span></a>.<br/>
 
 <br/>
 </div>
@@ -551,7 +544,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="paragraph"> </div>
 
   Intuitively, a "complete" program must not refer to any undefined
-  variables.  We'll see shortly how to define the "free" variables 
+  variables.  We'll see shortly how to define the "free" variables
   in a STLC term.  A program is "closed", that is, it contains no
   free variables.
 
@@ -572,7 +565,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 </div>
 
 <div class="doc">
-<a name="lab668"></a><h3 class="section">Substitution</h3>
+<a name="lab562"></a><h3 class="section">Substitution</h3>
 
 <div class="paragraph"> </div>
 
@@ -593,7 +586,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="paragraph"> </div>
 
 </div>
-    to 
+    to
 
 <div class="paragraph"> </div>
 
@@ -603,7 +596,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 
 </div>
     by substituting <span class="inlinecode"><span class="id" type="var">false</span></span> for the parameter <span class="inlinecode"><span class="id" type="var">x</span></span> in the body of the
-    function.  
+    function.
 
 <div class="paragraph"> </div>
 
@@ -684,12 +677,12 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="code code-tight">
 &nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">x</span>&nbsp;=&nbsp;<span class="id" type="var">s</span><br/>
 &nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">y</span>&nbsp;=&nbsp;<span class="id" type="var">y</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span>&nbsp;<span class="id" type="var">x</span>&nbsp;≠&nbsp;<span class="id" type="var">y</span><br/>
-&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>11</sub>.t<sub>12</sub></span>)&nbsp;&nbsp;&nbsp;=&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>11</sub></span>. <span class="id" type="var">t<sub>12</sub></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
-&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](\<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub>.t<sub>12</sub></span>)&nbsp;&nbsp;&nbsp;=&nbsp;\<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span>. [<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>12</sub></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span>&nbsp;<span class="id" type="var">x</span>&nbsp;≠&nbsp;<span class="id" type="var">y</span><br/>
-&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="var">t<sub>2</sub></span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>1</sub></span>)&nbsp;([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>2</sub></span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>11</sub>.t12</span>)&nbsp;&nbsp;&nbsp;=&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">T<sub>11</sub></span>. <span class="id" type="var">t<sub>12</sub></span><br/>
+&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](\<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub>.t12</span>)&nbsp;&nbsp;&nbsp;=&nbsp;\<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span>. [<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>12</sub></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span>&nbsp;<span class="id" type="var">x</span>&nbsp;≠&nbsp;<span class="id" type="var">y</span><br/>
+&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="var">t<sub>2</sub></span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>1</sub></span>)&nbsp;([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>2</sub></span>)<br/>
 &nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">true</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="id" type="var">true</span><br/>
 &nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">false</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="id" type="var">false</span><br/>
-&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](<span class="id" type="keyword">if</span>&nbsp;<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="keyword">then</span>&nbsp;<span class="id" type="var">t<sub>2</sub></span>&nbsp;<span class="id" type="keyword">else</span>&nbsp;<span class="id" type="var">t<sub>3</sub></span>)&nbsp;=&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>](<span class="id" type="keyword">if</span>&nbsp;<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="keyword">then</span>&nbsp;<span class="id" type="var">t<sub>2</sub></span>&nbsp;<span class="id" type="keyword">else</span>&nbsp;<span class="id" type="var">t<sub>3</sub></span>)&nbsp;=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span>&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>1</sub></span>&nbsp;<span class="id" type="keyword">then</span>&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>2</sub></span>&nbsp;<span class="id" type="keyword">else</span>&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t<sub>3</sub></span>
 <div class="paragraph"> </div>
 
@@ -705,23 +698,23 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <span class="id" type="keyword">Reserved Notation</span> "'[' x ':=' s ']' t" (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 20).<br/>
 
 <br/>
-<span class="id" type="keyword">Fixpoint</span> <span class="id" type="tactic">subst</span> (<span class="id" type="var">x</span>:<span class="id" type="var">id</span>) (<span class="id" type="var">s</span>:<span class="id" type="var">tm</span>) (<span class="id" type="var">t</span>:<span class="id" type="var">tm</span>) : <span class="id" type="var">tm</span> :=<br/>
-&nbsp;&nbsp;<span class="id" type="keyword">match</span> <span class="id" type="var">t</span> <span class="id" type="keyword">with</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tvar</span> <span class="id" type="var">x'</span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span> <span class="id" type="var">eq_id_dec</span> <span class="id" type="var">x</span> <span class="id" type="var">x'</span> <span class="id" type="keyword">then</span> <span class="id" type="var">s</span> <span class="id" type="keyword">else</span> <span class="id" type="var">t</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tabs</span> <span class="id" type="var">x'</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>1</sub></span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tabs</span> <span class="id" type="var">x'</span> <span class="id" type="var">T</span> (<span class="id" type="keyword">if</span> <span class="id" type="var">eq_id_dec</span> <span class="id" type="var">x</span> <span class="id" type="var">x'</span> <span class="id" type="keyword">then</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="keyword">else</span> ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>1</sub></span>)) <br/>
-&nbsp;&nbsp;| <span class="id" type="var">tapp</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tapp</span> ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>1</sub></span>) ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>2</sub></span>)<br/>
-&nbsp;&nbsp;| <span class="id" type="var">ttrue</span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">ttrue</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tfalse</span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tfalse</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">tif</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span> ⇒ <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tif</span> ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>1</sub></span>) ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>2</sub></span>) ([<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>] <span class="id" type="var">t<sub>3</sub></span>)<br/>
+<span class="id" type="keyword">Fixpoint</span> <a name="STLC.subst"><span class="id" type="definition">subst</span></a> (<span class="id" type="var">x</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) (<span class="id" type="var">s</span>:<a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a>) (<span class="id" type="var">t</span>:<a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a>) : <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Stlc.html#t"><span class="id" type="variable">t</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <span class="id" type="var">x'</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <span class="id" type="var">x'</span> <span class="id" type="keyword">then</span> <a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="keyword">else</span> <a class="idref" href="Stlc.html#t"><span class="id" type="variable">t</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">x'</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>1</sub></span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">x'</span> <span class="id" type="var">T</span> (<span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <span class="id" type="var">x'</span> <span class="id" type="keyword">then</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="keyword">else</span> ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>1</sub></span>))<br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>1</sub></span>) ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>2</sub></span>)<br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>1</sub></span>) ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>2</sub></span>) ([<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>] <span class="id" type="var">t<sub>3</sub></span>)<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 <br/>
-<span class="id" type="keyword">where</span> "'[' x ':=' s ']' t" := (<span class="id" type="tactic">subst</span> <span class="id" type="var">x</span> <span class="id" type="var">s</span> <span class="id" type="var">t</span>).<br/>
+<span class="id" type="keyword">where</span> "'[' x ':=' s ']' t" := (<a class="idref" href="Stlc.html#subst"><span class="id" type="definition">subst</span></a> <span class="id" type="var">x</span> <span class="id" type="var">s</span> <span class="id" type="var">t</span>).<br/>
 
 <br/>
 </div>
@@ -737,8 +730,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
     formalizing richer languages. 
 <div class="paragraph"> </div>
 
-<a name="lab669"></a><h3 class="section"> </h3>
-<a name="lab670"></a><h4 class="section">Exercise: 3 stars (substi)</h4>
+<a name="lab563"></a><h4 class="section">Exercise: 3 stars (substi)</h4>
 
 <div class="paragraph"> </div>
 
@@ -752,18 +744,18 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">substi</span> (<span class="id" type="var">s</span>:<span class="id" type="var">tm</span>) (<span class="id" type="var">x</span>:<span class="id" type="var">id</span>) : <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> := <br/>
-&nbsp;&nbsp;| <span class="id" type="var">s_var1</span> : <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">substi</span> <span class="id" type="var">s</span> <span class="id" type="var">x</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) <span class="id" type="var">s</span><br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.substi"><span class="id" type="inductive">substi</span></a> (<span class="id" type="var">s</span>:<a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a>) (<span class="id" type="var">x</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) : <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.s_var1"><span class="id" type="constructor">s_var1</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#substi"><span class="id" type="inductive">substi</span></a> <span class="id" type="var">s</span> <span class="id" type="var">x</span> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <span class="id" type="var">x</span>) <span class="id" type="var">s</span><br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
 .<br/>
 
 <br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <span class="id" type="var">substi</span>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Stlc.html#substi"><span class="id" type="inductive">substi</span></a>.<br/>
 
 <br/>
-<span class="id" type="keyword">Theorem</span> <span class="id" type="var">substi_correct</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">s</span> <span class="id" type="var">x</span> <span class="id" type="var">t</span> <span class="id" type="var">t'</span>,<br/>
-&nbsp;&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">s</span>]<span class="id" type="var">t</span> = <span class="id" type="var">t'</span> <span style="font-family: arial;">&harr;</span> <span class="id" type="var">substi</span> <span class="id" type="var">s</span> <span class="id" type="var">x</span> <span class="id" type="var">t</span> <span class="id" type="var">t'</span>.<br/>
+<span class="id" type="keyword">Theorem</span> <a name="STLC.substi_correct"><span class="id" type="lemma">substi_correct</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">s</span> <span class="id" type="var">x</span> <span class="id" type="var">t</span> <span class="id" type="var">t'</span>,<br/>
+&nbsp;&nbsp;[<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a>]<a class="idref" href="Stlc.html#t"><span class="id" type="variable">t</span></a> = <a class="idref" href="Stlc.html#t'"><span class="id" type="variable">t'</span></a> <span style="font-family: arial;">&harr;</span> <a class="idref" href="Stlc.html#STLC.substi"><span class="id" type="inductive">substi</span></a> <a class="idref" href="Stlc.html#s"><span class="id" type="variable">s</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Stlc.html#t"><span class="id" type="variable">t</span></a> <a class="idref" href="Stlc.html#t'"><span class="id" type="variable">t'</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
 </div>
@@ -777,7 +769,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 </div>
 
 <div class="doc">
-<a name="lab671"></a><h3 class="section">Reduction</h3>
+<a name="lab564"></a><h3 class="section">Reduction</h3>
 
 <div class="paragraph"> </div>
 
@@ -792,7 +784,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(\<span class="id" type="var">x</span>:<span class="id" type="var">T.t<sub>12</sub></span>)&nbsp;<span class="id" type="var">v<sub>2</sub></span>&nbsp;<span style="font-family: arial;">&rArr;</span>&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">v<sub>2</sub></span>]<span class="id" type="var">t<sub>12</sub></span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(\<span class="id" type="var">x</span>:<span class="id" type="var">T.t12</span>)&nbsp;<span class="id" type="var">v<sub>2</sub></span>&nbsp;<span style="font-family: arial;">&rArr;</span>&nbsp;[<span class="id" type="var">x</span>:=<span class="id" type="var">v<sub>2</sub></span>]<span class="id" type="var">t<sub>12</sub></span>
 <div class="paragraph"> </div>
 
 </div>
@@ -809,7 +801,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
   <td class="infrule"><hr /></td>
 </tr>
 <tr class="infruleassumption">
-  <td class="infrule">(\x:T.t<sub>12</sub>)&nbsp;v<sub>2</sub>&nbsp;<span style="font-family: arial;">&rArr;</span>&nbsp;[x:=v<sub>2</sub>]t<sub>12</sub></td>
+  <td class="infrule">(\x:T.t12)&nbsp;v<sub>2</sub>&nbsp;<span style="font-family: arial;">&rArr;</span>&nbsp;[x:=v<sub>2</sub>]t<sub>12</sub></td>
   <td></td>
 </td>
 </table></center><center><table class="infrule">
@@ -890,40 +882,33 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <span class="id" type="keyword">Reserved Notation</span> "t<sub>1</sub> '<span style="font-family: arial;">&rArr;</span>' t<sub>2</sub>" (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 40).<br/>
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">step</span> : <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_AppAbs</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>12</sub></span> <span class="id" type="var">v<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">value</span> <span class="id" type="var">v<sub>2</sub></span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>12</sub></span>) <span class="id" type="var">v<sub>2</sub></span>) <span style="font-family: arial;">&rArr;</span> [<span class="id" type="var">x</span>:=<span class="id" type="var">v<sub>2</sub></span>]<span class="id" type="var">t<sub>12</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_App1</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">t<sub>1</sub></span> <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">t<sub>1</sub>'</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tapp</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">tapp</span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_App2</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">v<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>2</sub>'</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">value</span> <span class="id" type="var">v<sub>1</sub></span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">t<sub>2</sub></span> <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">t<sub>2</sub>'</span> <span style="font-family: arial;">&rarr;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">tapp</span> <span class="id" type="var">v<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">tapp</span> <span class="id" type="var">v<sub>1</sub></span>  <span class="id" type="var">t<sub>2</sub>'</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_IfTrue</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tif</span> <span class="id" type="var">ttrue</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>) <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">t<sub>1</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_IfFalse</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tif</span> <span class="id" type="var">tfalse</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>) <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">t<sub>2</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">ST_If</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">t<sub>1</sub></span> <span style="font-family: arial;">&rArr;</span> <span class="id" type="var">t<sub>1</sub>'</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tif</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span>) <span style="font-family: arial;">&rArr;</span> (<span class="id" type="var">tif</span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span>)<br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.step"><span class="id" type="inductive">step</span></a> : <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>12</sub></span> <span class="id" type="var">v<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.value"><span class="id" type="inductive">value</span></a> <a class="idref" href="Stlc.html#v<sub>2</sub>"><span class="id" type="variable">v<sub>2</sub></span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a> <a class="idref" href="Stlc.html#t<sub>12</sub>"><span class="id" type="variable">t<sub>12</sub></span></a>) <a class="idref" href="Stlc.html#v<sub>2</sub>"><span class="id" type="variable">v<sub>2</sub></span></a>) <span style="font-family: arial;">&rArr;</span> [<a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a>:=<a class="idref" href="Stlc.html#v<sub>2</sub>"><span class="id" type="variable">v<sub>2</sub></span></a>]<a class="idref" href="Stlc.html#t<sub>12</sub>"><span class="id" type="variable">t<sub>12</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ST_App1"><span class="id" type="constructor">ST_App1</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#t<sub>1</sub>'"><span class="id" type="variable">t<sub>1</sub>'</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>'"><span class="id" type="variable">t<sub>1</sub>'</span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ST_App2"><span class="id" type="constructor">ST_App2</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">v<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>2</sub>'</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.value"><span class="id" type="inductive">value</span></a> <a class="idref" href="Stlc.html#v<sub>1</sub>"><span class="id" type="variable">v<sub>1</sub></span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#t<sub>2</sub>'"><span class="id" type="variable">t<sub>2</sub>'</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#v<sub>1</sub>"><span class="id" type="variable">v<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#v<sub>1</sub>"><span class="id" type="variable">v<sub>1</sub></span></a>  <a class="idref" href="Stlc.html#t<sub>2</sub>'"><span class="id" type="variable">t<sub>2</sub>'</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ST_IfTrue"><span class="id" type="constructor">ST_IfTrue</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a>) <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ST_IfFalse"><span class="id" type="constructor">ST_IfFalse</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a>) <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.ST_If"><span class="id" type="constructor">ST_If</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Stlc.html#t<sub>1</sub>'"><span class="id" type="variable">t<sub>1</sub>'</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <a class="idref" href="Stlc.html#t<sub>3</sub>"><span class="id" type="variable">t<sub>3</sub></span></a>) <span style="font-family: arial;">&rArr;</span> (<a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>'"><span class="id" type="variable">t<sub>1</sub>'</span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <a class="idref" href="Stlc.html#t<sub>3</sub>"><span class="id" type="variable">t<sub>3</sub></span></a>)<br/>
 <br/>
-<span class="id" type="keyword">where</span> "t<sub>1</sub> '<span style="font-family: arial;">&rArr;</span>' t<sub>2</sub>" := (<span class="id" type="var">step</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>).<br/>
+<span class="id" type="keyword">where</span> "t<sub>1</sub> '<span style="font-family: arial;">&rArr;</span>' t<sub>2</sub>" := (<a class="idref" href="Stlc.html#step"><span class="id" type="inductive">step</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>).<br/>
 
 <br/>
-<span class="id" type="keyword">Tactic Notation</span> "step_cases" <span class="id" type="var">tactic</span>(<span class="id" type="var">first</span>) <span class="id" type="var">ident</span>(<span class="id" type="var">c</span>) :=<br/>
-&nbsp;&nbsp;<span class="id" type="var">first</span>;<br/>
-&nbsp;&nbsp;[ <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_AppAbs" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_App1" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_App2" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_IfTrue" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_IfFalse" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "ST_If" ].<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Stlc.html#step"><span class="id" type="inductive">step</span></a>.<br/>
 
 <br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <span class="id" type="var">step</span>.<br/>
-
-<br/>
-<span class="id" type="keyword">Notation</span> <span class="id" type="var">multistep</span> := (<span class="id" type="var">multi</span> <span class="id" type="var">step</span>).<br/>
-<span class="id" type="keyword">Notation</span> "t<sub>1</sub> '<span style="font-family: arial;">&rArr;*</span>' t<sub>2</sub>" := (<span class="id" type="var">multistep</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>) (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 40).<br/>
+<span class="id" type="keyword">Notation</span> <a name="STLC.multistep"><span class="id" type="abbreviation">multistep</span></a> := (<a class="idref" href="Smallstep.html#multi"><span class="id" type="inductive">multi</span></a> <a class="idref" href="Stlc.html#STLC.step"><span class="id" type="inductive">step</span></a>).<br/>
+<span class="id" type="keyword">Notation</span> "t<sub>1</sub> '<span style="font-family: arial;">&rArr;*</span>' t<sub>2</sub>" := (<a class="idref" href="Stlc.html#STLC.multistep"><span class="id" type="abbreviation">multistep</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>) (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 40).<br/>
 
 <br/>
 
@@ -931,7 +916,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 </div>
 
 <div class="doc">
-<a name="lab672"></a><h3 class="section">Examples</h3>
+<a name="lab565"></a><h3 class="section">Examples</h3>
 
 <div class="paragraph"> </div>
 
@@ -944,7 +929,7 @@ Finally, we must consider what constitutes a <i>complete</i> program.
 <div class="paragraph"> </div>
 
 </div>
-i.e.
+i.e.,
 
 <div class="paragraph"> </div>
 
@@ -958,14 +943,14 @@ i.e.
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example1</span> :<br/>
-&nbsp;&nbsp;(<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">idB</span>) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">idB</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example1"><span class="id" type="lemma">step_example1</span></a> :<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">v_abs</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.v_abs"><span class="id" type="constructor">v_abs</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">simpl</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">multi_refl</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Smallstep.html#multi_refl"><span class="id" type="constructor">multi_refl</span></a>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
@@ -976,12 +961,12 @@ Example:
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-((\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)&nbsp;((\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)&nbsp;(\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)))&nbsp;<br/>
+((\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)&nbsp;((\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)&nbsp;(\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&rArr;*</span>&nbsp;(\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span>. <span class="id" type="var">x</span>)
 <div class="paragraph"> </div>
 
 </div>
-i.e.
+i.e.,
 
 <div class="paragraph"> </div>
 
@@ -995,15 +980,15 @@ i.e.
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example2</span> :<br/>
-&nbsp;&nbsp;(<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">idB</span>)) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">idB</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example2"><span class="id" type="lemma">step_example2</span></a> :<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>)) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_App2</span>. <span class="id" type="tactic">auto</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">auto</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">auto</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">multi_refl</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_App2"><span class="id" type="constructor">ST_App2</span></a>. <span class="id" type="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">auto</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">auto</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">apply</span> <a class="idref" href="Smallstep.html#multi_refl"><span class="id" type="constructor">multi_refl</span></a>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
@@ -1020,7 +1005,7 @@ Example:
 <div class="paragraph"> </div>
 
 </div>
-i.e.
+i.e.,
 
 <div class="paragraph"> </div>
 
@@ -1034,15 +1019,15 @@ i.e.
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example3</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">tapp</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">notB</span>) <span class="id" type="var">ttrue</span> <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">tfalse</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example3"><span class="id" type="lemma">step_example3</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.notB"><span class="id" type="abbreviation">notB</span></a>) <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_App1</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_IfTrue</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">multi_refl</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_App1"><span class="id" type="constructor">ST_App1</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_IfTrue"><span class="id" type="constructor">ST_IfTrue</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Smallstep.html#multi_refl"><span class="id" type="constructor">multi_refl</span></a>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
@@ -1059,7 +1044,7 @@ Example:
 <div class="paragraph"> </div>
 
 </div>
-i.e.
+i.e.,
 
 <div class="paragraph"> </div>
 
@@ -1073,18 +1058,18 @@ i.e.
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example4</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">notB</span> <span class="id" type="var">ttrue</span>) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">tfalse</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example4"><span class="id" type="lemma">step_example4</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.notB"><span class="id" type="abbreviation">notB</span></a> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a>) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_App2</span>. <span class="id" type="tactic">auto</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_App2</span>. <span class="id" type="tactic">auto</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_IfTrue</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">multi_step</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">ST_AppAbs</span>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">multi_refl</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_App2"><span class="id" type="constructor">ST_App2</span></a>. <span class="id" type="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_App2"><span class="id" type="constructor">ST_App2</span></a>. <span class="id" type="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_IfTrue"><span class="id" type="constructor">ST_IfTrue</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Smallstep.html#multi_step"><span class="id" type="constructor">multi_step</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.ST_AppAbs"><span class="id" type="constructor">ST_AppAbs</span></a>. <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Smallstep.html#multi_refl"><span class="id" type="constructor">multi_refl</span></a>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
@@ -1095,8 +1080,8 @@ A more automatic proof
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example1'</span> :<br/>
-&nbsp;&nbsp;(<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">idB</span>) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">idB</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example1'"><span class="id" type="lemma">step_example1'</span></a> :<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>. <span class="id" type="var">normalize</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
@@ -1109,35 +1094,35 @@ Again, we can use the <span class="inlinecode"><span class="id" type="var">norma
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example2'</span> :<br/>
-&nbsp;&nbsp;(<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">idB</span>)) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">idB</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example2'"><span class="id" type="lemma">step_example2'</span></a> :<br/>
+&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>)) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="var">normalize</span>.<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example3'</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">tapp</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> <span class="id" type="var">notB</span>) <span class="id" type="var">ttrue</span> <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">tfalse</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example3'"><span class="id" type="lemma">step_example3'</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> <a class="idref" href="Stlc.html#STLC.notB"><span class="id" type="abbreviation">notB</span></a>) <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>. <span class="id" type="var">normalize</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example4'</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">tapp</span> <span class="id" type="var">idBB</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">notB</span> <span class="id" type="var">ttrue</span>) <span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">tfalse</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example4'"><span class="id" type="lemma">step_example4'</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.notB"><span class="id" type="abbreviation">notB</span></a> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a>) <span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>. <span class="id" type="var">normalize</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab673"></a><h4 class="section">Exercise: 2 stars (step_example3)</h4>
+<a name="lab566"></a><h4 class="section">Exercise: 2 stars (step_example3)</h4>
  Try to do this one both with and without <span class="inlinecode"><span class="id" type="var">normalize</span></span>. 
 </div>
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">step_example5</span> :<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tapp</span> <span class="id" type="var">idBBBB</span> <span class="id" type="var">idBB</span>) <span class="id" type="var">idB</span>)<br/>
-&nbsp;&nbsp;<span style="font-family: arial;">&rArr;*</span> <span class="id" type="var">idB</span>.<br/>
+<span class="id" type="keyword">Lemma</span> <a name="STLC.step_example5"><span class="id" type="lemma">step_example5</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#STLC.idBBBB"><span class="id" type="abbreviation">idBBBB</span></a> <a class="idref" href="Stlc.html#STLC.idBB"><span class="id" type="abbreviation">idBB</span></a>) <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>)<br/>
+&nbsp;&nbsp;<span style="font-family: arial;">&rArr;*</span> <a class="idref" href="Stlc.html#STLC.idB"><span class="id" type="abbreviation">idB</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
 
@@ -1154,7 +1139,7 @@ Again, we can use the <span class="inlinecode"><span class="id" type="var">norma
 </div>
 
 <div class="doc">
-<a name="lab674"></a><h2 class="section">Typing</h2>
+<a name="lab567"></a><h2 class="section">Typing</h2>
 
 </div>
 <div class="code code-space">
@@ -1163,7 +1148,7 @@ Again, we can use the <span class="inlinecode"><span class="id" type="var">norma
 </div>
 
 <div class="doc">
-<a name="lab675"></a><h3 class="section">Contexts</h3>
+<a name="lab568"></a><h3 class="section">Contexts</h3>
 
 <div class="paragraph"> </div>
 
@@ -1171,7 +1156,7 @@ Again, we can use the <span class="inlinecode"><span class="id" type="var">norma
 
 <div class="paragraph"> </div>
 
-    <i>Answer</i>: It depends on the types of <span class="inlinecode"><span class="id" type="var">x</span></span> and <span class="inlinecode"><span class="id" type="var">y</span></span>!  
+    <i>Answer</i>: It depends on the types of <span class="inlinecode"><span class="id" type="var">x</span></span> and <span class="inlinecode"><span class="id" type="var">y</span></span>!
 
 <div class="paragraph"> </div>
 
@@ -1186,66 +1171,20 @@ Again, we can use the <span class="inlinecode"><span class="id" type="var">norma
     "typing context" &mdash; a mapping from variables to their types. 
 <div class="paragraph"> </div>
 
- We hide the definition of partial maps in a module since it is
-    actually defined in <span class="inlinecode"><span class="id" type="var">SfLib</span></span>. 
-</div>
-<div class="code code-tight">
-
-<br/>
-<span class="id" type="keyword">Module</span> <span class="id" type="var">PartialMap</span>.<br/>
-
-<br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">partial_map</span> (<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>) := <span class="id" type="var">id</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">option</span> <span class="id" type="var">A</span>.<br/>
-
-<br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">empty</span> {<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>} : <span class="id" type="var">partial_map</span> <span class="id" type="var">A</span> := (<span class="id" type="keyword">fun</span> <span class="id" type="var">_</span> ⇒ <span class="id" type="var">None</span>).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Informally, we'll write <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,</span> <span class="inlinecode"><span class="id" type="var">x</span>:<span class="id" type="var">T</span></span> for "extend the partial
+ Informally, we'll write <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,</span> <span class="inlinecode"><span class="id" type="var">x</span>:<span class="id" type="var">T</span></span> for "extend the partial
     function <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> to also map <span class="inlinecode"><span class="id" type="var">x</span></span> to <span class="inlinecode"><span class="id" type="var">T</span></span>."  Formally, we use the
     function <span class="inlinecode"><span class="id" type="var">extend</span></span> to add a binding to a partial map. 
 </div>
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">extend</span> {<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>} (<span style="font-family: serif; font-size:85%;">&Gamma;</span> : <span class="id" type="var">partial_map</span> <span class="id" type="var">A</span>) (<span class="id" type="var">x</span>:<span class="id" type="var">id</span>) (<span class="id" type="var">T</span> : <span class="id" type="var">A</span>) :=<br/>
-&nbsp;&nbsp;<span class="id" type="keyword">fun</span> <span class="id" type="var">x'</span> ⇒ <span class="id" type="keyword">if</span> <span class="id" type="var">eq_id_dec</span> <span class="id" type="var">x</span> <span class="id" type="var">x'</span> <span class="id" type="keyword">then</span> <span class="id" type="var">Some</span> <span class="id" type="var">T</span> <span class="id" type="keyword">else</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x'</span>.<br/>
-
-<br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">extend_eq</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">A</span> (<span class="id" type="var">ctxt</span>: <span class="id" type="var">partial_map</span> <span class="id" type="var">A</span>) <span class="id" type="var">x</span> <span class="id" type="var">T</span>,<br/>
-&nbsp;&nbsp;(<span class="id" type="var">extend</span> <span class="id" type="var">ctxt</span> <span class="id" type="var">x</span> <span class="id" type="var">T</span>) <span class="id" type="var">x</span> = <span class="id" type="var">Some</span> <span class="id" type="var">T</span>.<br/>
-<div class="togglescript" id="proofcontrol3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')"><span class="show"></span></div>
-<div class="proofscript" id="proof3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')">
-<span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">intros</span>. <span class="id" type="tactic">unfold</span> <span class="id" type="var">extend</span>. <span class="id" type="tactic">rewrite</span> <span class="id" type="var">eq_id</span>. <span class="id" type="tactic">auto</span>.<br/>
-<span class="id" type="keyword">Qed</span>.<br/>
-</div>
-
-<br/>
-<span class="id" type="keyword">Lemma</span> <span class="id" type="var">extend_neq</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">A</span> (<span class="id" type="var">ctxt</span>: <span class="id" type="var">partial_map</span> <span class="id" type="var">A</span>) <span class="id" type="var">x1</span> <span class="id" type="var">T</span> <span class="id" type="var">x2</span>,<br/>
-&nbsp;&nbsp;<span class="id" type="var">x2</span> ≠ <span class="id" type="var">x1</span> <span style="font-family: arial;">&rarr;</span>                       <br/>
-&nbsp;&nbsp;(<span class="id" type="var">extend</span> <span class="id" type="var">ctxt</span> <span class="id" type="var">x2</span> <span class="id" type="var">T</span>) <span class="id" type="var">x1</span> = <span class="id" type="var">ctxt</span> <span class="id" type="var">x1</span>.<br/>
-<div class="togglescript" id="proofcontrol4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')"><span class="show"></span></div>
-<div class="proofscript" id="proof4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')">
-<span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">intros</span>. <span class="id" type="tactic">unfold</span> <span class="id" type="var">extend</span>. <span class="id" type="tactic">rewrite</span> <span class="id" type="var">neq_id</span>; <span class="id" type="tactic">auto</span>.<br/>
-<span class="id" type="keyword">Qed</span>.<br/>
-</div>
-
-<br/>
-<span class="id" type="keyword">End</span> <span class="id" type="var">PartialMap</span>.<br/>
-
-<br/>
-<span class="id" type="keyword">Definition</span> <span class="id" type="var">context</span> := <span class="id" type="var">partial_map</span> <span class="id" type="var">ty</span>.<br/>
+<span class="id" type="keyword">Definition</span> <a name="STLC.context"><span class="id" type="definition">context</span></a> := <a class="idref" href="Maps.html#partial_map"><span class="id" type="definition">partial_map</span></a> <a class="idref" href="Stlc.html#STLC.ty"><span class="id" type="inductive">ty</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab676"></a><h3 class="section">Typing Relation</h3>
+<a name="lab569"></a><h3 class="section">Typing Relation</h3>
 
 <div class="paragraph"> </div>
 
@@ -1272,7 +1211,7 @@ Informally, we'll write <span class="inlinecode"><span style="font-family: serif
   <td class="infrule"><hr /></td>
 </tr>
 <tr class="infruleassumption">
-  <td class="infrule"><span style="font-family: serif; font-size:85%;">&Gamma;</span>&nbsp;<span style="font-family: arial;">&#8866;</span>&nbsp;\x:T<sub>11</sub>.t<sub>12</sub>&nbsp;&#x2208;&nbsp;T<sub>11</sub>->T<sub>12</sub></td>
+  <td class="infrule"><span style="font-family: serif; font-size:85%;">&Gamma;</span>&nbsp;<span style="font-family: arial;">&#8866;</span>&nbsp;\x:T<sub>11</sub>.t12&nbsp;&#x2208;&nbsp;T<sub>11</sub>->T<sub>12</sub></td>
   <td></td>
 </td>
 </table></center><center><table class="infrule">
@@ -1334,9 +1273,9 @@ Informally, we'll write <span class="inlinecode"><span style="font-family: serif
 </table></center>
 <div class="paragraph"> </div>
 
-    We can read the three-place relation <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">&#x2208;</span> <span class="inlinecode"><span class="id" type="var">T</span></span> as: 
+    We can read the three-place relation <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">&#x2208;</span> <span class="inlinecode"><span class="id" type="var">T</span></span> as:
     "to the term <span class="inlinecode"><span class="id" type="var">t</span></span> we can assign the type <span class="inlinecode"><span class="id" type="var">T</span></span> using as types for
-    the free variables of <span class="inlinecode"><span class="id" type="var">t</span></span> the ones specified in the context 
+    the free variables of <span class="inlinecode"><span class="id" type="var">t</span></span> the ones specified in the context
     <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span>." 
 </div>
 <div class="code code-tight">
@@ -1345,56 +1284,46 @@ Informally, we'll write <span class="inlinecode"><span style="font-family: serif
 <span class="id" type="keyword">Reserved Notation</span> "Gamma '<span style="font-family: arial;">&#8866;</span>' t '&#x2208;' T" (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 40).<br/>
 
 <br/>
-<span class="id" type="keyword">Inductive</span> <span class="id" type="var">has_type</span> : <span class="id" type="var">context</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">tm</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">ty</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_Var</span> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">T</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> = <span class="id" type="var">Some</span> <span class="id" type="var">T</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tvar</span> <span class="id" type="var">x</span> &#x2208; <span class="id" type="var">T</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_Abs</span> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span> <span class="id" type="var">t<sub>12</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">extend</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">T<sub>11</sub></span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>12</sub></span> &#x2208; <span class="id" type="var">T<sub>12</sub></span> <span style="font-family: arial;">&rarr;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">t<sub>12</sub></span> &#x2208; <span class="id" type="var">TArrow</span> <span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_App</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>1</sub></span> &#x2208; <span class="id" type="var">TArrow</span> <span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span> <span style="font-family: arial;">&rarr;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>2</sub></span> &#x2208; <span class="id" type="var">T<sub>11</sub></span> <span style="font-family: arial;">&rarr;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tapp</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> &#x2208; <span class="id" type="var">T<sub>12</sub></span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_True</span> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">ttrue</span> &#x2208; <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_False</span> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tfalse</span> &#x2208; <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">T_If</span> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span> <span class="id" type="var">T</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>1</sub></span> &#x2208; <span class="id" type="var">TBool</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>2</sub></span> &#x2208; <span class="id" type="var">T</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">t<sub>3</sub></span> &#x2208; <span class="id" type="var">T</span> <span style="font-family: arial;">&rarr;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tif</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span> &#x2208; <span class="id" type="var">T</span><br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLC.has_type"><span class="id" type="inductive">has_type</span></a> : <a class="idref" href="Stlc.html#STLC.context"><span class="id" type="definition">context</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.ty"><span class="id" type="inductive">ty</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLC.T_Var"><span class="id" type="constructor">T_Var</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">T</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> &#x2208; <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.T_Abs"><span class="id" type="constructor">T_Abs</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span> <span class="id" type="var">t<sub>12</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Stlc.html#T<sub>11</sub>"><span class="id" type="variable">T<sub>11</sub></span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>12</sub>"><span class="id" type="variable">t<sub>12</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T<sub>12</sub>"><span class="id" type="variable">T<sub>12</sub></span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Stlc.html#T<sub>11</sub>"><span class="id" type="variable">T<sub>11</sub></span></a> <a class="idref" href="Stlc.html#t<sub>12</sub>"><span class="id" type="variable">t<sub>12</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#T<sub>11</sub>"><span class="id" type="variable">T<sub>11</sub></span></a> <a class="idref" href="Stlc.html#T<sub>12</sub>"><span class="id" type="variable">T<sub>12</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.T_App"><span class="id" type="constructor">T_App</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">T<sub>11</sub></span> <span class="id" type="var">T<sub>12</sub></span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#T<sub>11</sub>"><span class="id" type="variable">T<sub>11</sub></span></a> <a class="idref" href="Stlc.html#T<sub>12</sub>"><span class="id" type="variable">T<sub>12</sub></span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T<sub>11</sub>"><span class="id" type="variable">T<sub>11</sub></span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T<sub>12</sub>"><span class="id" type="variable">T<sub>12</sub></span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.T_True"><span class="id" type="constructor">T_True</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.ttrue"><span class="id" type="constructor">ttrue</span></a> &#x2208; <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.T_False"><span class="id" type="constructor">T_False</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tfalse"><span class="id" type="constructor">tfalse</span></a> &#x2208; <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;| <a name="STLC.T_If"><span class="id" type="constructor">T_If</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> <span class="id" type="var">t<sub>3</sub></span> <span class="id" type="var">T</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#t<sub>3</sub>"><span class="id" type="variable">t<sub>3</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tif"><span class="id" type="constructor">tif</span></a> <a class="idref" href="Stlc.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Stlc.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a> <a class="idref" href="Stlc.html#t<sub>3</sub>"><span class="id" type="variable">t<sub>3</sub></span></a> &#x2208; <a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a><br/>
 <br/>
-<span class="id" type="keyword">where</span> "Gamma '<span style="font-family: arial;">&#8866;</span>' t '&#x2208;' T" := (<span class="id" type="var">has_type</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span>).<br/>
-<div class="togglescript" id="proofcontrol5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')"><span class="show"></span></div>
-<div class="proofscript" id="proof5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')">
+<span class="id" type="keyword">where</span> "Gamma '<span style="font-family: arial;">&#8866;</span>' t '&#x2208;' T" := (<a class="idref" href="Stlc.html#has_type"><span class="id" type="inductive">has_type</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span>).<br/>
 
 <br/>
-<span class="id" type="keyword">Tactic Notation</span> "has_type_cases" <span class="id" type="var">tactic</span>(<span class="id" type="var">first</span>) <span class="id" type="var">ident</span>(<span class="id" type="var">c</span>) :=<br/>
-&nbsp;&nbsp;<span class="id" type="var">first</span>;<br/>
-&nbsp;&nbsp;[ <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_Var" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_Abs" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_App" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_True" <br/>
-&nbsp;&nbsp;| <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_False" | <span class="id" type="var">Case_aux</span> <span class="id" type="var">c</span> "T_If" ].<br/>
-</div>
-
-<br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <span class="id" type="var">has_type</span>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Stlc.html#has_type"><span class="id" type="inductive">has_type</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab677"></a><h3 class="section">Examples</h3>
+<a name="lab570"></a><h3 class="section">Examples</h3>
 
 </div>
 <div class="code code-space">
 
 <br/>
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_example_1</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) &#x2208; <span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>.<br/>
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_example_1"><span class="id" type="definition">typing_example_1</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) &#x2208; <a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">T_Abs</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">T_Var</span>. <span class="id" type="tactic">reflexivity</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Abs"><span class="id" type="constructor">T_Abs</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Var"><span class="id" type="constructor">T_Var</span></a>. <span class="id" type="tactic">reflexivity</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
@@ -1406,8 +1335,8 @@ Note that since we added the <span class="inlinecode"><span class="id" type="var
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_example_1'</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span> <span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) &#x2208; <span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>.<br/>
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_example_1'"><span class="id" type="definition">typing_example_1'</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) &#x2208; <a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>. <span class="id" type="tactic">auto</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
@@ -1419,7 +1348,7 @@ Another example:
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span>&nbsp;<span style="font-family: arial;">&#8866;</span>&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">A</span>. &lambda;<span class="id" type="var">y</span>:<span class="id" type="var">A</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">A</span>. <span class="id" type="var">y</span>&nbsp;(<span class="id" type="var">y</span>&nbsp;<span class="id" type="var">x</span>))&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span>&nbsp;<span style="font-family: arial;">&#8866;</span>&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">A</span>. &lambda;<span class="id" type="var">y</span>:<span class="id" type="var">A</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">A</span>. <span class="id" type="var">y</span>&nbsp;(<span class="id" type="var">y</span>&nbsp;<span class="id" type="var">x</span>))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x2208;&nbsp;<span class="id" type="var">A</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;(<span class="id" type="var">A</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">A</span>)&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">A</span>.
 <div class="paragraph"> </div>
 
@@ -1429,20 +1358,20 @@ Another example:
 <div class="code code-tight">
 
 <br/>
-<div class="togglescript" id="proofcontrol6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')"><span class="show"></span></div>
-<div class="proofscript" id="proof6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')">
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_example_2</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">y</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>) (<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>))))) &#x2208;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">TArrow</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>) <span class="id" type="var">TBool</span>)).<br/>
-<span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">auto</span> <span class="id" type="keyword">using</span> <span class="id" type="var">extend_eq</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">T_Abs</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">T_Abs</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">T_App</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">T_Var</span>...<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <span class="id" type="var">T_App</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">T_Var</span>...<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">T_Var</span>...<br/>
+<div class="togglescript" id="proofcontrol2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')"><span class="show"></span></div>
+<div class="proofscript" id="proof2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')">
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_example_2"><span class="id" type="definition">typing_example_2</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>) (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>))))) &#x2208;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>) <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)).<br/>
+<span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">auto</span> <span class="id" type="keyword">using</span> <a class="idref" href="Maps.html#update_eq"><span class="id" type="lemma">update_eq</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Abs"><span class="id" type="constructor">T_Abs</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Abs"><span class="id" type="constructor">T_Abs</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Stlc.html#STLC.T_App"><span class="id" type="constructor">T_App</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Var"><span class="id" type="constructor">T_Var</span></a>...<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Stlc.html#STLC.T_App"><span class="id" type="constructor">T_App</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Var"><span class="id" type="constructor">T_Var</span></a>...<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Stlc.html#STLC.T_Var"><span class="id" type="constructor">T_Var</span></a>...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
 </div>
 
@@ -1450,19 +1379,19 @@ Another example:
 </div>
 
 <div class="doc">
-<a name="lab678"></a><h4 class="section">Exercise: 2 stars, optional (typing_example_2_full)</h4>
+<a name="lab571"></a><h4 class="section">Exercise: 2 stars, optional (typing_example_2_full)</h4>
  Prove the same result without using <span class="inlinecode"><span class="id" type="tactic">auto</span></span>, <span class="inlinecode"><span class="id" type="tactic">eauto</span></span>, or
     <span class="inlinecode"><span class="id" type="tactic">eapply</span></span>. 
 </div>
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_example_2_full</span> :<br/>
-&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">y</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>) (<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>))))) &#x2208;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> (<span class="id" type="var">TArrow</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>) <span class="id" type="var">TBool</span>)).<br/>
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_example_2_full"><span class="id" type="definition">typing_example_2_full</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>) (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>))))) &#x2208;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>) <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)).<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
 </div>
@@ -1471,13 +1400,13 @@ Another example:
 <font size=-2>&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab679"></a><h4 class="section">Exercise: 2 stars (typing_example_3)</h4>
+<a name="lab572"></a><h4 class="section">Exercise: 2 stars (typing_example_3)</h4>
  Formally prove the following typing derivation holds:  
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
 &nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span>&nbsp;<span style="font-family: arial;">&#8866;</span>&nbsp;\<span class="id" type="var">x</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">B</span>. &lambda;<span class="id" type="var">y</span>:<span class="id" type="var">Bool</span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">Bool</span>. &lambda;<span class="id" type="var">z</span>:<span class="id" type="var">Bool</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">y</span>&nbsp;(<span class="id" type="var">x</span>&nbsp;<span class="id" type="var">z</span>)&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">y</span>&nbsp;(<span class="id" type="var">x</span>&nbsp;<span class="id" type="var">z</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x2208;&nbsp;<span class="id" type="var">T</span>.
 <div class="paragraph"> </div>
 
@@ -1487,14 +1416,14 @@ Another example:
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_example_3</span> :<br/>
-&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">T</span>, <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">y</span> (<span class="id" type="var">TArrow</span> <span class="id" type="var">TBool</span> <span class="id" type="var">TBool</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">z</span> <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>) (<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">z</span>)))))) &#x2208;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">T</span>.<br/>
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_example_3"><span class="id" type="definition">typing_example_3</span></a> :<br/>
+&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">T</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a> (<a class="idref" href="Stlc.html#STLC.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.z"><span class="id" type="definition">z</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>) (<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.z"><span class="id" type="definition">z</span></a>)))))) &#x2208;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a>.<br/>
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">auto</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
 </div>
@@ -1520,33 +1449,32 @@ Another example:
 <div class="code code-tight">
 
 <br/>
-<div class="togglescript" id="proofcontrol7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')"><span class="show"></span></div>
-<div class="proofscript" id="proof7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')">
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_nonexample_1</span> :<br/>
+<div class="togglescript" id="proofcontrol3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')"><span class="show"></span></div>
+<div class="proofscript" id="proof3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')">
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_nonexample_1"><span class="id" type="definition">typing_nonexample_1</span></a> :<br/>
 &nbsp;&nbsp;¬ <span style="font-family: arial;">&exist;</span><span class="id" type="var">T</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">y</span> <span class="id" type="var">TBool</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">y</span>)))) &#x2208;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">T</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a> <a class="idref" href="Stlc.html#STLC.TBool"><span class="id" type="constructor">TBool</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.y"><span class="id" type="definition">y</span></a>)))) &#x2208;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">Hc</span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">Hc</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;The&nbsp;<span class="inlinecode"><span class="id" type="tactic">clear</span></span>&nbsp;tactic&nbsp;is&nbsp;useful&nbsp;here&nbsp;for&nbsp;tidying&nbsp;away&nbsp;bits&nbsp;of<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;context&nbsp;that&nbsp;we're&nbsp;not&nbsp;going&nbsp;to&nbsp;need&nbsp;again.&nbsp;*)</span><br/>
 &nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H5</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H5</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H4</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H4</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H2</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H2</span>.<br/>
-&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H5</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H5</span>.<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;rewrite&nbsp;extend_neq&nbsp;in&nbsp;H1.&nbsp;rewrite&nbsp;extend_eq&nbsp;in&nbsp;H1.&nbsp;*)</span><br/>
-&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H1</span>. <span class="id" type="keyword">Qed</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>5</sub></span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>5</sub></span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>4</sub></span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>4</sub></span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>2</sub></span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>2</sub></span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>5</sub></span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>5</sub></span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>1</sub></span>. <span class="id" type="keyword">Qed</span>.<br/>
 </div>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab680"></a><h4 class="section">Exercise: 3 stars, optional (typing_nonexample_3)</h4>
+<a name="lab573"></a><h4 class="section">Exercise: 3 stars, optional (typing_nonexample_3)</h4>
  Another nonexample:
 
 <div class="paragraph"> </div>
@@ -1562,12 +1490,12 @@ Another example:
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">Example</span> <span class="id" type="var">typing_nonexample_3</span> :<br/>
+<span class="id" type="keyword">Example</span> <a name="STLC.typing_nonexample_3"><span class="id" type="definition">typing_nonexample_3</span></a> :<br/>
 &nbsp;&nbsp;¬ (<span style="font-family: arial;">&exist;</span><span class="id" type="var">S</span>, <span style="font-family: arial;">&exist;</span><span class="id" type="var">T</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">empty</span> <span style="font-family: arial;">&#8866;</span> <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tabs</span> <span class="id" type="var">x</span> <span class="id" type="var">S</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">tapp</span> (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>) (<span class="id" type="var">tvar</span> <span class="id" type="var">x</span>))) &#x2208;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">T</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tabs"><span class="id" type="constructor">tabs</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a> <a class="idref" href="Stlc.html#S"><span class="id" type="variable">S</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Stlc.html#STLC.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>) (<a class="idref" href="Stlc.html#STLC.tvar"><span class="id" type="constructor">tvar</span></a> <a class="idref" href="Stlc.html#STLC.x"><span class="id" type="definition">x</span></a>))) &#x2208;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Stlc.html#T"><span class="id" type="variable">T</span></a>).<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
 </div>
@@ -1578,7 +1506,7 @@ Another example:
 <div class="code code-tight">
 
 <br/>
-<span class="id" type="keyword">End</span> <span class="id" type="var">STLC</span>.<br/>
+<span class="id" type="keyword">End</span> <a class="idref" href="Stlc.html#STLC"><span class="id" type="module">STLC</span></a>.<br/>
 
 <br/>
 </div>

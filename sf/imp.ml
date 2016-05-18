@@ -106,6 +106,27 @@ let rec nat_iter n0 f x =
     f (nat_iter n' f x))
     n0
 
+(** val leb : int -> int -> bool **)
+
+let rec leb m x =
+  (fun zero succ n ->
+      if n=0 then zero () else succ (n-1))
+    (fun _ ->
+    true)
+    (fun m' ->
+    (fun zero succ n ->
+      if n=0 then zero () else succ (n-1))
+      (fun _ ->
+      false)
+      (fun n' ->
+      leb m' n')
+      x)
+    m
+
+(** val beq_nat : int -> int -> bool **)
+
+let rec beq_nat = ( = )
+
 type positive =
 | XI of positive
 | XO of positive
@@ -2121,33 +2142,6 @@ module N =
     Private_Dec.min_dec
  end
 
-(** val eq_nat_dec : int -> int -> bool **)
-
-let rec eq_nat_dec n0 m =
-  (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-    (fun _ ->
-    (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-      (fun _ ->
-      true)
-      (fun m0 ->
-      false)
-      m)
-    (fun n1 ->
-    (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-      (fun _ ->
-      false)
-      (fun m0 ->
-      eq_nat_dec n1 m0)
-      m)
-    n0
-
-(** val beq_nat : int -> int -> bool **)
-
-let rec beq_nat = ( = )
-
 (** val rev : 'a1 list -> 'a1 list **)
 
 let rec rev = function
@@ -2178,6 +2172,100 @@ let rec fold_right f a0 = function
 let rec forallb f = function
 | Nil -> true
 | Cons (a, l0) -> if f a then forallb f l0 else false
+
+type id =
+  int
+  (* singleton inductive, whose constructor was Id *)
+
+(** val beq_id : id -> id -> bool **)
+
+let beq_id id1 id2 =
+  beq_nat id1 id2
+
+type 'a total_map = id -> 'a
+
+(** val t_empty : 'a1 -> 'a1 total_map **)
+
+let t_empty v x =
+  v
+
+(** val t_update : 'a1 total_map -> id -> 'a1 -> id -> 'a1 **)
+
+let t_update m x v x' =
+  if beq_id x x' then v else m x'
+
+type state = int total_map
+
+(** val empty_state : state **)
+
+let empty_state =
+  t_empty 0
+
+type aexp =
+| ANum of int
+| AId of id
+| APlus of aexp * aexp
+| AMinus of aexp * aexp
+| AMult of aexp * aexp
+
+type bexp =
+| BTrue
+| BFalse
+| BEq of aexp * aexp
+| BLe of aexp * aexp
+| BNot of bexp
+| BAnd of bexp * bexp
+
+(** val aeval : state -> aexp -> int **)
+
+let rec aeval st = function
+| ANum n0 -> n0
+| AId x -> st x
+| APlus (a1, a2) -> plus (aeval st a1) (aeval st a2)
+| AMinus (a1, a2) -> minus (aeval st a1) (aeval st a2)
+| AMult (a1, a2) -> mult (aeval st a1) (aeval st a2)
+
+(** val beval : state -> bexp -> bool **)
+
+let rec beval st = function
+| BTrue -> true
+| BFalse -> false
+| BEq (a1, a2) -> beq_nat (aeval st a1) (aeval st a2)
+| BLe (a1, a2) -> leb (aeval st a1) (aeval st a2)
+| BNot b1 -> negb (beval st b1)
+| BAnd (b1, b2) -> if beval st b1 then beval st b2 else false
+
+type com =
+| CSkip
+| CAss of id * aexp
+| CSeq of com * com
+| CIf of bexp * com * com
+| CWhile of bexp * com
+
+(** val ceval_step : state -> com -> int -> state option **)
+
+let rec ceval_step st c i =
+  (fun zero succ n ->
+      if n=0 then zero () else succ (n-1))
+    (fun _ ->
+    None)
+    (fun i' ->
+    match c with
+    | CSkip -> Some st
+    | CAss (l, a1) -> Some (t_update st l (aeval st a1))
+    | CSeq (c1, c2) ->
+      (match ceval_step st c1 i' with
+       | Some st' -> ceval_step st' c2 i'
+       | None -> None)
+    | CIf (b, c1, c2) ->
+      if beval st b then ceval_step st c1 i' else ceval_step st c2 i'
+    | CWhile (b1, c1) ->
+      if beval st b1
+      then (match ceval_step st c1 i' with
+            | Some st' -> ceval_step st' c i'
+            | None -> None)
+      else Some st)
+    i
 
 (** val n_of_digits : bool list -> n **)
 
@@ -2224,110 +2312,6 @@ let rec append s1 s2 =
   | EmptyString -> s2
   | String (c, s1') -> String (c, (append s1' s2))
 
-(** val ble_nat : int -> int -> bool **)
-
-let rec ble_nat n0 m =
-  (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-    (fun _ ->
-    true)
-    (fun n' ->
-    (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-      (fun _ ->
-      false)
-      (fun m' ->
-      ble_nat n' m')
-      m)
-    n0
-
-type id =
-  int
-  (* singleton inductive, whose constructor was Id *)
-
-(** val eq_id_dec : id -> id -> bool **)
-
-let eq_id_dec id1 id2 =
-  eq_nat_dec id1 id2
-
-type state = id -> int
-
-(** val empty_state : state **)
-
-let empty_state x =
-  0
-
-(** val update : state -> id -> int -> state **)
-
-let update st x n0 x' =
-  if eq_id_dec x x' then n0 else st x'
-
-type aexp =
-| ANum of int
-| AId of id
-| APlus of aexp * aexp
-| AMinus of aexp * aexp
-| AMult of aexp * aexp
-
-type bexp =
-| BTrue
-| BFalse
-| BEq of aexp * aexp
-| BLe of aexp * aexp
-| BNot of bexp
-| BAnd of bexp * bexp
-
-(** val aeval : state -> aexp -> int **)
-
-let rec aeval st = function
-| ANum n0 -> n0
-| AId x -> st x
-| APlus (a1, a2) -> plus (aeval st a1) (aeval st a2)
-| AMinus (a1, a2) -> minus (aeval st a1) (aeval st a2)
-| AMult (a1, a2) -> mult (aeval st a1) (aeval st a2)
-
-(** val beval : state -> bexp -> bool **)
-
-let rec beval st = function
-| BTrue -> true
-| BFalse -> false
-| BEq (a1, a2) -> beq_nat (aeval st a1) (aeval st a2)
-| BLe (a1, a2) -> ble_nat (aeval st a1) (aeval st a2)
-| BNot b1 -> negb (beval st b1)
-| BAnd (b1, b2) -> if beval st b1 then beval st b2 else false
-
-type com =
-| CSkip
-| CAss of id * aexp
-| CSeq of com * com
-| CIf of bexp * com * com
-| CWhile of bexp * com
-
-(** val ceval_step : state -> com -> int -> state option **)
-
-let rec ceval_step st c i =
-  (fun zero succ n ->
-      if n=0 then zero () else succ (n-1))
-    (fun _ ->
-    None)
-    (fun i' ->
-    match c with
-    | CSkip -> Some st
-    | CAss (l, a1) -> Some (update st l (aeval st a1))
-    | CSeq (c1, c2) ->
-      (match ceval_step st c1 i' with
-       | Some st' -> ceval_step st' c2 i'
-       | None -> None)
-    | CIf (b, c1, c2) ->
-      if beval st b then ceval_step st c1 i' else ceval_step st c2 i'
-    | CWhile (b1, c1) ->
-      if beval st b1
-      then (match ceval_step st c1 i' with
-            | Some st' -> ceval_step st' c i'
-            | None -> None)
-      else Some st)
-    i
-
 (** val isWhite : char -> bool **)
 
 let isWhite c =
@@ -2364,7 +2348,7 @@ let isWhite c =
 
 let isLowerAlpha c =
   let n0 = nat_of_ascii c in
-  if ble_nat ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  if leb ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2399,7 +2383,7 @@ let isLowerAlpha c =
        ((fun x -> x + 1)
        0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
        n0
-  then ble_nat n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  then leb n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2447,7 +2431,7 @@ let isLowerAlpha c =
 
 let isAlpha c =
   let n0 = nat_of_ascii c in
-  if if ble_nat ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  if if leb ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
           ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
           ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
           ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2471,7 +2455,7 @@ let isAlpha c =
           ((fun x -> x + 1) ((fun x -> x + 1)
           0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
           n0
-     then ble_nat n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+     then leb n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2504,7 +2488,7 @@ let isAlpha c =
             0))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
      else false
   then true
-  else if ble_nat ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  else if leb ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
             ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2539,7 +2523,7 @@ let isAlpha c =
             ((fun x -> x + 1)
             0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
             n0
-       then ble_nat n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+       then leb n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
               ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
               ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
               ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2587,7 +2571,7 @@ let isAlpha c =
 
 let isDigit c =
   let n0 = nat_of_ascii c in
-  if ble_nat ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  if leb ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
@@ -2604,7 +2588,7 @@ let isDigit c =
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
        0)))))))))))))))))))))))))))))))))))))))))))))))) n0
-  then ble_nat n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
+  then leb n0 ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)
          ((fun x -> x + 1) ((fun x -> x + 1) ((fun x -> x + 1)

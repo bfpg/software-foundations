@@ -1,46 +1,49 @@
 (** * Stlc: The Simply Typed Lambda-Calculus *)
 
-Require Export Types.
+Require Import Maps.
+Require Import Smallstep.
+Require Import Types.
 
 (* ###################################################################### *)
 (** * The Simply Typed Lambda-Calculus *)
 
-(** The simply typed lambda-calculus (STLC) is a tiny core calculus
-    embodying the key concept of _functional abstraction_, which shows
-    up in pretty much every real-world programming language in some
-    form (functions, procedures, methods, etc.).
-    
-    We will follow exactly the same pattern as in the previous
-    chapter when formalizing this calculus (syntax, small-step
-    semantics, typing rules) and its main properties (progress and
-    preservation).  The new technical challenges (which will take some
-    work to deal with) all arise from the mechanisms of _variable
-    binding_ and _substitution_. *)
+(** The simply typed lambda-calculus (STLC) is a tiny core
+    calculus embodying the key concept of _functional abstraction_,
+    which shows up in pretty much every real-world programming
+    language in some form (functions, procedures, methods, etc.).
+
+    We will follow exactly the same pattern as in the previous chapter
+    when formalizing this calculus (syntax, small-step semantics,
+    typing rules) and its main properties (progress and preservation).
+    The new technical challenges all arise from the mechanisms of
+    _variable binding_ and _substitution_.  It which will take some
+    work to deal with these. *)
 
 (* ###################################################################### *)
 (** ** Overview *)
 
-(** The STLC is built on some collection of _base types_ -- booleans,
-    numbers, strings, etc.  The exact choice of base types doesn't
-    matter -- the construction of the language and its theoretical
-    properties work out pretty much the same -- so for the sake of
-    brevity let's take just [Bool] for the moment.  At the end of the
-    chapter we'll see how to add more base types, and in later
-    chapters we'll enrich the pure STLC with other useful constructs
-    like pairs, records, subtyping, and mutable state.
+(** The STLC is built on some collection of _base types_ --
+    booleans, numbers, strings, etc.  The exact choice of base types
+    doesn't matter much -- the construction of the language and its
+    theoretical properties work out the same no matter what we
+    choose -- so for the sake of brevity let's take just [Bool] for
+    the moment.  At the end of the chapter we'll see how to add more
+    base types, and in later chapters we'll enrich the pure STLC with
+    other useful constructs like pairs, records, subtyping, and
+    mutable state.
 
-    Starting from the booleans, we add three things:
+    Starting from boolean constants and conditionals, we add three
+    things:
         - variables
         - function abstractions
         - application
 
     This gives us the following collection of abstract syntax
-    constructors (written out here in informal BNF notation -- we'll
+    constructors (written out first in informal BNF notation -- we'll
     formalize it below).
 
 *)
-
-(** Informal concrete syntax: 
+(**
        t ::= x                       variable
            | \x:T1.t2                abstraction
            | t1 t2                   application
@@ -49,12 +52,12 @@ Require Export Types.
            | if t1 then t2 else t3   conditional
 *)
 
-(** The [\] symbol (backslash, in ascii) in a function abstraction
-    [\x:T1.t2] is generally written as a greek letter "lambda" (hence
-    the name of the calculus).  The variable [x] is called the
-    _parameter_ to the function; the term [t2] is its _body_.  The
-    annotation [:T] specifies the type of arguments that the function
-    can be applied to. *)
+(** The [\] symbol in a function abstraction [\x:T1.t2] is generally
+    written as a greek letter "lambda" (hence the name of the
+    calculus).  The variable [x] is called the _parameter_ to the
+    function; the term [t2] is its _body_.  The annotation [:T1]
+    specifies the type of arguments that the function can be applied
+    to. *)
 
 (** Some examples:
 
@@ -74,7 +77,7 @@ Require Export Types.
 
         The constant function that takes every (boolean) argument to
         [true]. *)
-(**  
+(**
       - [\x:Bool. \y:Bool. x]
 
         A two-argument function that takes two booleans and returns
@@ -105,13 +108,13 @@ Require Export Types.
 (** As the last several examples show, the STLC is a language of
     _higher-order_ functions: we can write down functions that take
     other functions as arguments and/or return other functions as
-    results.  
+    results.
 
     Another point to note is that the STLC doesn't provide any
     primitive syntax for defining _named_ functions -- all functions
     are "anonymous."  We'll see in chapter [MoreStlc] that it is easy
     to add named functions to what we've got -- indeed, the
-    fundamental naming and binding mechanisms are exactly the same.  
+    fundamental naming and binding mechanisms are exactly the same.
 
     The _types_ of the STLC include [Bool], which classifies the
     boolean constants [true] and [false] as well as more complex
@@ -128,7 +131,7 @@ Require Export Types.
 
       - [(\x:Bool. x) true] has type [Bool]
 
-      - [\x:Bool. \y:Bool. x] has type [Bool->Bool->Bool] (i.e. [Bool -> (Bool->Bool)])
+      - [\x:Bool. \y:Bool. x] has type [Bool->Bool->Bool] (i.e., [Bool -> (Bool->Bool)])
 
       - [(\x:Bool. \y:Bool. x) false] has type [Bool->Bool]
 
@@ -147,8 +150,8 @@ Module STLC.
 (* ################################### *)
 (** *** Types *)
 
-Inductive ty : Type := 
-  | TBool  : ty 
+Inductive ty : Type :=
+  | TBool  : ty
   | TArrow : ty -> ty -> ty.
 
 (* ################################### *)
@@ -161,12 +164,6 @@ Inductive tm : Type :=
   | ttrue : tm
   | tfalse : tm
   | tif : tm -> tm -> tm -> tm.
-
-Tactic Notation "t_cases" tactic(first) ident(c) :=
-  first;
-  [ Case_aux c "tvar" | Case_aux c "tapp" 
-  | Case_aux c "tabs" | Case_aux c "ttrue" 
-  | Case_aux c "tfalse" | Case_aux c "tif" ].
 
 (** Note that an abstraction [\x:T.t] (formally, [tabs x T t]) is
     always annotated with the type [T] of its parameter, in contrast
@@ -185,19 +182,19 @@ Hint Unfold z.
 
 (** [idB = \x:Bool. x] *)
 
-Notation idB := 
+Notation idB :=
   (tabs x TBool (tvar x)).
 
 (** [idBB = \x:Bool->Bool. x] *)
 
-Notation idBB := 
+Notation idBB :=
   (tabs x (TArrow TBool TBool) (tvar x)).
 
 (** [idBBBB = \x:(Bool->Bool) -> (Bool->Bool). x] *)
 
 Notation idBBBB :=
-  (tabs x (TArrow (TArrow TBool TBool) 
-                      (TArrow TBool TBool)) 
+  (tabs x (TArrow (TArrow TBool TBool)
+                      (TArrow TBool TBool))
     (tvar x)).
 
 (** [k = \x:Bool. \y:Bool. x] *)
@@ -247,8 +244,8 @@ Notation notB := (tabs x TBool (tif (tvar x) tfalse ttrue)).
 
     Coq, in its built-in functional programming langauge, makes the
     first choice -- for example,
-         Eval simpl in (fun x:bool => 3 + 4)
-    yields [fun x:bool => 7].  
+         Compute (fun x:bool => 3 + 4)
+    yields [fun x:bool => 7].
 
     Most real-world functional programming languages make the second
     choice -- reduction of a function's body only begins when the
@@ -258,9 +255,9 @@ Notation notB := (tabs x TBool (tif (tvar x) tfalse ttrue)).
 Inductive value : tm -> Prop :=
   | v_abs : forall x T t,
       value (tabs x T t)
-  | v_true : 
+  | v_true :
       value ttrue
-  | v_false : 
+  | v_false :
       value tfalse.
 
 Hint Constructors value.
@@ -269,10 +266,10 @@ Hint Constructors value.
 (** Finally, we must consider what constitutes a _complete_ program.
 
   Intuitively, a "complete" program must not refer to any undefined
-  variables.  We'll see shortly how to define the "free" variables 
+  variables.  We'll see shortly how to define the "free" variables
   in a STLC term.  A program is "closed", that is, it contains no
   free variables.
-   
+
 *)
 
 (** Having made the choice not to reduce under abstractions,
@@ -294,11 +291,10 @@ Hint Constructors value.
     substitute the argument term for the function parameter in the
     function's body.  For example, we reduce
        (\x:Bool. if x then true else x) false
-    to 
+    to
        if false then true else false
-]] 
     by substituting [false] for the parameter [x] in the body of the
-    function.  
+    function.
 
     In general, we need to be able to substitute some given
     term [s] for occurrences of some variable [x] in another term [t].
@@ -333,14 +329,13 @@ Hint Constructors value.
 (** Here is the definition, informally...
    [x:=s]x = s
    [x:=s]y = y                                   if x <> y
-   [x:=s](\x:T11.t12)   = \x:T11. t12      
+   [x:=s](\x:T11.t12)   = \x:T11. t12
    [x:=s](\y:T11.t12)   = \y:T11. [x:=s]t12      if x <> y
-   [x:=s](t1 t2)        = ([x:=s]t1) ([x:=s]t2)       
+   [x:=s](t1 t2)        = ([x:=s]t1) ([x:=s]t2)
    [x:=s]true           = true
    [x:=s]false          = false
-   [x:=s](if t1 then t2 else t3) = 
+   [x:=s](if t1 then t2 else t3) =
                    if [x:=s]t1 then [x:=s]t2 else [x:=s]t3
-]]  
 *)
 
 (**    ... and formally: *)
@@ -349,17 +344,17 @@ Reserved Notation "'[' x ':=' s ']' t" (at level 20).
 
 Fixpoint subst (x:id) (s:tm) (t:tm) : tm :=
   match t with
-  | tvar x' => 
-      if eq_id_dec x x' then s else t
-  | tabs x' T t1 => 
-      tabs x' T (if eq_id_dec x x' then t1 else ([x:=s] t1)) 
-  | tapp t1 t2 => 
+  | tvar x' =>
+      if beq_id x x' then s else t
+  | tabs x' T t1 =>
+      tabs x' T (if beq_id x x' then t1 else ([x:=s] t1))
+  | tapp t1 t2 =>
       tapp ([x:=s] t1) ([x:=s] t2)
-  | ttrue => 
+  | ttrue =>
       ttrue
-  | tfalse => 
+  | tfalse =>
       tfalse
-  | tif t1 t2 t3 => 
+  | tif t1 t2 t3 =>
       tif ([x:=s] t1) ([x:=s] t2) ([x:=s] t3)
   end
 
@@ -374,8 +369,7 @@ where "'[' x ':=' s ']' t" := (subst x s t).
     this extra complexity here, but it must be dealt with when
     formalizing richer languages. *)
 
-(** *** *)
-(** **** Exercise: 3 stars (substi)  *)  
+(** **** Exercise: 3 stars (substi)  *)
 
 (** The definition that we gave above uses Coq's [Fixpoint] facility
     to define substitution as a _function_.  Suppose, instead, we
@@ -384,8 +378,8 @@ where "'[' x ':=' s ']' t" := (subst x s t).
     one of the constructors; your job is to fill in the rest of the
     constructors. *)
 
-Inductive substi (s:tm) (x:id) : tm -> tm -> Prop := 
-  | s_var1 : 
+Inductive substi (s:tm) (x:id) : tm -> tm -> Prop :=
+  | s_var1 :
       substi s x (tvar x) s
   (* FILL IN HERE *)
 .
@@ -448,7 +442,7 @@ Inductive step : tm -> tm -> Prop :=
          tapp t1 t2 ==> tapp t1' t2
   | ST_App2 : forall v1 t2 t2',
          value v1 ->
-         t2 ==> t2' -> 
+         t2 ==> t2' ->
          tapp v1 t2 ==> tapp v1  t2'
   | ST_IfTrue : forall t1 t2,
       (tif ttrue t1 t2) ==> t1
@@ -459,12 +453,6 @@ Inductive step : tm -> tm -> Prop :=
       (tif t1 t2 t3) ==> (tif t1' t2 t3)
 
 where "t1 '==>' t2" := (step t1 t2).
-
-Tactic Notation "step_cases" tactic(first) ident(c) :=
-  first;
-  [ Case_aux c "ST_AppAbs" | Case_aux c "ST_App1" 
-  | Case_aux c "ST_App2" | Case_aux c "ST_IfTrue" 
-  | Case_aux c "ST_IfFalse" | Case_aux c "ST_If" ].
 
 Hint Constructors step.
 
@@ -482,7 +470,7 @@ Notation "t1 '==>*' t2" := (multistep t1 t2) (at level 40).
 
 (** Example:
     ((\x:Bool->Bool. x) (\x:Bool. x)) ==>* (\x:Bool. x)
-i.e.
+i.e.,
     (idBB idB) ==>* idB
 *)
 
@@ -493,12 +481,12 @@ Proof.
     apply ST_AppAbs.
     apply v_abs.
   simpl.
-  apply multi_refl.  Qed.  
+  apply multi_refl.  Qed.
 
 (** Example:
-((\x:Bool->Bool. x) ((\x:Bool->Bool. x) (\x:Bool. x))) 
+((\x:Bool->Bool. x) ((\x:Bool->Bool. x) (\x:Bool. x)))
       ==>* (\x:Bool. x)
-i.e.
+i.e.,
   (idBB (idBB idB)) ==>* idB.
 *)
 
@@ -510,53 +498,53 @@ Proof.
     apply ST_AppAbs. auto.
   eapply multi_step.
     apply ST_AppAbs. simpl. auto.
-  simpl. apply multi_refl.  Qed. 
+  simpl. apply multi_refl.  Qed.
 
 (** Example:
 ((\x:Bool->Bool. x) (\x:Bool. if x then false
                               else true)) true)
       ==>* false
-i.e.
+i.e.,
   ((idBB notB) ttrue) ==>* tfalse.
 *)
 
 Lemma step_example3 :
   tapp (tapp idBB notB) ttrue ==>* tfalse.
-Proof. 
+Proof.
   eapply multi_step.
     apply ST_App1. apply ST_AppAbs. auto. simpl.
   eapply multi_step.
     apply ST_AppAbs. auto. simpl.
   eapply multi_step.
-    apply ST_IfTrue. apply multi_refl.  Qed. 
+    apply ST_IfTrue. apply multi_refl.  Qed.
 
 (** Example:
 ((\x:Bool -> Bool. x) ((\x:Bool. if x then false
                                else true) true))
       ==>* false
-i.e.
+i.e.,
   (idBB (notB ttrue)) ==>* tfalse.
 *)
 
 Lemma step_example4 :
   tapp idBB (tapp notB ttrue) ==>* tfalse.
-Proof. 
+Proof.
   eapply multi_step.
-    apply ST_App2. auto. 
+    apply ST_App2. auto.
     apply ST_AppAbs. auto. simpl.
   eapply multi_step.
-    apply ST_App2. auto. 
-    apply ST_IfTrue. 
+    apply ST_App2. auto.
+    apply ST_IfTrue.
   eapply multi_step.
     apply ST_AppAbs. auto. simpl.
-  apply multi_refl.  Qed. 
+  apply multi_refl.  Qed.
 
 
 (** A more automatic proof *)
 
 Lemma step_example1' :
   (tapp idBB idB) ==>* idB.
-Proof. normalize.  Qed.  
+Proof. normalize.  Qed.
 
 (** Again, we can use the [normalize] tactic from above to simplify
     the proof. *)
@@ -565,17 +553,17 @@ Lemma step_example2' :
   (tapp idBB (tapp idBB idB)) ==>* idB.
 Proof.
   normalize.
-Qed. 
+Qed.
 
 Lemma step_example3' :
   tapp (tapp idBB notB) ttrue ==>* tfalse.
-Proof. normalize.  Qed.  
+Proof. normalize.  Qed.
 
 Lemma step_example4' :
   tapp idBB (tapp notB ttrue) ==>* tfalse.
-Proof. normalize.  Qed.  
+Proof. normalize.  Qed.
 
-(** **** Exercise: 2 stars (step_example3)  *)  
+(** **** Exercise: 2 stars (step_example3)  *)
 (** Try to do this one both with and without [normalize]. *)
 
 Lemma step_example5 :
@@ -595,7 +583,7 @@ Proof.
 
 (** _Question_: What is the type of the term "[x y]"?
 
-    _Answer_: It depends on the types of [x] and [y]!  
+    _Answer_: It depends on the types of [x] and [y]!
 
     I.e., in order to assign a type to a term, we need to know
     what assumptions we should make about the types of its free
@@ -605,36 +593,9 @@ Proof.
     written [Gamma |- t \in T], where [Gamma] is a
     "typing context" -- a mapping from variables to their types. *)
 
-(** We hide the definition of partial maps in a module since it is
-    actually defined in [SfLib]. *)
-
-Module PartialMap.
-
-Definition partial_map (A:Type) := id -> option A.
-
-Definition empty {A:Type} : partial_map A := (fun _ => None). 
-
 (** Informally, we'll write [Gamma, x:T] for "extend the partial
     function [Gamma] to also map [x] to [T]."  Formally, we use the
     function [extend] to add a binding to a partial map. *)
-
-Definition extend {A:Type} (Gamma : partial_map A) (x:id) (T : A) :=
-  fun x' => if eq_id_dec x x' then Some T else Gamma x'.
-
-Lemma extend_eq : forall A (ctxt: partial_map A) x T,
-  (extend ctxt x T) x = Some T.
-Proof.
-  intros. unfold extend. rewrite eq_id. auto.
-Qed.
-
-Lemma extend_neq : forall A (ctxt: partial_map A) x1 T x2,
-  x2 <> x1 ->                       
-  (extend ctxt x2 T) x1 = ctxt x1.
-Proof.
-  intros. unfold extend. rewrite neq_id; auto.
-Qed.
-
-End PartialMap.
 
 Definition context := partial_map ty.
 
@@ -666,23 +627,23 @@ Definition context := partial_map ty.
                   Gamma |- if t1 then t2 else t3 \in T
 
 
-    We can read the three-place relation [Gamma |- t \in T] as: 
+    We can read the three-place relation [Gamma |- t \in T] as:
     "to the term [t] we can assign the type [T] using as types for
-    the free variables of [t] the ones specified in the context 
+    the free variables of [t] the ones specified in the context
     [Gamma]." *)
 
 Reserved Notation "Gamma '|-' t '\in' T" (at level 40).
-    
+
 Inductive has_type : context -> tm -> ty -> Prop :=
   | T_Var : forall Gamma x T,
       Gamma x = Some T ->
       Gamma |- tvar x \in T
   | T_Abs : forall Gamma x T11 T12 t12,
-      extend Gamma x T11 |- t12 \in T12 -> 
+      update Gamma x T11 |- t12 \in T12 ->
       Gamma |- tabs x T11 t12 \in TArrow T11 T12
   | T_App : forall T11 T12 Gamma t1 t2,
-      Gamma |- t1 \in TArrow T11 T12 -> 
-      Gamma |- t2 \in T11 -> 
+      Gamma |- t1 \in TArrow T11 T12 ->
+      Gamma |- t2 \in T11 ->
       Gamma |- tapp t1 t2 \in T12
   | T_True : forall Gamma,
        Gamma |- ttrue \in TBool
@@ -695,12 +656,6 @@ Inductive has_type : context -> tm -> ty -> Prop :=
        Gamma |- tif t1 t2 t3 \in T
 
 where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
-
-Tactic Notation "has_type_cases" tactic(first) ident(c) :=
-  first;
-  [ Case_aux c "T_Var" | Case_aux c "T_Abs" 
-  | Case_aux c "T_App" | Case_aux c "T_True" 
-  | Case_aux c "T_False" | Case_aux c "T_If" ].
 
 Hint Constructors has_type.
 
@@ -720,7 +675,7 @@ Example typing_example_1' :
 Proof. auto.  Qed.
 
 (** Another example:
-     empty |- \x:A. \y:A->A. y (y x)) 
+     empty |- \x:A. \y:A->A. y (y x))
            \in A -> (A->A) -> A.
 *)
 
@@ -730,7 +685,7 @@ Example typing_example_2 :
        (tabs y (TArrow TBool TBool)
           (tapp (tvar y) (tapp (tvar y) (tvar x))))) \in
     (TArrow TBool (TArrow (TArrow TBool TBool) TBool)).
-Proof with auto using extend_eq.
+Proof with auto using update_eq.
   apply T_Abs.
   apply T_Abs.
   eapply T_App. apply T_Var...
@@ -756,12 +711,12 @@ Proof.
 (** Formally prove the following typing derivation holds: *)
 (** 
    empty |- \x:Bool->B. \y:Bool->Bool. \z:Bool.
-               y (x z) 
+               y (x z)
          \in T.
 *)
 
 Example typing_example_3 :
-  exists T, 
+  exists T,
     empty |-
       (tabs x (TArrow TBool TBool)
          (tabs y (TArrow TBool TBool)
@@ -781,7 +736,7 @@ Proof with auto.
 
 Example typing_nonexample_1 :
   ~ exists T,
-      empty |- 
+      empty |-
         (tabs x TBool
             (tabs y TBool
                (tapp (tvar x) (tvar y)))) \in
@@ -795,7 +750,6 @@ Proof.
   inversion H4. subst. clear H4.
   inversion H2. subst. clear H2.
   inversion H5. subst. clear H5.
-  (* rewrite extend_neq in H1. rewrite extend_eq in H1. *)
   inversion H1.  Qed.
 
 (** **** Exercise: 3 stars, optional (typing_nonexample_3)  *)
@@ -806,7 +760,7 @@ Proof.
 
 Example typing_nonexample_3 :
   ~ (exists S, exists T,
-        empty |- 
+        empty |-
           (tabs x S
              (tapp (tvar x) (tvar x))) \in
           T).
@@ -818,5 +772,5 @@ Proof.
 
 End STLC.
 
-(** $Date: 2014-12-31 11:17:56 -0500 (Wed, 31 Dec 2014) $ *)
+(** $Date: 2016-03-07 17:05:52 -0500 (Mon, 07 Mar 2016) $ *)
 
