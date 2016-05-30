@@ -3,11 +3,11 @@
 (** * Basic Extraction *)
 
 (** In its simplest form, extracting an efficient program from one
-    written in Coq is completely straightforward. *)
+    written in Coq is completely straightforward. 
 
-(** First we say what language we want to extract into.  Options are
-     OCaml (the most mature), Haskell (which mostly works), and
-     Scheme (a bit out of date). *)
+    First we say what language we want to extract into.  Options are
+    OCaml (the most mature), Haskell (which mostly works), and
+    Scheme (a bit out of date). *)
 
 Extraction Language Ocaml.
 
@@ -16,7 +16,6 @@ Extraction Language Ocaml.
 
 Require Import Coq.Arith.Arith.
 Require Import Coq.Arith.EqNat.
-
 Require Import SfLib.
 Require Import ImpCEvalFun.
 
@@ -59,7 +58,9 @@ Extract Constant beq_nat => "( = )".
 (** Important: It is entirely _your responsibility_ to make sure that
     the translations you're proving make sense.  For example, it might
     be tempting to include this one
+
       Extract Constant minus => "( - )".
+
     but doing so could lead to serious confusion!  (Why?)
 *)
 
@@ -110,10 +111,10 @@ Extraction "imp.ml" empty_state ceval_step parse.
 
     Next, compile the driver together with the extracted code and
     execute it, as follows.
-<<
+
         ocamlc -w -20 -w -26 -o impdriver imp.mli imp.ml impdriver.ml
         ./impdriver
->>
+
     (The [-w] flags to [ocamlc] are just there to suppress a few
     spurious warnings.) *)
 
@@ -126,4 +127,4 @@ Extraction "imp.ml" empty_state ceval_step parse.
     course, the parser we're using is not certified, since we didn't
     prove anything about it! *)
 
-(** $Date: 2016-02-29 10:14:50 -0500 (Mon, 29 Feb 2016) $ *)
+(** $Date: 2016-05-26 12:03:56 -0400 (Thu, 26 May 2016) $ *)

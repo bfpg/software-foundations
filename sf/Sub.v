@@ -1,6 +1,5 @@
 (** * Sub: Subtyping *)
 
-
 Require Import SfLib.
 Require Import Maps.
 Require Import Types.
@@ -8,31 +7,28 @@ Require Import Types.
 (* ###################################################### *)
 (** * Concepts *)
 
-(** We now turn to the study of _subtyping_, perhaps the most
-    characteristic feature of the static type systems of recently
-    designed programming languages and a key feature needed to support
-    the object-oriented programming style. *)
+(** We now turn to the study of _subtyping_, a key feature
+    needed to support the object-oriented programming style. *)
 
 (* ###################################################### *)
 (** ** A Motivating Example *)
 
 (** Suppose we are writing a program involving two record types
     defined as follows:
-<<
-    Person  = {name:String, age:Nat}
-    Student = {name:String, age:Nat, gpa:Nat}
->>
+
+      Person  = {name:String, age:Nat}
+      Student = {name:String, age:Nat, gpa:Nat}
+
 *)
 
 (** In the simply typed lamdba-calculus with records, the term
-<<
-    (\r:Person. (r.age)+1) {name="Pat",age=21,gpa=1}
->>
-   is not typable: it involves an application of a function that wants
-   a one-field record to an argument that actually provides two
-   fields, while the [T_App] rule demands that the domain type of the
-   function being applied must match the type of the argument
-   precisely.
+
+      (\r:Person. (r.age)+1) {name="Pat",age=21,gpa=1}
+
+   is not typable, since it applies a function that wants a one-field
+   record to an argument that actually provides two fields, while the
+   [T_App] rule demands that the domain type of the function being
+   applied must match the type of the argument precisely.
 
    But this is silly: we're passing the function a _better_ argument
    than it needs!  The only thing the body of the function can
@@ -42,21 +38,20 @@ Require Import Types.
    intuitively, it seems that this function should be applicable to
    any record value that has at least an [age] field.
 
-   Looking at the same thing from another point of view, a record with
-   more fields is "at least as good in any context" as one with just a
-   subset of these fields, in the sense that any value belonging to
-   the longer record type can be used _safely_ in any context
-   expecting the shorter record type.  If the context expects
-   something with the shorter type but we actually give it something
-   with the longer type, nothing bad will happen (formally, the
-   program will not get stuck).
+   More generally, a record with more fields is "at least as good in
+   any context" as one with just a subset of these fields, in the
+   sense that any value belonging to the longer record type can be
+   used _safely_ in any context expecting the shorter record type.  If
+   the context expects something with the shorter type but we actually
+   give it something with the longer type, nothing bad will
+   happen (formally, the program will not get stuck).
 
-   The general principle at work here is called _subtyping_.  We say
-   that "[S] is a subtype of [T]", informally written [S <: T], if a
-   value of type [S] can safely be used in any context where a value
-   of type [T] is expected.  The idea of subtyping applies not only to
-   records, but to all of the type constructors in the language --
-   functions, pairs, etc. *)
+   The principle at work here is called _subtyping_.  We say that "[S]
+   is a subtype of [T]", written [S <: T], if a value of type [S] can
+   safely be used in any context where a value of type [T] is
+   expected.  The idea of subtyping applies not only to records, but
+   to all of the type constructors in the language -- functions,
+   pairs, etc. *)
 
 (** ** Subtyping and Object-Oriented Languages *)
 
@@ -68,54 +63,42 @@ Require Import Types.
     some of whose fields are functions ("methods") and some of whose
     fields are data values ("fields" or "instance variables").
     Invoking a method [m] of an object [o] on some arguments [a1..an]
-    consists of projecting out the [m] field of [o] and applying it to
-    [a1..an].
+    roughly consists of projecting out the [m] field of [o] and
+    applying it to [a1..an].
 
-    The type of an object can be given as either a _class_ or an
-    _interface_.  Both of these provide a description of which methods
-    and which data fields the object offers.
+    The type of an object is called a _class_ -- or, in some
+    languages, an _interface_.  It describes which methods and which
+    data fields the object offers.  Classes and interfaces are related
+    by the _subclass_ and _subinterface_ relations.  An object
+    belonging to a subclass (or subinterface) is required to provide
+    all the methods and fields of one belonging to a superclass (or
+    superinterface), plus possibly some more.
 
-    Classes and interfaces are related by the _subclass_ and
-    _subinterface_ relations.  An object belonging to a subclass (or
-    subinterface) is required to provide all the methods and fields of
-    one belonging to a superclass (or superinterface), plus possibly
-    some more.
-
-    The fact that an object from a subclass (or sub-interface) can be
-    used in place of one from a superclass (or super-interface)
-    provides a degree of flexibility that is is extremely handy for
-    organizing complex libraries.  For example, a GUI toolkit like
-    Java's Swing framework might define an abstract interface
-    [Component] that collects together the common fields and methods
-    of all objects having a graphical representation that can be
-    displayed on the screen and that can interact with the user.
-    Examples of such object would include the buttons, checkboxes, and
-    scrollbars of a typical GUI.  A method that relies only on this
-    common interface can now be applied to any of these objects.
+    The fact that an object from a subclass can be used in place of
+    one from a superclass provides a degree of flexibility that is is
+    extremely handy for organizing complex libraries.  For example, a
+    GUI toolkit like Java's Swing framework might define an abstract
+    interface [Component] that collects together the common fields and
+    methods of all objects having a graphical representation that can
+    be displayed on the screen and interact with the user, such as the
+    buttons, checkboxes, and scrollbars of a typical GUI.  A method
+    that relies only on this common interface can now be applied to
+    any of these objects.
 
     Of course, real object-oriented languages include many other
     features besides these.  For example, fields can be updated.
-    Fields and methods can be declared [private].  Classes also give
-    _code_ that is used when constructing objects and implementing
-    their methods, and the code in subclasses cooperate with code in
-    superclasses via _inheritance_.  Classes can have static methods
-    and fields, initializers, etc., etc.
+    Fields and methods can be declared [private].  Classes can give
+    _initializers_ that are used when constructing objects.  Code in
+    subclasses can cooperate with code in superclasses via
+    _inheritance_.  Classes can have static methods and fields.  Etc.,
+    etc.
 
     To keep things simple here, we won't deal with any of these
     issues -- in fact, we won't even talk any more about objects or
-    classes.  (There is a lot of discussion in _Types and Programming
-    Languages_, if you are interested.)  Instead, we'll study the core
-    concepts behind the subclass / subinterface relation in the
-    simplified setting of the STLC. *)
-
-(** Of course, real OO languages have lots of other features...
-       - mutable fields
-       - [private] and other visibility modifiers
-       - method inheritance
-       - static components
-       - etc., etc.
-
-    We'll ignore all these and focus on core mechanisms. *)
+    classes.  (There is a lot of discussion in [Pierce 2002], if
+    you are interested.)  Instead, we'll study the core concepts
+    behind the subclass / subinterface relation in the simplified
+    setting of the STLC. *)
 
 (** ** The Subsumption Rule *)
 
@@ -129,11 +112,14 @@ Require Import Types.
 
     The second step is actually very simple.  We add just a single rule
     to the typing relation: the so-called _rule of subsumption_:
+
                          Gamma |- t : S     S <: T
                          -------------------------                      (T_Sub)
                                Gamma |- t : T
+
     This rule says, intuitively, that it is OK to "forget" some of
     what we know about a term. *)
+
 (** For example, we may know that [t] is a record with two
     fields (e.g., [S = {x:A->A, y:B->B}]), but choose to forget about
     one of the fields ([T = {y:B->B}]) so that we can pass [t] to a
@@ -149,36 +135,45 @@ Require Import Types.
 
 (** To start off, we impose two "structural rules" that are
     independent of any particular type constructor: a rule of
-    _transitivity_, which says intuitively that, if [S] is better than
-    [U] and [U] is better than [T], then [S] is better than [T]...
+    _transitivity_, which says intuitively that, if [S] is 
+    better (richer, safer) than [U] and [U] is better than [T], 
+    then [S] is better than [T]...
+
                               S <: U    U <: T
                               ----------------                        (S_Trans)
                                    S <: T
+
     ... and a rule of _reflexivity_, since certainly any type [T] is
     as good as itself:
+
                                    ------                              (S_Refl)
                                    T <: T
+
 *)
 
 (** *** Products *)
 
 (** Now we consider the individual type constructors, one by one,
-    beginning with product types.  We consider one pair to be "better
-    than" another if each of its components is.
+    beginning with product types.  We consider one pair to be a subtype 
+    of another if each of its components is.
+
                             S1 <: T1    S2 <: T2
                             --------------------                        (S_Prod)
                              S1 * S2 <: T1 * T2
+
 *)
 
 (** *** Arrows *)
 
-(** Suppose we have two functions [f] and [g] with these types:
+(** The subtyping rule for arrows is a little less intuitive.  
+    Suppose we have functions [f] and [g] with these types:
+
        f : C -> Student
        g : (C->Person) -> D
+
     That is, [f] is a function that yields a record of type [Student],
-    and [g] is a (higher-order) function that expects its (function)
-    argument to yield a record of type [Person].  Also suppose, even
-    though we haven't yet discussed subtyping for records, that
+    and [g] is a (higher-order) function that expects its argument to be 
+    a function yielding a record of type [Person].  Also suppose that
     [Student] is a subtype of [Person].  Then the application [g f] is
     safe even though their types do not match up precisely, because
     the only thing [g] can do with [f] is to apply it to some
@@ -191,23 +186,30 @@ Require Import Types.
     This example suggests that the subtyping rule for arrow types
     should say that two arrow types are in the subtype relation if
     their results are:
+
                                   S2 <: T2
                               ----------------                     (S_Arrow_Co)
                             S1 -> S2 <: S1 -> T2
+
+
     We can generalize this to allow the arguments of the two arrow
     types to be in the subtype relation as well:
+
                             T1 <: S1    S2 <: T2
                             --------------------                      (S_Arrow)
                             S1 -> S2 <: T1 -> T2
-    Notice that the argument types are subtypes "the other way round":
+
+    But notice that the argument types are subtypes "the other way round":
     in order to conclude that [S1->S2] to be a subtype of [T1->T2], it
     must be the case that [T1] is a subtype of [S1].  The arrow
     constructor is said to be _contravariant_ in its first argument
     and _covariant_ in its second.
 
     Here is an example that illustrates this:
+
        f : Person -> C
        g : (Student -> C) -> D
+
     The application [g f] is safe, because the only thing the body of
     [g] can do with [f] is to apply it to some argument of type
     [Student].  Since [f] requires records having (at least) the
@@ -221,76 +223,88 @@ Require Import Types.
     [f] also tells us that it returns elements of type [S2]; we can
     also view these results belonging to any supertype [T2] of
     [S2]. That is, any function [f] of type [S1->S2] can also be
-    viewed as having type [T1->T2].
-*)
+    viewed as having type [T1->T2]. *)
 
 (** *** Records *)
 
 (** What about subtyping for record types? *)
 
-(** The basic intuition about subtyping for record types is that it is
-   always safe to use a "bigger" record in place of a "smaller" one.
-   That is, given a record type, adding extra fields will always
-   result in a subtype.  If some code is expecting a record with
-   fields [x] and [y], it is perfectly safe for it to receive a record
-   with fields [x], [y], and [z]; the [z] field will simply be ignored.
-   For example,
+(** The basic intuition is that it is always safe to use a "bigger"
+    record in place of a "smaller" one.  That is, given a record type,
+    adding extra fields will always result in a subtype.  If some code
+    is expecting a record with fields [x] and [y], it is perfectly safe
+    for it to receive a record with fields [x], [y], and [z]; the [z]
+    field will simply be ignored.  For example,
+
        {name:String, age:Nat, gpa:Nat} <: {name:String, age:Nat}
-       {name:String, age:Nat} <: {name:String}
-       {name:String} <: {}
-   This is known as "width subtyping" for records. *)
+       {name:String, age:Nat} <: {name:String} {name:String} <: {}
+
+    This is known as "width subtyping" for records. *)
 
 (** We can also create a subtype of a record type by replacing the type
-   of one of its fields with a subtype.  If some code is expecting a
-   record with a field [x] of type [T], it will be happy with a record
-   having a field [x] of type [S] as long as [S] is a subtype of
-   [T]. For example,
+    of one of its fields with a subtype.  If some code is expecting a
+    record with a field [x] of type [T], it will be happy with a record
+    having a field [x] of type [S] as long as [S] is a subtype of
+    [T]. For example,
+
        {x:Student} <: {x:Person}
-   This is known as "depth subtyping". *)
+
+    This is known as "depth subtyping". *)
 
 (** Finally, although the fields of a record type are written in a
-   particular order, the order does not really matter. For example,
-       {name:String,age:Nat} <: {age:Nat,name:String}
-   This is known as "permutation subtyping". *)
+    particular order, the order does not really matter. For example,
 
-(** We could formalize these requirements in a single subtyping rule
-   for records as follows:
-                        for each jk in j1..jn,
+       {name:String,age:Nat} <: {age:Nat,name:String}
+
+    This is known as "permutation subtyping". *)
+
+(** We _could_ formalize these requirements in a single subtyping rule
+    for records as follows:
+
+                        forall jk in j1..jn,
                     exists ip in i1..im, such that
                           jk=ip and Sp <: Tk
                   ----------------------------------                    (S_Rcd)
                   {i1:S1...im:Sm} <: {j1:T1...jn:Tn}
-   That is, the record on the left should have all the field labels of
-   the one on the right (and possibly more), while the types of the
-   common fields should be in the subtype relation. However, this rule
-   is rather heavy and hard to read.  If we like, we can decompose it
-   into three simpler rules, which can be combined using [S_Trans] to
-   achieve all the same effects. *)
+
+    That is, the record on the left should have all the field labels of
+    the one on the right (and possibly more), while the types of the
+    common fields should be in the subtype relation. 
+
+    However, this rule is rather heavy and hard to read, so it is often 
+    decomposed into three simpler rules, which can be combined using 
+    [S_Trans] to achieve all the same effects. *)
 
 (** First, adding fields to the end of a record type gives a subtype:
+
                                n > m
                  ---------------------------------                 (S_RcdWidth)
                  {i1:T1...in:Tn} <: {i1:T1...im:Tm}
-   We can use [S_RcdWidth] to drop later fields of a multi-field
-   record while keeping earlier fields, showing for example that
-   [{age:Nat,name:String} <: {name:String}]. *)
 
-(** Second, we can apply subtyping inside the components of a compound
-   record type:
+    We can use [S_RcdWidth] to drop later fields of a multi-field
+    record while keeping earlier fields, showing for example that
+    [{age:Nat,name:String} <: {name:String}]. *)
+
+(** Second, subtyping can be applied inside the components of a compound
+    record type:
+
                        S1 <: T1  ...  Sn <: Tn
                   ----------------------------------               (S_RcdDepth)
                   {i1:S1...in:Sn} <: {i1:T1...in:Tn}
-   For example, we can use [S_RcdDepth] and [S_RcdWidth] together to
-   show that [{y:Student, x:Nat} <: {y:Person}]. *)
 
-(** Third, we need to be able to reorder fields.  For example, we
-   might expect that [{name:String, gpa:Nat, age:Nat} <: Person].  We
-   haven't quite achieved this yet: using just [S_RcdDepth] and
-   [S_RcdWidth] we can only drop fields from the _end_ of a record
-   type.  So we need:
+    For example, we can use [S_RcdDepth] and [S_RcdWidth] together to
+    show that [{y:Student, x:Nat} <: {y:Person}]. *)
+
+(** Third, subtyping can reorder fields.  For example, we
+    want [{name:String, gpa:Nat, age:Nat} <: Person].  (We
+    haven't quite achieved this yet: using just [S_RcdDepth] and
+    [S_RcdWidth] we can only drop fields from the _end_ of a record
+    type.)  So we add:
+
          {i1:S1...in:Sn} is a permutation of {i1:T1...in:Tn}
          ---------------------------------------------------        (S_RcdPerm)
                   {i1:S1...in:Sn} <: {i1:T1...in:Tn}
+
 *)
 
 (** It is worth noting that full-blown language designs may choose not
@@ -299,9 +313,6 @@ Require Import Types.
     - A subclass may not change the argument or result types of a
       method of its superclass (i.e., no depth subtyping or no arrow
       subtyping, depending how you look at it).
-
-    - Each class has just one superclass ("single inheritance" of
-      classes).
 
     - Each class member (field or method) can be assigned a single
       index, adding new indices "on the right" as more members are
@@ -314,12 +325,16 @@ Require Import Types.
 (** **** Exercise: 2 stars, recommended (arrow_sub_wrong)  *)
 (** Suppose we had incorrectly defined subtyping as covariant on both
     the right and the left of arrow types:
+
                             S1 <: T1    S2 <: T2
                             --------------------                (S_Arrow_wrong)
                             S1 -> S2 <: T1 -> T2
+
     Give a concrete example of functions [f] and [g] with the following types...
+
        f : Student -> Nat
        g : (Person -> Nat) -> Nat
+
     ... such that the application [g f] will get stuck during
     execution.
 
@@ -327,31 +342,36 @@ Require Import Types.
 
 (** *** Top *)
 
-(** Finally, it is natural to give the subtype relation a maximum
+(** Finally, it is convenient to give the subtype relation a maximum
     element -- a type that lies above every other type and is
     inhabited by all (well-typed) values.  We do this by adding to the
     language one new type constant, called [Top], together with a
     subtyping rule that places it above every other type in the
     subtype relation:
+
                                    --------                             (S_Top)
                                    S <: Top
+
     The [Top] type is an analog of the [Object] type in Java and C[#]. *)
 
 (* ############################################### *)
 (** *** Summary *)
 
 (** In summary, we form the STLC with subtyping by starting with the
-    pure STLC (over some set of base types) and...
+    pure STLC (over some set of base types) and then...
 
     - adding a base type [Top],
 
     - adding the rule of subsumption
+
                          Gamma |- t : S     S <: T
                          -------------------------                      (T_Sub)
                                Gamma |- t : T
+
       to the typing relation, and
 
     - defining a subtype relation as follows:
+
                               S <: U    U <: T
                               ----------------                        (S_Trans)
                                    S <: T
@@ -381,9 +401,8 @@ Require Import Types.
          {i1:S1...in:Sn} is a permutation of {i1:T1...in:Tn}
          ---------------------------------------------------        (S_RcdPerm)
                   {i1:S1...in:Sn} <: {i1:T1...in:Tn}
+
 *)
-
-
 
 (* ############################################### *)
 (** ** Exercises *)
@@ -420,15 +439,14 @@ Require Import Types.
 
 Write these types in order from the most specific to the most general.
 
-
 Where does the type [Top->Top->Student] fit into this order?
 
-
-*)
+[] *)
 
 (** **** Exercise: 1 star (subtype_instances_tf_2)  *)
 (** Which of the following statements are true?  Write _true_ or
     _false_ after each one.
+
       forall S T,
           S <: T  ->
           S->S   <:  T->T
@@ -453,6 +471,7 @@ Where does the type [Top->Top->Student] fit into this order?
            S <: T1*T2 ->
            exists S1 S2,
               S = S1*S2  /\  S1 <: T1  /\  S2 <: T2  
+
 [] *)
 
 (** **** Exercise: 1 star (subtype_concepts_tf)  *)
@@ -488,12 +507,14 @@ Where does the type [Top->Top->Student] fit into this order?
 (** **** Exercise: 2 stars (proper_subtypes)  *)
 (** Is the following statement true or false?  Briefly explain your
     answer.
+
     forall T,
          ~(exists n, T = TBase n) ->
          exists S,
             S <: T  /\  S <> T
-]] 
+
 [] *)
+
 
 (** **** Exercise: 2 stars (small_large_1)  *)
 (**
@@ -501,7 +522,9 @@ Where does the type [Top->Top->Student] fit into this order?
      relation) that makes the following assertion true?  (Assume we
      have [Unit] among the base types and [unit] as a constant of this
      type.)
+
        empty |- (\p:T*Top. p.fst) ((\z:A.z), unit) : A->A
+
 
    - What is the _largest_ type [T] that makes the same assertion true?
 
@@ -511,7 +534,9 @@ Where does the type [Top->Top->Student] fit into this order?
 (**
    - What is the _smallest_ type [T] that makes the following
      assertion true?
+
        empty |- (\p:(A->A * B->B). p) ((\z:A.z), (\z:B.z)) : T
+
 
    - What is the _largest_ type [T] that makes the same assertion true?
 
@@ -521,21 +546,22 @@ Where does the type [Top->Top->Student] fit into this order?
 (**
    - What is the _smallest_ type [T] that makes the following
      assertion true?
+
        a:A |- (\p:(A*T). (p.snd) (p.fst)) (a , \z:A.z) : A
+
 
    - What is the _largest_ type [T] that makes the same assertion true?
 
 [] *)
 
-
-
-
 (** **** Exercise: 2 stars (small_large_4)  *)
 (**
    - What is the _smallest_ type [T] that makes the following
      assertion true?
+
        exists S,
          empty |- (\p:(A*T). (p.snd) (p.fst)) : S
+
 
    - What is the _largest_ type [T] that makes the same
      assertion true?
@@ -545,6 +571,7 @@ Where does the type [Top->Top->Student] fit into this order?
 (** **** Exercise: 2 stars (smallest_1)  *)
 (** What is the _smallest_ type [T] that makes the following
     assertion true?
+
       exists S, exists t,
         empty |- (\x:T. x x) t : S
 ]] 
@@ -553,6 +580,7 @@ Where does the type [Top->Top->Student] fit into this order?
 (** **** Exercise: 2 stars (smallest_2)  *)
 (** What is the _smallest_ type [T] that makes the following
     assertion true?
+
       empty |- (\x:Top. x) ((\z:A.z) , (\z:B.z)) : T
 ]] 
 [] *)
@@ -564,31 +592,34 @@ Where does the type [Top->Top->Student] fit into this order?
     differently, even if each is a subtype of the other.  For example,
     [{x:A,y:B}] and [{y:B,x:A}] are different.)
 
-
 [] *)
 
 (** **** Exercise: 2 stars (pair_permutation)  *)
 (** The subtyping rule for product types
+
                             S1 <: T1    S2 <: T2
                             --------------------                        (S_Prod)
                                S1*S2 <: T1*T2
-intuitively corresponds to the "depth" subtyping rule for records. Extending the analogy, we might consider adding a "permutation" rule
+
+    intuitively corresponds to the "depth" subtyping rule for records. 
+    Extending the analogy, we might consider adding a "permutation" rule
+
                                    --------------
                                    T1*T2 <: T2*T1
-for products.
-Is this a good idea? Briefly explain why or why not.
+
+    for products.  Is this a good idea? Briefly explain why or why not.
 
 [] *)
 
 (* ###################################################### *)
 (** * Formal Definitions *)
 
-(** Most of the definitions -- in particular, the syntax and
-    operational semantics of the language -- are identical to what we
-    saw in the last chapter.  We just need to extend the typing
-    relation with the subsumption rule and add a new [Inductive]
-    definition for the subtyping relation.  Let's first do the
-    identical bits. *)
+(** Most of the definitions needed to formalize what we've discussed
+    above -- in particular, the syntax and operational semantics of
+    the language -- are identical to what we saw in the last chapter.
+    We just need to extend the typing relation with the subsumption
+    rule and add a new [Inductive] definition for the subtyping
+    relation.  Let's first do the identical bits. *)
 
 (* ###################################################### *)
 (** ** Core Definitions *)
@@ -596,14 +627,13 @@ Is this a good idea? Briefly explain why or why not.
 (* ################################### *)
 (** *** Syntax *)
 
-(** For the sake of more interesting examples below, we'll allow an
-    arbitrary set of additional base types like [String], [Float],
-    etc.  We won't bother adding any constants belonging to these
-    types or any operators on them, but we could easily do so. *)
-
 (** In the rest of the chapter, we formalize just base types,
     booleans, arrow types, [Unit], and [Top], omitting record types
-    and leaving product types as an exercise. *)
+    and leaving product types as an exercise.  For the sake of more
+    interesting examples, we'll add an arbitrary set of base types
+    like [String], [Float], etc.  (Since they are just for examples,
+    we won't bother adding any operations over these base types, but
+    we could easily do so.) *)
 
 Inductive ty : Type :=
   | TTop   : ty
@@ -695,9 +725,9 @@ Hint Constructors step.
 (* ###################################################################### *)
 (** ** Subtyping *)
 
-(** Now we come to the most interesting part.  We begin by
-    defining the subtyping relation and developing some of its
-    important technical properties. *)
+(** Now we come to the interesting part.  We begin by defining
+    the subtyping relation and developing some of its important
+    technical properties. *)
 
 (** The definition of subtyping is just what we sketched in the
     motivating discussion. *)
@@ -739,30 +769,36 @@ Notation String := (TBase (Id 9)).
 Notation Float := (TBase (Id 10)).
 Notation Integer := (TBase (Id 11)).
 
+Example subtyping_example_0 :
+  (TArrow C TBool) <: (TArrow C TTop).
+  (* C->Bool <: C->Top *)
+Proof. auto. Qed.
+
 (** **** Exercise: 2 stars, optional (subtyping_judgements)  *)
+(** (Wait to do this exercise after you have added product types to the
+    language -- see exercise [products] -- at least up to this point 
+    in the file).
 
-(** (Do this exercise after you have added product types to the
-    language, at least up to this point in the file).
+    Recall that, in chapter [MoreStlc], the optional section "Encoding
+    Records" describes how records can be encoded as pairs.
+    Using this encoding, define pair types representing the following 
+    record types:
 
-    Using the encoding of records into pairs, define pair types
-    representing the record types
     Person   := { name : String }
     Student  := { name : String ;
                   gpa  : Float }
     Employee := { name : String ;
                   ssn  : Integer }
 
-Recall that in chapter MoreStlc, the optional subsection "Encoding
-Records" describes how records can be encoded as pairs.
-
 *)
-
 Definition Person : ty :=
 (* FILL IN HERE *) admit.
 Definition Student : ty :=
 (* FILL IN HERE *) admit.
 Definition Employee : ty :=
 (* FILL IN HERE *) admit.
+
+(** Now use the definition of the subtype relation to prove the following: *)
 
 Example sub_student_person :
   Student <: Person.
@@ -774,14 +810,6 @@ Example sub_employee_person :
 Proof.
 (* FILL IN HERE *) Admitted.
 (** [] *)
-
-Example subtyping_example_0 :
-  (TArrow C Person) <: (TArrow C TTop).
-  (* C->Person <: C->Top *)
-Proof.
-  apply S_Arrow.
-    apply S_Refl. auto.
-Qed.
 
 (** The following facts are mostly easy to prove in Coq.  To get
     full benefit from the exercises, make sure you also
@@ -804,7 +832,6 @@ Proof with eauto.
 (** [] *)
 
 End Examples.
-
 
 (* ###################################################################### *)
 (** ** Typing *)
@@ -849,15 +876,12 @@ where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
 
 Hint Constructors has_type.
 
-(* To make your job simpler, the following hints help construct typing
-   derivations. *)
+(** The following hints help [auto] and [eauto] construct typing
+    derivations.  (See chapter [UseAuto] for more on hints.) *)
+
 Hint Extern 2 (has_type _ (tapp _ _) _) =>
   eapply T_App; auto.
 Hint Extern 2 (_ = _) => compute; reflexivity.
-
-
-(* ############################################### *)
-(** ** Typing examples *)
 
 Module Examples2.
 Import Examples.
@@ -890,28 +914,29 @@ End Examples2.
 (* ###################################################################### *)
 (** * Properties *)
 
-(** The fundamental properties of the system that we want to check are
-    the same as always: progress and preservation.  Unlike the
-    extension of the STLC with references, we don't need to change the
-    _statements_ of these properties to take subtyping into account.
-    However, their proofs do become a little bit more involved. *)
+(** The fundamental properties of the system that we want to
+    check are the same as always: progress and preservation.  Unlike
+    the extension of the STLC with references (chapter [References]),
+    we don't need to change the _statements_ of these properties to
+    take subtyping into account.  However, their proofs do become a
+    little bit more involved. *)
 
 (* ###################################################################### *)
 (** ** Inversion Lemmas for Subtyping *)
 
 (** Before we look at the properties of the typing relation, we need
-    to record a couple of critical structural properties of the subtype
-    relation:
-       - [Bool] is the only subtype of [Bool]
+    to establish a couple of critical structural properties of the
+    subtype relation:
+       - [Bool] is the only subtype of [Bool], and
        - every subtype of an arrow type is itself an arrow type. *)
 
-(** These are called _inversion lemmas_ because they play the same
-    role in later proofs as the built-in [inversion] tactic: given a
+(** These are called _inversion lemmas_ because they play a
+    similar role in proofs as the built-in [inversion] tactic: given a
     hypothesis that there exists a derivation of some subtyping
     statement [S <: T] and some constraints on the shape of [S] and/or
-    [T], each one reasons about what this derivation must look like to
-    tell us something further about the shapes of [S] and [T] and the
-    existence of subtype relations between their parts. *)
+    [T], each inversion lemma reasons about what this derivation must
+    look like to tell us something further about the shapes of [S] and
+    [T] and the existence of subtype relations between their parts. *)
 
 (** **** Exercise: 2 stars, optional (sub_inversion_Bool)  *)
 Lemma sub_inversion_Bool : forall U,
@@ -932,19 +957,18 @@ Proof with eauto.
   remember (TArrow V1 V2) as V.
   generalize dependent V2. generalize dependent V1.
   (* FILL IN HERE *) Admitted.
-
-
 (** [] *)
 
 (* ########################################## *)
 (** ** Canonical Forms *)
 
-(** We'll see first that the proof of the progress theorem doesn't
-    change too much -- we just need one small refinement.  When we're
-    considering the case where the term in question is an application
-    [t1 t2] where both [t1] and [t2] are values, we need to know that
-    [t1] has the _form_ of a lambda-abstraction, so that we can apply
-    the [ST_AppAbs] reduction rule.  In the ordinary STLC, this is
+(** The proof of the progress theorem -- that a well-typed
+    non-value can always take a step -- doesn't need to change too
+    much: we just need one small refinement.  When we're considering
+    the case where the term in question is an application [t1 t2]
+    where both [t1] and [t2] are values, we need to know that [t1] has
+    the _form_ of a lambda-abstraction, so that we can apply the
+    [ST_AppAbs] reduction rule.  In the ordinary STLC, this is
     obvious: we know that [t1] has a function type [T11->T12], and
     there is only one rule that can be used to give a function type to
     a value -- rule [T_Abs] -- and the form of the conclusion of this
@@ -991,8 +1015,8 @@ Qed.
 (* ########################################## *)
 (** ** Progress *)
 
-(** The proof of progress proceeds like the one for the pure
-    STLC, except that in several places we invoke canonical forms
+(** The proof of progress now proceeds just like the one for the
+    pure STLC, except that in several places we invoke canonical forms
     lemmas... *)
 
 (** _Theorem_ (Progress): For any term [t] and type [T], if [empty |-
@@ -1021,8 +1045,8 @@ Qed.
         Then [t1 t2 ==> t1 t2'] by rule [ST_App2] because [t1] is a
         value.
 
-      - Finally, suppose [t1] and [t2] are both values.  By Lemma
-        [canonical_forms_for_arrow_types], we know that [t1] has the
+      - Finally, suppose [t1] and [t2] are both values.  By the lemma 
+        about canonical forms for arrow types, we know that [t1] has the
         form [\x:S1.s2] for some [x], [S1], and [s2].  But then
         [(\x:S1.s2) t2 ==> [x:=t2]s2] by [ST_AppAbs], since [t2] is a
         value.
@@ -1042,8 +1066,7 @@ Qed.
     - If the final step of the derivation is by [T_Sub], then there is
       a type [S] such that [S <: T] and [empty |- t : S].  The desired
       result is exactly the induction hypothesis for the typing
-      subderivation.
-*)
+      subderivation. *)
 
 Theorem progress : forall t T,
      empty |- t \in T ->
@@ -1086,13 +1109,13 @@ Qed.
 (** The proof of the preservation theorem also becomes a little more
     complex with the addition of subtyping.  The reason is that, as
     with the "inversion lemmas for subtyping" above, there are a
-    number of facts about the typing relation that are "obvious from
-    the definition" in the pure STLC (and hence can be obtained
+    number of facts about the typing relation that are immediate from
+    the definition in the pure STLC (formally: that can be obtained
     directly from the [inversion] tactic) but that require real proofs
     in the presence of subtyping because there are multiple ways to
     derive the same [has_type] statement.
 
-    The following "inversion lemma" tells us that, if we have a
+    The following inversion lemma tells us that, if we have a
     derivation of some typing statement [Gamma |- \x:S1.t2 : T] whose
     subject is an abstraction, then there must be some subderivation
     giving a type to the body [t2]. *)
@@ -1209,7 +1232,6 @@ Proof with eauto.
   induction Htyp;
     inversion Heqtu; subst; intros...
 Qed.
-
 
 (** The inversion lemmas for typing and for subtyping between arrow
     types can be packaged up as a useful "combination lemma" telling
@@ -1438,8 +1460,8 @@ Qed.
 
 (** ** Records, via Products and Top *)
 
-(** This formalization of the STLC with subtyping has omitted record
-    types, for brevity.  If we want to deal with them more seriously,
+(** This formalization of the STLC with subtyping omits record
+    types for brevity.  If we want to deal with them more seriously,
     we have two choices.
 
     First, we can treat them as part of the core language, writing
@@ -1454,59 +1476,73 @@ Qed.
     small change to the encoding described earlier: instead of using
     [Unit] as the base case in the encoding of tuples and the "don't
     care" placeholder in the encoding of records, we use [Top].  So:
-<<
+
     {a:Nat, b:Nat} ----> {Nat,Nat}       i.e., (Nat,(Nat,Top))
     {c:Nat, a:Nat} ----> {Nat,Top,Nat}   i.e., (Nat,(Top,(Nat,Top)))
->>
+
     The encoding of record values doesn't change at all.  It is
     easy (and instructive) to check that the subtyping rules above are
-    validated by the encoding.  For the rest of this chapter, we'll
-    follow this encoding-based approach. *)
+    validated by the encoding. *)
 
 (* ###################################################### *)
 (** ** Exercises *)
 
 (** **** Exercise: 2 stars (variations)  *)
-(** Each part of this problem suggests a different way of
-    changing the definition of the STLC with Unit and
-    subtyping.  (These changes are not cumulative: each part
-    starts from the original language.)  In each part, list which
-    properties (Progress, Preservation, both, or neither) become
-    false.  If a property becomes false, give a counterexample.
+(** Each part of this problem suggests a different way of changing the
+    definition of the STLC with Unit and subtyping.  (These changes
+    are not cumulative: each part starts from the original language.)
+    In each part, list which properties (Progress, Preservation, both,
+    or neither) become false.  If a property becomes false, give a
+    counterexample.
+
     - Suppose we add the following typing rule:
-                            Gamma |- t : S1->S2
-                    S1 <: T1      T1 <: S1     S2 <: T2
-                    -----------------------------------              (T_Funny1)
+
+                            Gamma |- t : S1->S2 
+                    S1 <: T1     T1 <: S1      S2 <: T2
+                    -----------------------------------    (T_Funny1)
                             Gamma |- t : T1->T2
 
+
     - Suppose we add the following reduction rule:
-                             ------------------                     (ST_Funny21)
+
+                             --------------------         (ST_Funny21) 
                              unit ==> (\x:Top. x)
 
+
     - Suppose we add the following subtyping rule:
-                               --------------                        (S_Funny3)
+
+                               ----------------          (S_Funny3) 
                                Unit <: Top->Top
 
+
     - Suppose we add the following subtyping rule:
-                               --------------                        (S_Funny4)
+
+                               ----------------          (S_Funny4) 
                                Top->Top <: Unit
 
-    - Suppose we add the following evaluation rule:
-                             -----------------                      (ST_Funny5)
+
+    - Suppose we add the following reduction rule:
+
+                             ---------------------      (ST_Funny5) 
                              (unit t) ==> (t unit)
 
-    - Suppose we add the same evaluation rule _and_ a new typing rule:
-                             -----------------                      (ST_Funny5)
+
+    - Suppose we add the same reduction rule _and_ a new typing rule:
+
+                             ---------------------       (ST_Funny5) 
                              (unit t) ==> (t unit)
 
-                           ----------------------                    (T_Funny6)
+                           ------------------------      (T_Funny6) 
                            empty |- Unit : Top->Top
 
-    - Suppose we _change_ the arrow subtyping rule to:
-                          S1 <: T1       S2 <: T2
-                          -----------------------                    (S_Arrow')
-                               S1->S2 <: T1->T2
 
+    - Suppose we _change_ the arrow subtyping rule to:
+
+                          S1 <: T1 S2 <: T2
+                          -----------------              (S_Arrow') 
+                          S1->S2 <: T1->T2
+
+ 
 [] *)
 
 (* ###################################################################### *)
@@ -1522,10 +1558,10 @@ Qed.
       forget to add corresponding cases to [T_cases] and [t_cases].)
 
     - Extend the substitution function and value relation as in
-      MoreSTLC.
+      chapter [MoreSTLC].
 
     - Extend the operational semantics with the same reduction rules
-      as in MoreSTLC.
+      as in chapter [MoreSTLC].
 
     - Extend the subtyping relation with this rule:
 
@@ -1534,7 +1570,7 @@ Qed.
                           S1 * S2 <: T1 * T2
 
     - Extend the typing relation with the same rules for pairs and
-      projections as in MoreSTLC.
+      projections as in chapter [MoreSTLC].
 
     - Extend the proofs of progress, preservation, and all their
       supporting lemmas to deal with the new constructs.  (You'll also
@@ -1542,5 +1578,5 @@ Qed.
 [] *)
 
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 17:51:14 -0400 (Thu, 26 May 2016) $ *)
 

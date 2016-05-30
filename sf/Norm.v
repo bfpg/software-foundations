@@ -1,69 +1,79 @@
 (** * Norm: Normalization of STLC *)
 
-(* Chapter maintained by Andrew Tolmach *)
+(* Chapter written and maintained by Andrew Tolmach *)
 
-(* (Based on TAPL Ch. 12.) *)
+(** This optional chapter is based on chapter 12 of _Types and
+    Programming Languages_ (Pierce).  It may be useful to look at the
+    two together, as that chapter includes explanations and informal
+    proofs that are not repeated here.
 
-Require Import Coq.Lists.List.
-Import ListNotations.
+    In this chapter, we consider another fundamental theoretical
+    property of the simply typed lambda-calculus: the fact that the
+    evaluation of a well-typed program is guaranteed to halt in a
+    finite number of steps---i.e., every well-typed term is
+    _normalizable_.
 
-Require Import SfLib.
-Require Import Maps.
-Require Import Smallstep.
-Hint Constructors multi.
+    Unlike the type-safety properties we have considered so far, the
+    normalization property does not extend to full-blown programming
+    languages, because these languages nearly always extend the simply
+    typed lambda-calculus with constructs, such as general
+    recursion (see the [MoreStlc] chapter) or recursive types, that
+    can be used to write nonterminating programs.  However, the issue
+    of normalization reappears at the level of _types_ when we
+    consider the metatheory of polymorphic versions of the lambda
+    calculus such as System F-omega: in this system, the language of
+    types effectively contains a copy of the simply typed
+    lambda-calculus, and the termination of the typechecking algorithm
+    will hinge on the fact that a "normalization" operation on type
+    expressions is guaranteed to terminate.
 
-(**
-(This chapter is optional.)
+    Another reason for studying normalization proofs is that they are
+    some of the most beautiful---and mind-blowing---mathematics to be
+    found in the type theory literature, often (as here) involving the
+    fundamental proof technique of _logical relations_.
 
-In this chapter, we consider another fundamental theoretical property
-of the simply typed lambda-calculus: the fact that the evaluation of a
-well-typed program is guaranteed to halt in a finite number of
-steps---i.e., every well-typed term is _normalizable_.
+    The calculus we shall consider here is the simply typed
+    lambda-calculus over a single base type [bool] and with
+    pairs. We'll give most details of the development for the basic
+    lambda-calculus terms treating [bool] as an uninterpreted base
+    type, and leave the extension to the boolean operators and pairs
+    to the reader.  Even for the base calculus, normalization is not
+    entirely trivial to prove, since each reduction of a term can
+    duplicate redexes in subterms. *)
 
-Unlike the type-safety properties we have considered so far, the
-normalization property does not extend to full-blown programming
-languages, because these languages nearly always extend the simply
-typed lambda-calculus with constructs, such as general recursion
-(as we discussed in the MoreStlc chapter) or recursive types, that can
-be used to write nonterminating programs.  However, the issue of
-normalization reappears at the level of _types_ when we consider the
-metatheory of polymorphic versions of the lambda calculus such as
-F_omega: in this system, the language of types effectively contains a
-copy of the simply typed lambda-calculus, and the termination of the
-typechecking algorithm will hinge on the fact that a ``normalization''
-operation on type expressions is guaranteed to terminate.
-
-Another reason for studying normalization proofs is that they are some
-of the most beautiful---and mind-blowing---mathematics to be found in
-the type theory literature, often (as here) involving the fundamental
-proof technique of _logical relations_.
-
-The calculus we shall consider here is the simply typed
-lambda-calculus over a single base type [bool] and with pairs. We'll
-give full details of the development for the basic lambda-calculus
-terms treating [bool] as an uninterpreted base type, and leave the
-extension to the boolean operators and pairs to the reader.  Even for
-the base calculus, normalization is not entirely trivial to prove,
-since each reduction of a term can duplicate redexes in subterms. *)
-
-(** **** Exercise: 1 star  *)
+(** **** Exercise: 2 stars  *)
 (** Where do we fail if we attempt to prove normalization by a
-straightforward induction on the size of a well-typed term? *)
+    straightforward induction on the size of a well-typed term? *)
 
 (* FILL IN HERE *)
+(** [] *)
+
+(** **** Exercise: 5 stars, recommended  *)
+(** The best ways to understand an intricate proof like this is
+    are (1) to help fill it in and (2) to extend it.  We've left out some
+    parts of the following development, including some proofs of lemmas
+    and the all the cases involving products and conditionals.  Fill them
+    in. *)
 (** [] *)
 
 (* ###################################################################### *)
 (** * Language *)
 
 (** We begin by repeating the relevant language definition, which is
-similar to those in the MoreStlc chapter, and supporting results
-including type preservation and step determinism.  (We won't need
-progress.)  You may just wish to skip down to the Normalization
-section... *)
+    similar to those in the [MoreStlc] chapter, plus supporting
+    results including type preservation and step determinism.  (We
+    won't need progress.)  You may just wish to skip down to the
+    Normalization section... *)
 
 (* ###################################################################### *)
 (** *** Syntax and Operational Semantics *)
+
+Require Import Coq.Lists.List.
+Import ListNotations.
+Require Import SfLib.
+Require Import Maps.
+Require Import Smallstep.
+Hint Constructors multi.
 
 Inductive ty : Type :=
   | TBool : ty
@@ -92,14 +102,16 @@ Inductive tm : Type :=
 Fixpoint subst (x:id) (s:tm) (t:tm) : tm :=
   match t with
   | tvar y => if beq_id x y then s else t
-  | tabs y T t1 =>  tabs y T (if beq_id x y then t1 else (subst x s t1))
+  | tabs y T t1 =>
+      tabs y T (if beq_id x y then t1 else (subst x s t1))
   | tapp t1 t2 => tapp (subst x s t1) (subst x s t2)
   | tpair t1 t2 => tpair (subst x s t1) (subst x s t2)
   | tfst t1 => tfst (subst x s t1)
   | tsnd t1 => tsnd (subst x s t1)
   | ttrue => ttrue
   | tfalse => tfalse
-  | tif t0 t1 t2 => tif (subst x s t0) (subst x s t1) (subst x s t2)
+  | tif t0 t1 t2 =>
+      tif (subst x s t0) (subst x s t1) (subst x s t2)
   end.
 
 Notation "'[' x ':=' s ']' t" := (subst x s t) (at level 20).
@@ -177,7 +189,6 @@ Lemma value__normal : forall t, value t -> step_normal_form t.
 Proof with eauto.
   intros t H; induction H; intros [t' ST]; inversion ST...
 Qed.
-
 
 (* ###################################################################### *)
 (** *** Typing *)
@@ -429,8 +440,6 @@ Proof with eauto.
   - (* T_Snd *)
     inversion HT...
 Qed.
-(** [] *)
-
 
 (* ###################################################################### *)
 (** *** Determinism *)
@@ -439,19 +448,69 @@ Lemma step_deterministic :
    deterministic step.
 Proof with eauto.
    unfold deterministic.
-   (* FILL IN HERE *) Admitted.
+   intros t t' t'' E1 E2.
+   generalize dependent t''.
+   induction E1; intros t'' E2; inversion E2; subst; clear E2...
+  (* ST_AppAbs *)
+   - inversion H3.
+   - exfalso; apply value__normal in H...
+   (* ST_App1 *)
+   - inversion E1.
+   -  f_equal...
+   - exfalso; apply value__normal in H1...
+   (* ST_App2 *)
+   - exfalso; apply value__normal in H3...
+   - exfalso; apply value__normal in H...
+   - f_equal...
+   (* ST_Pair1 *)
+   - f_equal...
+   - exfalso; apply value__normal in H1...
+   (* ST_Pair2 *)
+   - exfalso; apply value__normal in H...
+   - f_equal...
+   (* ST_Fst *)
+   - f_equal...
+   - exfalso.
+     inversion E1; subst.
+     + apply value__normal in H0...
+     + apply value__normal in H1...
+   (* ST_FstPair *)
+   - exfalso.
+     inversion H2; subst.
+     + apply value__normal in H...
+     + apply value__normal in H0...
+   (* ST_Snd *)
+   - f_equal...
+   - exfalso.
+     inversion E1; subst.
+     + apply value__normal in H0...
+     + apply value__normal in H1...
+   (* ST_SndPair *)
+   - exfalso.
+     inversion H2; subst.
+     + apply value__normal in H...
+     + apply value__normal in H0...
+   - (* ST_IfTrue *)
+       inversion H3.
+   - (* ST_IfFalse *)
+       inversion H3.
+   (* ST_If *)
+   - inversion E1.
+   - inversion E1.
+   - f_equal...
+Qed.
 
 (* ###################################################################### *)
 (** * Normalization *)
 
 (** Now for the actual normalization proof.
 
-    Our goal is to prove that every well-typed term evaluates to a
+    Our goal is to prove that every well-typed term reduces to a
     normal form.  In fact, it turns out to be convenient to prove
     something slightly stronger, namely that every well-typed term
-    evaluates to a _value_.  This follows from the weaker property
-    anyway via the Progress lemma (why?) but otherwise we don't need
-    Progress, and we didn't bother re-proving it above.
+    reduces to a _value_.  This follows from the weaker property
+    anyway via Progress (why?) but otherwise we don't need Progress,
+    and we didn't bother re-proving it above.
 
     Here's the key definition: *)
 
@@ -468,87 +527,90 @@ Proof.
 Qed.
 
 (** The key issue in the normalization proof (as in many proofs by
-induction) is finding a strong enough induction hypothesis.  To this
-end, we begin by defining, for each type [T], a set [R_T] of closed
-terms of type [T].  We will specify these sets using a relation [R]
-and write [R T t] when [t] is in [R_T]. (The sets [R_T] are sometimes
-called _saturated sets_ or _reducibility candidates_.)
+    induction) is finding a strong enough induction hypothesis.  To
+    this end, we begin by defining, for each type [T], a set [R_T] of
+    closed terms of type [T].  We will specify these sets using a
+    relation [R] and write [R T t] when [t] is in [R_T]. (The sets
+    [R_T] are sometimes called _saturated sets_ or _reducibility
+    candidates_.)
 
-Here is the definition of [R] for the base language:
+    Here is the definition of [R] for the base language:
 
-- [R bool t] iff [t] is a closed term of type [bool] and [t] halts in a value
+    - [R bool t] iff [t] is a closed term of type [bool] and [t] halts
+      in a value
 
-- [R (T1 -> T2) t] iff [t] is a closed term of type [T1 -> T2] and [t] halts
-  in a value _and_ for any term [s] such that [R T1 s], we have [R
-  T2 (t s)]. *)
+    - [R (T1 -> T2) t] iff [t] is a closed term of type [T1 -> T2] and
+      [t] halts in a value _and_ for any term [s] such that [R T1 s],
+      we have [R T2 (t s)]. *)
 
 (** This definition gives us the strengthened induction hypothesis that we
-need.  Our primary goal is to show that all _programs_ ---i.e., all
-closed terms of base type---halt.  But closed terms of base type can
-contain subterms of functional type, so we need to know something
-about these as well.  Moreover, it is not enough to know that these
-subterms halt, because the application of a normalized function to a
-normalized argument involves a substitution, which may enable more
-evaluation steps.  So we need a stronger condition for terms of
-functional type: not only should they halt themselves, but, when
-applied to halting arguments, they should yield halting results.
+    need.  Our primary goal is to show that all _programs_ ---i.e., all
+    closed terms of base type---halt.  But closed terms of base type can
+    contain subterms of functional type, so we need to know something
+    about these as well.  Moreover, it is not enough to know that these
+    subterms halt, because the application of a normalized function to a
+    normalized argument involves a substitution, which may enable more
+    reduction steps.  So we need a stronger condition for terms of
+    functional type: not only should they halt themselves, but, when
+    applied to halting arguments, they should yield halting results.
 
-The form of [R] is characteristic of the _logical relations_ proof
-technique.  (Since we are just dealing with unary relations here, we
-could perhaps more properly say _logical properties_.)  If we want to
-prove some property [P] of all closed terms of type [A], we proceed by
-proving, by induction on types, that all terms of type [A] _possess_
-property [P], all terms of type [A->A] _preserve_ property [P], all
-terms of type [(A->A)->(A->A)] _preserve the property of preserving_
-property [P], and so on.  We do this by defining a family of
-properties, indexed by types.  For the base type [A], the property is
-just [P].  For functional types, it says that the function should map
-values satisfying the property at the input type to values satisfying
-the property at the output type.
+    The form of [R] is characteristic of the _logical relations_ proof
+    technique.  (Since we are just dealing with unary relations here, we
+    could perhaps more properly say _logical properties_.)  If we want to
+    prove some property [P] of all closed terms of type [A], we proceed by
+    proving, by induction on types, that all terms of type [A] _possess_
+    property [P], all terms of type [A->A] _preserve_ property [P], all
+    terms of type [(A->A)->(A->A)] _preserve the property of preserving_
+    property [P], and so on.  We do this by defining a family of
+    properties, indexed by types.  For the base type [A], the property is
+    just [P].  For functional types, it says that the function should map
+    values satisfying the property at the input type to values satisfying
+    the property at the output type.
 
-When we come to formalize the definition of [R] in Coq, we hit a
-problem.  The most obvious formulation would be as a parameterized
-Inductive proposition like this:
+    When we come to formalize the definition of [R] in Coq, we hit a
+    problem.  The most obvious formulation would be as a parameterized
+    Inductive proposition like this:
 
-Inductive R : ty -> tm -> Prop :=
-| R_bool : forall b t, has_type empty t TBool ->
-                halts t ->
-                R TBool t
-| R_arrow : forall T1 T2 t, has_type empty t (TArrow T1 T2) ->
-                halts t ->
-                (forall s, R T1 s -> R T2 (tapp t s)) ->
-                R (TArrow T1 T2) t.
+      Inductive R : ty -> tm -> Prop :=
+      | R_bool : forall b t, has_type empty t TBool ->
+                      halts t ->
+                      R TBool t
+      | R_arrow : forall T1 T2 t, has_type empty t (TArrow T1 T2) ->
+                      halts t ->
+                      (forall s, R T1 s -> R T2 (tapp t s)) ->
+                      R (TArrow T1 T2) t.
 
-Unfortunately, Coq rejects this definition because it violates the
-_strict positivity requirement_ for inductive definitions, which says
-that the type being defined must not occur to the left of an arrow in
-the type of a constructor argument. Here, it is the third argument to
-[R_arrow], namely [(forall s, R T1 s -> R TS (tapp t s))], and
-specifically the [R T1 s] part, that violates this rule.  (The
-outermost arrows separating the constructor arguments don't count when
-applying this rule; otherwise we could never have genuinely inductive
-properties at all!)  The reason for the rule is that types defined
-with non-positive recursion can be used to build non-terminating
-functions, which as we know would be a disaster for Coq's logical
-soundness. Even though the relation we want in this case might be
-perfectly innocent, Coq still rejects it because it fails the
-positivity test.
+    Unfortunately, Coq rejects this definition because it violates the
+    _strict positivity requirement_ for inductive definitions, which says
+    that the type being defined must not occur to the left of an arrow in
+    the type of a constructor argument. Here, it is the third argument to
+    [R_arrow], namely [(forall s, R T1 s -> R TS (tapp t s))], and
+    specifically the [R T1 s] part, that violates this rule.  (The
+    outermost arrows separating the constructor arguments don't count when
+    applying this rule; otherwise we could never have genuinely inductive
+    properties at all!)  The reason for the rule is that types defined
+    with non-positive recursion can be used to build non-terminating
+    functions, which as we know would be a disaster for Coq's logical
+    soundness. Even though the relation we want in this case might be
+    perfectly innocent, Coq still rejects it because it fails the
+    positivity test.
 
-Fortunately, it turns out that we _can_ define [R] using a
-[Fixpoint]: *)
+    Fortunately, it turns out that we _can_ define [R] using a
+    [Fixpoint]: *)
 
 Fixpoint R (T:ty) (t:tm) {struct T} : Prop :=
   has_type empty t T /\ halts t /\
   (match T with
    | TBool  => True
    | TArrow T1 T2 => (forall s, R T1 s -> R T2 (tapp t s))
-(* FILL IN HERE *)
-   | TProd T1 T2 => False (* ... and delete this line *)
+
+   (* ... edit the next line when dealing with products *)
+   | TProd T1 T2 => False 
    end).
 
 (** As immediate consequences of this definition, we have that every
-element of every set [R_T] halts in a value and is closed with type
-[t] :*)
+    element of every set [R_T] halts in a value and is closed with type
+    [t] :*)
 
 Lemma R_halts : forall {T} {t}, R T t -> halts t.
 Proof.
@@ -562,25 +624,25 @@ Proof.
 Qed.
 
 (** Now we proceed to show the main result, which is that every
-well-typed term of type [T] is an element of [R_T].  Together with
-[R_halts], that will show that every well-typed term halts in a
-value.  *)
+    well-typed term of type [T] is an element of [R_T].  Together with
+    [R_halts], that will show that every well-typed term halts in a
+    value.  *)
 
 
 (* ###################################################################### *)
-(** **  Membership in [R_T] is invariant under evaluation *)
+(** **  Membership in [R_T] Is Invariant Under Reduction *)
 
 (** We start with a preliminary lemma that shows a kind of strong
-preservation property, namely that membership in [R_T] is _invariant_
-under evaluation. We will need this property in both directions,
-i.e., both to show that a term in [R_T] stays in [R_T] when it takes a
-forward step, and to show that any term that ends up in [R_T] after a
-step must have been in [R_T] to begin with.
+    preservation property, namely that membership in [R_T] is _invariant_
+    under reduction. We will need this property in both directions,
+    i.e., both to show that a term in [R_T] stays in [R_T] when it takes a
+    forward step, and to show that any term that ends up in [R_T] after a
+    step must have been in [R_T] to begin with.
 
-First of all, an easy preliminary lemma. Note that in the forward
-direction the proof depends on the fact that our language is
-determinstic. This lemma might still be true for nondeterministic
-languages, but the proof would be harder! *)
+    First of all, an easy preliminary lemma. Note that in the forward
+    direction the proof depends on the fact that our language is
+    determinstic. This lemma might still be true for nondeterministic
+    languages, but the proof would be harder! *)
 
 Lemma step_preserves_halting : forall t t', (t ==> t') -> (halts t <-> halts t').
 Proof.
@@ -597,12 +659,12 @@ Proof.
 Qed.
 
 (** Now the main lemma, which comes in two parts, one for each
-   direction.  Each proceeds by induction on the structure of the type
-   [T]. In fact, this is where we make fundamental use of the
-   structure of types.
+    direction.  Each proceeds by induction on the structure of the type
+    [T]. In fact, this is where we make fundamental use of the
+    structure of types.
 
-   One requirement for staying in [R_T] is to stay in type [T]. In the
-   forward direction, we get this from ordinary type Preservation. *)
+    One requirement for staying in [R_T] is to stay in type [T]. In the
+    forward direction, we get this from ordinary type Preservation. *)
 
 Lemma step_preserves_R : forall T t t', (t ==> t') -> R T t -> R T t'.
 Proof.
@@ -620,7 +682,6 @@ Proof.
   apply  ST_App1. apply E.
   apply RRt; auto.
   (* FILL IN HERE *) Admitted.
-
 
 (** The generalization to multiple steps is trivial: *)
 
@@ -651,65 +712,65 @@ Proof.
 Qed.
 
 (* ###################################################################### *)
-(** ** Closed instances of terms of type [T] belong to [R_T] *)
+(** ** Closed Instances of Terms of Type [t] Belong to [R_T] *)
 
 (** Now we proceed to show that every term of type [T] belongs to
-[R_T].  Here, the induction will be on typing derivations (it would be
-surprising to see a proof about well-typed terms that did not
-somewhere involve induction on typing derivations!).  The only
-technical difficulty here is in dealing with the abstraction case.
-Since we are arguing by induction, the demonstration that a term
-[tabs x T1 t2] belongs to [R_(T1->T2)] should involve applying the
-induction hypothesis to show that [t2] belongs to [R_(T2)].  But
-[R_(T2)] is defined to be a set of _closed_ terms, while [t2] may
-contain [x] free, so this does not make sense.
+    [R_T].  Here, the induction will be on typing derivations (it would be
+    surprising to see a proof about well-typed terms that did not
+    somewhere involve induction on typing derivations!).  The only
+    technical difficulty here is in dealing with the abstraction case.
+    Since we are arguing by induction, the demonstration that a term
+    [tabs x T1 t2] belongs to [R_(T1->T2)] should involve applying the
+    induction hypothesis to show that [t2] belongs to [R_(T2)].  But
+    [R_(T2)] is defined to be a set of _closed_ terms, while [t2] may
+    contain [x] free, so this does not make sense.
 
-This problem is resolved by using a standard trick to suitably
-generalize the induction hypothesis: instead of proving a statement
-involving a closed term, we generalize it to cover all closed
-_instances_ of an open term [t].  Informally, the statement of the
-lemma will look like this:
+    This problem is resolved by using a standard trick to suitably
+    generalize the induction hypothesis: instead of proving a statement
+    involving a closed term, we generalize it to cover all closed
+    _instances_ of an open term [t].  Informally, the statement of the
+    lemma will look like this:
 
-If [x1:T1,..xn:Tn |- t : T] and [v1,...,vn] are values such that
-[R T1 v1], [R T2 v2], ..., [R Tn vn], then
-[R T ([x1:=v1][x2:=v2]...[xn:=vn]t)].
+    If [x1:T1,..xn:Tn |- t : T] and [v1,...,vn] are values such that
+    [R T1 v1], [R T2 v2], ..., [R Tn vn], then
+    [R T ([x1:=v1][x2:=v2]...[xn:=vn]t)].
 
-The proof will proceed by induction on the typing derivation
-[x1:T1,..xn:Tn |- t : T]; the most interesting case will be the one
-for abstraction. *)
+    The proof will proceed by induction on the typing derivation
+    [x1:T1,..xn:Tn |- t : T]; the most interesting case will be the one
+    for abstraction. *)
 
 (* ###################################################################### *)
-(** *** Multisubstitutions, multi-extensions, and instantiations *)
+(** *** Multisubstitutions, Multi-Extensions, and Instantiations *)
 
 (** However, before we can proceed to formalize the statement and
-proof of the lemma, we'll need to build some (rather tedious)
-machinery to deal with the fact that we are performing _multiple_
-substitutions on term [t] and _multiple_ extensions of the typing
-context.  In particular, we must be precise about the order in which
-the substitutions occur and how they act on each other.  Often these
-details are simply elided in informal paper proofs, but of course Coq
-won't let us do that. Since here we are substituting closed terms, we
-don't need to worry about how one substitution might affect the term
-put in place by another.  But we still do need to worry about the
-_order_ of substitutions, because it is quite possible for the same
-identifier to appear multiple times among the [x1,...xn] with
-different associated [vi] and [Ti].
+    proof of the lemma, we'll need to build some (rather tedious)
+    machinery to deal with the fact that we are performing _multiple_
+    substitutions on term [t] and _multiple_ extensions of the typing
+    context.  In particular, we must be precise about the order in which
+    the substitutions occur and how they act on each other.  Often these
+    details are simply elided in informal paper proofs, but of course Coq
+    won't let us do that. Since here we are substituting closed terms, we
+    don't need to worry about how one substitution might affect the term
+    put in place by another.  But we still do need to worry about the
+    _order_ of substitutions, because it is quite possible for the same
+    identifier to appear multiple times among the [x1,...xn] with
+    different associated [vi] and [Ti].
 
-To make everything precise, we will assume that environments are
-extended from left to right, and multiple substitutions are performed
-from right to left.  To see that this is consistent, suppose we have
-an environment written as [...,y:bool,...,y:nat,...]  and a
-corresponding term substitution written as [...[y:=(tbool
-true)]...[y:=(tnat 3)]...t].  Since environments are extended from
-left to right, the binding [y:nat] hides the binding [y:bool]; since
-substitutions are performed right to left, we do the substitution
-[y:=(tnat 3)] first, so that the substitution [y:=(tbool true)] has
-no effect. Substitution thus correctly preserves the type of the term.
+    To make everything precise, we will assume that environments are
+    extended from left to right, and multiple substitutions are performed
+    from right to left.  To see that this is consistent, suppose we have
+    an environment written as [...,y:bool,...,y:nat,...]  and a
+    corresponding term substitution written as [...[y:=(tbool
+    true)]...[y:=(tnat 3)]...t].  Since environments are extended from
+    left to right, the binding [y:nat] hides the binding [y:bool]; since
+    substitutions are performed right to left, we do the substitution
+    [y:=(tnat 3)] first, so that the substitution [y:=(tbool true)] has
+    no effect. Substitution thus correctly preserves the type of the term.
 
-With these points in mind, the following definitions should make sense.
+    With these points in mind, the following definitions should make sense.
 
-A _multisubstitution_ is the result of applying a list of
-substitutions, which we call an _environment_. *)
+    A _multisubstitution_ is the result of applying a list of
+    substitutions, which we call an _environment_. *)
 
 Definition env := list (id * tm).
 
@@ -732,29 +793,36 @@ Fixpoint mupdate (Gamma : context) (xts : tass) :=
   end.
 
 (** We will need some simple operations that work uniformly on
-environments and type assigments *)
+    environments and type assigments *)
 
-Fixpoint lookup {X:Set} (k : id) (l : list (id * X)) {struct l} : option X :=
+Fixpoint lookup {X:Set} (k : id) (l : list (id * X)) {struct l}
+              : option X :=
   match l with
     | nil => None
     | (j,x) :: l' =>
       if beq_id j k then Some x else lookup k l'
   end.
 
-Fixpoint drop {X:Set} (n:id) (nxs:list (id * X)) {struct nxs} : list (id * X) :=
+Fixpoint drop {X:Set} (n:id) (nxs:list (id * X)) {struct nxs}
+            : list (id * X) :=
   match nxs with
     | nil => nil
-    | ((n',x)::nxs') => if beq_id n' n then drop n nxs' else (n',x)::(drop n nxs')
+    | ((n',x)::nxs') =>
+        if beq_id n' n then drop n nxs'
+        else (n',x)::(drop n nxs')
   end.
 
 (** An _instantiation_ combines a type assignment and a value
-   environment with the same domains, where corresponding elements are
-   in R *)
+    environment with the same domains, where corresponding elements are
+    in R. *)
 
 Inductive instantiation :  tass -> env -> Prop :=
-| V_nil : instantiation nil nil
-| V_cons : forall x T v c e, value v -> R T v -> instantiation c e -> instantiation ((x,T)::c) ((x,v)::e).
-
+| V_nil :
+    instantiation nil nil
+| V_cons : forall x T v c e,
+    value v -> R T v ->
+    instantiation c e ->
+    instantiation ((x,T)::c) ((x,v)::e).
 
 (** We now proceed to prove various properties of these definitions. *)
 
@@ -775,8 +843,8 @@ Lemma subst_closed: forall t,
 Proof.
   intros. apply vacuous_substitution. apply H.  Qed.
 
-
-Lemma subst_not_afi : forall t x v, closed v ->  ~ appears_free_in x ([x:=v]t).
+Lemma subst_not_afi : forall t x v,
+    closed v ->  ~ appears_free_in x ([x:=v]t).
 Proof with eauto.  (* rather slow this way *)
   unfold closed, not.
   induction t; intros x v P A; simpl in A.
@@ -803,15 +871,16 @@ Proof with eauto.  (* rather slow this way *)
      inversion A; subst...
 Qed.
 
-
 Lemma duplicate_subst : forall t' x t v,
   closed v -> [x:=t]([x:=v]t') = [x:=v]t'.
 Proof.
   intros. eapply vacuous_substitution. apply subst_not_afi.  auto.
 Qed.
 
-Lemma swap_subst : forall t x x1 v v1, x <> x1 -> closed v -> closed v1 ->
-                   [x1:=v1]([x:=v]t) = [x:=v]([x1:=v1]t).
+Lemma swap_subst : forall t x x1 v v1,
+    x <> x1 ->
+    closed v -> closed v1 ->
+    [x1:=v1]([x:=v]t) = [x:=v]([x1:=v1]t).
 Proof with eauto.
  induction t; intros; simpl.
   - (* tvar *)
@@ -823,7 +892,7 @@ Proof with eauto.
   (* FILL IN HERE *) Admitted.
 
 (* ###################################################################### *)
-(** *** Properties of multi-substitutions *)
+(** *** Properties of Multi-Substitutions *)
 
 Lemma msubst_closed: forall t, closed t -> forall ss, msubst ss t = t.
 Proof.
@@ -835,16 +904,16 @@ Qed.
 (** Closed environments are those that contain only closed terms. *)
 
 Fixpoint closed_env (env:env) {struct env} :=
-match env with
-| nil => True
-| (x,t)::env' => closed t /\ closed_env env'
-end.
+  match env with
+  | nil => True
+  | (x,t)::env' => closed t /\ closed_env env'
+  end.
 
 (** Next come a series of lemmas charcterizing how [msubst] of closed terms
     distributes over [subst] and over each term form *)
 
 Lemma subst_msubst: forall env x v t, closed v -> closed_env env ->
-  msubst env ([x:=v]t) = [x:=v](msubst (drop x env) t).
+    msubst env ([x:=v]t) = [x:=v](msubst (drop x env) t).
 Proof.
   induction env0; intros; auto.
   destruct a. simpl.
@@ -853,7 +922,6 @@ Proof.
   - subst. rewrite duplicate_subst; auto.
   - simpl. rewrite swap_subst; eauto.
 Qed.
-
 
 Lemma msubst_var:  forall ss x, closed_env ss ->
    msubst ss (tvar x) =
@@ -892,12 +960,13 @@ Qed.
 (* FILL IN HERE *)
 
 (* ###################################################################### *)
-(** *** Properties of multi-extensions *)
+(** *** Properties of Multi-Extensions *)
 
-(** We need to connect the behavior of type assignments with that of their
-   corresponding contexts. *)
+(** We need to connect the behavior of type assignments with that of
+    their corresponding contexts. *)
 
-Lemma mupdate_lookup : forall (c : tass) (x:id), lookup x c = (mupdate empty c) x.
+Lemma mupdate_lookup : forall (c : tass) (x:id),
+    lookup x c = (mupdate empty c) x.
 Proof.
   induction c; intros.
     auto.
@@ -905,7 +974,8 @@ Proof.
 Qed.
 
 Lemma mupdate_drop : forall (c: tass) Gamma x x',
-       mupdate Gamma (drop x c) x' = if beq_id x x' then Gamma x' else mupdate Gamma c x'.
+      mupdate Gamma (drop x c) x'
+    = if beq_id x x' then Gamma x' else mupdate Gamma c x'.
 Proof.
   induction c; intros.
   - destruct (beq_idP x x'); auto.
@@ -923,7 +993,9 @@ Qed.
 (** These are strightforward. *)
 
 Lemma instantiation_domains_match: forall {c} {e},
-  instantiation c e -> forall {x} {T}, lookup x c = Some T -> exists t, lookup x e = Some t.
+    instantiation c e ->
+    forall {x} {T},
+      lookup x c = Some T -> exists t, lookup x e = Some t.
 Proof.
   intros c e V. induction V; intros x0 T0 C.
     solve by inversion .
@@ -931,7 +1003,8 @@ Proof.
     destruct (beq_id x x0); eauto.
 Qed.
 
-Lemma instantiation_env_closed : forall c e,  instantiation c e -> closed_env e.
+Lemma instantiation_env_closed : forall c e,
+  instantiation c e -> closed_env e.
 Proof.
   intros c e V; induction V; intros.
     econstructor.
@@ -940,9 +1013,11 @@ Proof.
         auto.
 Qed.
 
-Lemma instantiation_R : forall c e, instantiation c e ->
-                        forall x t T, lookup x c = Some T ->
-                                      lookup x e = Some t -> R T t.
+Lemma instantiation_R : forall c e,
+    instantiation c e ->
+    forall x t T,
+      lookup x c = Some T ->
+      lookup x e = Some t -> R T t.
 Proof.
   intros c e V. induction V; intros x' t' T' G E.
     solve by inversion.
@@ -952,7 +1027,8 @@ Proof.
 Qed.
 
 Lemma instantiation_drop : forall c env,
-  instantiation c env -> forall x, instantiation (drop x c) (drop x env).
+    instantiation c env ->
+    forall x, instantiation (drop x c) (drop x env).
 Proof.
   intros c e V. induction V.
     intros.  simpl.  constructor.
@@ -961,7 +1037,7 @@ Qed.
 
 
 (* ###################################################################### *)
-(** *** Congruence lemmas on multistep *)
+(** *** Congruence Lemmas on Multistep *)
 
 (** We'll need just a few of these; add them as the demand arises. *)
 
@@ -979,7 +1055,7 @@ Qed.
 (* ###################################################################### *)
 (** *** The R Lemma. *)
 
-(** We finally put everything together.
+(** We can finally put everything together.
 
     The key lemma about preservation of typing under substitution can
     be lifted to multi-substitutions: *)
@@ -1000,7 +1076,9 @@ Qed.
 (** And at long last, the main lemma. *)
 
 Lemma msubst_R : forall c env t T,
-  has_type (mupdate empty c) t T -> instantiation c env -> R T (msubst env t).
+    has_type (mupdate empty c) t T ->
+    instantiation c env ->
+    R T (msubst env t).
 Proof.
   intros c env0 t T HT V.
   generalize dependent env0.
@@ -1073,4 +1151,4 @@ Proof.
   eapply V_nil.
 Qed.
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

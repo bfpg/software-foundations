@@ -1,14 +1,14 @@
 (** * UseTactics: Tactic Library for Coq: A Gentle Introduction *)
 
-(* Chapter maintained by Arthur Chargueraud *)
+(* Chapter written and maintained by Arthur Chargueraud *)
 
 (** Coq comes with a set of builtin tactics, such as [reflexivity],
     [intros], [inversion] and so on. While it is possible to conduct
     proofs using only those tactics, you can significantly increase
     your productivity by working with a set of more powerful tactics.
-    This chapter describes a number of such very useful tactics, which,
-    for various reasons, are not yet available by default in Coq.
-    These tactics are defined in the [LibTactics.v] file. *)
+    This chapter describes a number of such useful tactics, which, for
+    various reasons, are not yet available by default in Coq.  These
+    tactics are defined in the [LibTactics.v] file. *)
 
 Require Import Coq.Arith.Arith.
 
@@ -35,7 +35,7 @@ Require Import LibTactics.
     from the "LibTactics" library. It does not aim at presenting all
     the features of "LibTactics". The detailed specification of tactics
     can be found in the source file [LibTactics.v]. Further documentation
-    as well as demos can be found at http://www.chargueraud.org/softs/tlc/ . *)
+    as well as demos can be found at http://www.chargueraud.org/softs/tlc/. *)
 
 (** In this tutorial, tactics are presented using examples taken from
     the core chapters of the "Software Foundations" course. To illustrate
@@ -45,7 +45,7 @@ Require Import LibTactics.
 
 
 (* ####################################################### *)
-(** * Tactics for introduction and case analysis *)
+(** * Tactics for Introduction and Case Analysis *)
 
 (** This section presents the following tactics:
     - [introv], for naming hypotheses more efficiently,
@@ -55,7 +55,7 @@ Require Import LibTactics.
 
 
 (* ####################################################### *)
-(** ** The tactic [introv] *)
+(** ** The Tactic [introv] *)
 
 Module IntrovExamples.
   Require Import Stlc.
@@ -115,7 +115,7 @@ End IntrovExamples.
 
 
 (* ####################################################### *)
-(** ** The tactic [inverts] *)
+(** ** The Tactic [inverts] *)
 
 Module InvertsExamples.
   Require Import Stlc Equiv Imp.
@@ -196,12 +196,12 @@ Proof.
     subst st3.
     apply IHE1_2. assumption.
   (* E_IfTrue *)
-  - (* b1 evaluates to true *)
+  - (* b1 reduces to true *)
     (* In an easy case like this one, there is no need to
        provide meaningful names, so we can just use [intros] *)
     (* new: *) intros.
     apply IHE1. assumption.
-  - (* b1 evaluates to false (contradiction) *)
+  - (* b1 reduces to false (contradiction) *)
     (* new: *) intros.
     rewrite H in H5. inversion H5.
   (* The other cases are similiar *)
@@ -271,7 +271,7 @@ End InvertsExamples.
 
 
 (* ####################################################### *)
-(** * Tactics for n-ary connectives *)
+(** * Tactics for N-ary Connectives *)
 
 (** Because Coq encodes conjunctions and disjunctions using binary
     constructors [/\] and [\/], working with a conjunction or a
@@ -291,7 +291,7 @@ Module NaryExamples.
 
 
 (* ####################################################### *)
-(** ** The tactic [splits] *)
+(** ** The Tactic [splits] *)
 
 (** The tactic [splits] applies to a goal made of a conjunction
     of [n] propositions and it produces [n] subgoals. For example,
@@ -306,7 +306,7 @@ Abort.
 
 
 (* ####################################################### *)
-(** ** The tactic [branch] *)
+(** ** The Tactic [branch] *)
 
 (** The tactic [branch k] can be used to prove a n-ary disjunction.
     For example, if the goal takes the form [G1 \/ G2 \/ G3],
@@ -325,7 +325,7 @@ Qed.
 
 
 (* ####################################################### *)
-(** ** The tactic [exists] *)
+(** ** The Tactic [exists] *)
 
 (** The library "LibTactics" introduces a notation for n-ary
     existentials. For example, one can write [exists x y z, H]
@@ -363,7 +363,7 @@ End NaryExamples.
 
 
 (* ####################################################### *)
-(** * Tactics for working with equality *)
+(** * Tactics for Working with Equality *)
 
 (** One of the major weakness of Coq compared with other interactive
     proof assistants is its relatively poor support for reasoning
@@ -382,7 +382,7 @@ Module EqualityExamples.
 
 
 (* ####################################################### *)
-(** ** The tactics [asserts_rewrite] and [cuts_rewrite] *)
+(** ** The Tactics [asserts_rewrite] and [cuts_rewrite] *)
 
 (** The tactic [asserts_rewrite (E1 = E2)] replaces [E1] with [E2] in
     the goal, and produces the goal [E1 = E2]. *)
@@ -435,7 +435,7 @@ Abort.
 
 
 (* ####################################################### *)
-(** ** The tactic [substs] *)
+(** ** The Tactic [substs] *)
 
 (** The tactic [substs] is similar to [subst] except that it
     does not fail when the goal contains "circular equalities",
@@ -450,7 +450,7 @@ Qed.
 
 
 (* ####################################################### *)
-(** ** The tactic [fequals] *)
+(** ** The Tactic [fequals] *)
 
 (** The tactic [fequals] is similar to [f_equal] except that it
     directly discharges all the trivial subgoals produced. Moreover,
@@ -467,7 +467,7 @@ Abort.
 
 
 (* ####################################################### *)
-(** ** The tactic [applys_eq] *)
+(** ** The Tactic [applys_eq] *)
 
 (** The tactic [applys_eq] is a variant of [eapply] that introduces
     equalities for subterms that do not unify. For example, assume
@@ -532,7 +532,7 @@ End EqualityExamples.
 
 
 (* ####################################################### *)
-(** * Some convenient shorthands *)
+(** * Some Convenient Shorthands *)
 
 (** This section of the tutorial introduces a few tactics
     that help make proof scripts shorter and more readable:
@@ -545,7 +545,7 @@ End EqualityExamples.
 
 
 (* ####################################################### *)
-(** ** The tactic [unfolds] *)
+(** ** The Tactic [unfolds] *)
 
 Module UnfoldsExample.
   Require Import Hoare.
@@ -576,7 +576,7 @@ End UnfoldsExample.
 
 
 (* ####################################################### *)
-(** ** The tactics [false] and [tryfalse] *)
+(** ** The Tactics [false] and [tryfalse] *)
 
 (** The tactic [false] can be used to replace any goal with [False].
     In short, it is a shorthand for [exfalso].
@@ -611,7 +611,7 @@ Qed.
 
 
 (* ####################################################### *)
-(** ** The tactic [gen] *)
+(** ** The Tactic [gen] *)
 
 (** The tactic [gen] is a shortand for [generalize dependent]
     that accepts several arguments at once. An invokation of
@@ -644,7 +644,7 @@ End GenExample.
 
 
 (* ####################################################### *)
-(** ** The tactics [skip], [skip_rewrite] and [skip_goal] *)
+(** ** The Tactics [skip], [skip_rewrite] and [skip_goal] *)
 
 (** Temporarily admitting a given subgoal is very useful when
     constructing proofs. It gives the ability to focus first
@@ -742,7 +742,7 @@ End SkipExample.
 
 
 (* ####################################################### *)
-(** ** The tactic [sort] *)
+(** ** The Tactic [sort] *)
 
 Module SortExamples.
   Require Import Imp.
@@ -767,7 +767,7 @@ End SortExamples.
 
 
 (* ####################################################### *)
-(** * Tactics for advanced lemma instantiation *)
+(** * Tactics for Advanced Lemma Instantiation *)
 
 (** This last section describes a mechanism for instantiating a lemma
     by providing some of its arguments and leaving other implicit.
@@ -948,7 +948,7 @@ End ExamplesLets.
 
 
 (* ####################################################### *)
-(** ** Example of instantiations *)
+(** ** Example of Instantiations *)
 
 Module ExamplesInstantiations.
   Require Import Sub.
@@ -1066,8 +1066,8 @@ End ExamplesInstantiations.
 
     If you are interested in using [LibTactics.v] in your own developments,
     make sure you get the lastest version from:
-    http://www.chargueraud.org/softs/tlc/ .
+    http://www.chargueraud.org/softs/tlc/.
 
 *)
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

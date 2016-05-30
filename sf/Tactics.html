@@ -25,17 +25,9 @@
 
 <div class="doc">
 
-</div>
-<div class="code code-tight">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Poly.html#"><span class="id" type="library">Poly</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-This chapter introduces several more proof strategies and
+ This chapter introduces several more proof strategies and
     tactics that allow us to prove more interesting properties of
     functional programs.  We will see:
 
@@ -54,19 +46,21 @@ This chapter introduces several more proof strategies and
       strengthening is required); and
 
 </li>
-<li> more details on how to reason by case analysis.
-
+<li> more details on how to reason by case analysis. 
 </li>
 </ul>
- 
+
 </div>
 <div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Poly.html#"><span class="id" type="library">Poly</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab124"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> Tactic</h1>
+<a name="lab127"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> Tactic</h1>
 
 <div class="paragraph"> </div>
 
@@ -151,7 +145,7 @@ You may find it instructive to experiment with this proof
 </div>
 
 <div class="doc">
-<a name="lab125"></a><h4 class="section">Exercise: 2 stars, optional (silly_ex)</h4>
+<a name="lab128"></a><h4 class="section">Exercise: 2 stars, optional (silly_ex)</h4>
  Complete the following proof without using <span class="inlinecode"><span class="id" type="tactic">simpl</span></span>. 
 </div>
 <div class="code code-tight">
@@ -166,7 +160,7 @@ You may find it instructive to experiment with this proof
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  To use the <span class="inlinecode"><span class="id" type="tactic">apply</span></span> tactic, the (conclusion of the) fact
@@ -210,7 +204,7 @@ In this case we can use the <span class="inlinecode"><span class="id" type="tact
 </div>
 
 <div class="doc">
-<a name="lab126"></a><h4 class="section">Exercise: 3 stars (apply_exercise1)</h4>
+<a name="lab129"></a><h4 class="section">Exercise: 3 stars (apply_exercise1)</h4>
  (<i>Hint</i>: You can use <span class="inlinecode"><span class="id" type="tactic">apply</span></span> with previously defined lemmas, not
     just hypotheses in the context.  Remember that <span class="inlinecode"><span class="id" type="var">SearchAbout</span></span> is
     your friend.) 
@@ -226,10 +220,10 @@ In this case we can use the <span class="inlinecode"><span class="id" type="tact
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab127"></a><h4 class="section">Exercise: 1 star, optional (apply_rewrite)</h4>
+<a name="lab130"></a><h4 class="section">Exercise: 1 star, optional (apply_rewrite)</h4>
  Briefly explain the difference between the tactics <span class="inlinecode"><span class="id" type="tactic">apply</span></span> and
     <span class="inlinecode"><span class="id" type="tactic">rewrite</span></span>.  What are the situations where both can usefully be
     applied?
@@ -237,7 +231,7 @@ In this case we can use the <span class="inlinecode"><span class="id" type="tact
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -245,7 +239,7 @@ In this case we can use the <span class="inlinecode"><span class="id" type="tact
 </div>
 
 <div class="doc">
-<a name="lab128"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> <span class="inlinecode">...</span> <span class="inlinecode"><span class="id" type="keyword">with</span></span> <span class="inlinecode">...</span> Tactic</h1>
+<a name="lab131"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> <span class="inlinecode">...</span> <span class="inlinecode"><span class="id" type="keyword">with</span></span> <span class="inlinecode">...</span> Tactic</h1>
 
 <div class="paragraph"> </div>
 
@@ -324,7 +318,7 @@ Actually, we usually don't have to include the name <span class="inlinecode"><sp
     <span class="inlinecode"><span class="id" type="var">trans_eq</span></span> <span class="inlinecode"><span class="id" type="keyword">with</span></span> <span class="inlinecode">[<span class="id" type="var">c</span>;<span class="id" type="var">d</span>]</span>. 
 <div class="paragraph"> </div>
 
-<a name="lab129"></a><h4 class="section">Exercise: 3 stars, optional (apply_with_exercise)</h4>
+<a name="lab132"></a><h4 class="section">Exercise: 3 stars, optional (apply_with_exercise)</h4>
 
 </div>
 <div class="code code-space">
@@ -337,7 +331,7 @@ Actually, we usually don't have to include the name <span class="inlinecode"><sp
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -345,7 +339,7 @@ Actually, we usually don't have to include the name <span class="inlinecode"><sp
 </div>
 
 <div class="doc">
-<a name="lab130"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">inversion</span></span> tactic</h1>
+<a name="lab133"></a><h1 class="section">The <span class="inlinecode"><span class="id" type="tactic">inversion</span></span> Tactic</h1>
 
 <div class="paragraph"> </div>
 
@@ -457,7 +451,7 @@ It is possible to name the equations that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<a name="lab131"></a><h4 class="section">Exercise: 1 star (inversion_ex<sub>3</sub>)</h4>
+<a name="lab134"></a><h4 class="section">Exercise: 1 star (inversion_ex<sub>3</sub>)</h4>
 
 </div>
 <div class="code code-space">
@@ -470,7 +464,7 @@ It is possible to name the equations that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  While the injectivity of constructors allows us to reason
@@ -581,7 +575,7 @@ If you find the principle of explosion confusing, remember
     in the next chapter. 
 <div class="paragraph"> </div>
 
-<a name="lab132"></a><h4 class="section">Exercise: 1 star (inversion_ex<sub>6</sub>)</h4>
+<a name="lab135"></a><h4 class="section">Exercise: 1 star (inversion_ex<sub>6</sub>)</h4>
 
 </div>
 <div class="code code-space">
@@ -595,7 +589,7 @@ If you find the principle of explosion confusing, remember
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  To summarize this discussion, suppose <span class="inlinecode"><span class="id" type="var">H</span></span> is a hypothesis in the
@@ -637,7 +631,7 @@ If you find the principle of explosion confusing, remember
 </div>
 
 <div class="doc">
-<a name="lab133"></a><h1 class="section">Using Tactics on Hypotheses</h1>
+<a name="lab136"></a><h1 class="section">Using Tactics on Hypotheses</h1>
 
 <div class="paragraph"> </div>
 
@@ -710,7 +704,7 @@ Forward reasoning starts from what is <i>given</i> (premises,
     about.  
 <div class="paragraph"> </div>
 
-<a name="lab134"></a><h4 class="section">Exercise: 3 stars, recommended (plus_n_n_injective)</h4>
+<a name="lab137"></a><h4 class="section">Exercise: 3 stars, recommended (plus_n_n_injective)</h4>
  Practice using "in" variants in this exercise.  (Hint: use
     <span class="inlinecode"><span class="id" type="var">plus_n_Sm</span></span>.) 
 </div>
@@ -726,7 +720,7 @@ Forward reasoning starts from what is <i>given</i> (premises,
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -734,7 +728,7 @@ Forward reasoning starts from what is <i>given</i> (premises,
 </div>
 
 <div class="doc">
-<a name="lab135"></a><h1 class="section">Varying the Induction Hypothesis</h1>
+<a name="lab138"></a><h1 class="section">Varying the Induction Hypothesis</h1>
 
 <div class="paragraph"> </div>
 
@@ -1014,7 +1008,7 @@ What you should take away from all this is that we need to be
  The following exercise requires the same pattern. 
 <div class="paragraph"> </div>
 
-<a name="lab136"></a><h4 class="section">Exercise: 2 stars (beq_nat_true)</h4>
+<a name="lab139"></a><h4 class="section">Exercise: 2 stars (beq_nat_true)</h4>
 
 </div>
 <div class="code code-space">
@@ -1025,10 +1019,10 @@ What you should take away from all this is that we need to be
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab137"></a><h4 class="section">Exercise: 2 stars, advanced (beq_nat_true_informal)</h4>
+<a name="lab140"></a><h4 class="section">Exercise: 2 stars, advanced (beq_nat_true_informal)</h4>
  Give a careful informal proof of <span class="inlinecode"><span class="id" type="var">beq_nat_true</span></span>, being as explicit
     as possible about quantifiers. 
 </div>
@@ -1039,7 +1033,7 @@ What you should take away from all this is that we need to be
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  The strategy of doing fewer <span class="inlinecode"><span class="id" type="tactic">intros</span></span> before an <span class="inlinecode"><span class="id" type="tactic">induction</span></span> to
@@ -1171,7 +1165,7 @@ Let's look at an informal proof of this theorem.  Note that
         <span class="inlinecode"><span class="id" type="var">double</span></span> <span class="inlinecode"><span class="id" type="var">m'</span></span>.  Instantiating the induction hypothesis with <span class="inlinecode"><span class="id" type="var">n'</span></span> thus
         allows us to conclude that <span class="inlinecode"><span class="id" type="var">n'</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">m'</span></span>, and it follows immediately
         that <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">n'</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">m'</span></span>.  Since <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">n'</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">n</span></span> and <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">m'</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">m</span></span>, this is just
-        what we wanted to show. <font size=-2>&#9744;</font> 
+        what we wanted to show. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
@@ -1196,7 +1190,7 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<a name="lab138"></a><h4 class="section">Exercise: 3 stars, recommended (gen_dep_practice)</h4>
+<a name="lab141"></a><h4 class="section">Exercise: 3 stars, recommended (gen_dep_practice)</h4>
  Prove this by induction on <span class="inlinecode"><span class="id" type="var">l</span></span>. 
 </div>
 <div class="code code-tight">
@@ -1210,10 +1204,10 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab139"></a><h4 class="section">Exercise: 3 stars, optional (app_length_cons)</h4>
+<a name="lab142"></a><h4 class="section">Exercise: 3 stars, optional (app_length_cons)</h4>
  Prove this by induction on <span class="inlinecode"><span class="id" type="var">l<sub>1</sub></span></span>, without using <span class="inlinecode"><span class="id" type="var">app_length</span></span>
     from <span class="inlinecode"><span class="id" type="var">Lists</span></span>. 
 </div>
@@ -1229,10 +1223,10 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab140"></a><h4 class="section">Exercise: 4 stars, optional (app_length_twice)</h4>
+<a name="lab143"></a><h4 class="section">Exercise: 4 stars, optional (app_length_twice)</h4>
  Prove this by induction on <span class="inlinecode"><span class="id" type="var">l</span></span>, without using <span class="inlinecode"><span class="id" type="var">app_length</span></span> from <span class="inlinecode"><span class="id" type="var">Lists</span></span>. 
 </div>
 <div class="code code-tight">
@@ -1246,10 +1240,10 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab141"></a><h4 class="section">Exercise: 3 stars, optional (double_induction)</h4>
+<a name="lab144"></a><h4 class="section">Exercise: 3 stars, optional (double_induction)</h4>
  Prove the following principle of induction over two naturals. 
 </div>
 <div class="code code-tight">
@@ -1266,7 +1260,7 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1274,13 +1268,13 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-<a name="lab142"></a><h1 class="section">Unfolding Definitions</h1>
+<a name="lab145"></a><h1 class="section">Unfolding Definitions</h1>
 
 <div class="paragraph"> </div>
 
  It sometimes happens that we need to manually unfold a Definition
     so that we can manipulate its right-hand side.  For example, if we
-    define 
+    define... 
 </div>
 <div class="code code-tight">
 
@@ -1291,7 +1285,7 @@ Let's look at an informal proof of this theorem.  Note that
 </div>
 
 <div class="doc">
-and try to prove a simple fact about <span class="inlinecode"><span class="id" type="var">square</span></span>... 
+... and try to prove a simple fact about <span class="inlinecode"><span class="id" type="var">square</span></span>... 
 </div>
 <div class="code code-tight">
 
@@ -1342,8 +1336,8 @@ Now we have plenty to work with: both sides of the equality are
 </div>
 
 <div class="doc">
-At this point, a slightly deeper discussion of unfolding and
-    simplification is in order.
+At this point, a deeper discussion of unfolding and simplification
+    is in order.
 
 <div class="paragraph"> </div>
 
@@ -1482,7 +1476,7 @@ Now it is apparent that we are stuck on the <span class="inlinecode"><span class
 </div>
 
 <div class="doc">
-<a name="lab143"></a><h1 class="section">Using <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> on Compound Expressions</h1>
+<a name="lab146"></a><h1 class="section">Using <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> on Compound Expressions</h1>
 
 <div class="paragraph"> </div>
 
@@ -1533,7 +1527,7 @@ After unfolding <span class="inlinecode"><span class="id" type="var">sillyfun</s
     are replaced by <span class="inlinecode"><span class="id" type="var">c</span></span>. 
 <div class="paragraph"> </div>
 
-<a name="lab144"></a><h4 class="section">Exercise: 3 stars, optional (combine_split)</h4>
+<a name="lab147"></a><h4 class="section">Exercise: 3 stars, optional (combine_split)</h4>
 
 </div>
 <div class="code code-space">
@@ -1545,7 +1539,7 @@ After unfolding <span class="inlinecode"><span class="id" type="var">sillyfun</s
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  However, <span class="inlinecode"><span class="id" type="tactic">destruct</span></span>ing compound expressions requires a bit of
@@ -1588,7 +1582,7 @@ Now suppose that we want to convince Coq of the (rather
 <div class="doc">
 We get stuck at this point because the context does not
     contain enough information to prove the goal!  The problem is that
-    the substitution peformed by <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> is too brutal &mdash; it threw
+    the substitution performed by <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> is too brutal &mdash; it threw
     away every occurrence of <span class="inlinecode"><span class="id" type="var">beq_nat</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">3</span>, but we need to keep some
     memory of this expression and how it was destructed, because we
     need to be able to reason that, since <span class="inlinecode"><span class="id" type="var">beq_nat</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">3</span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">true</span></span> in this
@@ -1633,7 +1627,7 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<a name="lab145"></a><h4 class="section">Exercise: 2 stars (destruct_eqn_practice)</h4>
+<a name="lab148"></a><h4 class="section">Exercise: 2 stars (destruct_eqn_practice)</h4>
 
 </div>
 <div class="code code-space">
@@ -1645,7 +1639,7 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1653,7 +1647,7 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<a name="lab146"></a><h1 class="section">Review</h1>
+<a name="lab149"></a><h1 class="section">Review</h1>
 
 <div class="paragraph"> </div>
 
@@ -1792,8 +1786,7 @@ We get stuck at this point because the context does not
 </li>
 <li> <span class="inlinecode"><span class="id" type="tactic">generalize</span></span> <span class="inlinecode"><span class="id" type="tactic">dependent</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span>: move the variable <span class="inlinecode"><span class="id" type="var">x</span></span> (and anything
         else that depends on it) from the context back to an explicit
-        hypothesis in the goal formula
-
+        hypothesis in the goal formula 
 </li>
 </ul>
 
@@ -1804,11 +1797,11 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<a name="lab147"></a><h1 class="section">Additional Exercises</h1>
+<a name="lab150"></a><h1 class="section">Additional Exercises</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab148"></a><h4 class="section">Exercise: 3 stars (beq_nat_sym)</h4>
+<a name="lab151"></a><h4 class="section">Exercise: 3 stars (beq_nat_sym)</h4>
 
 </div>
 <div class="code code-space">
@@ -1819,10 +1812,10 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab149"></a><h4 class="section">Exercise: 3 stars, advanced, optional (beq_nat_sym_informal)</h4>
+<a name="lab152"></a><h4 class="section">Exercise: 3 stars, advanced, optional (beq_nat_sym_informal)</h4>
  Give an informal proof of this lemma that corresponds to your
     formal proof above:
 
@@ -1834,11 +1827,11 @@ We get stuck at this point because the context does not
 
    Proof:
    <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
-<font size=-2>&#9744;</font>
- 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
+
 <div class="paragraph"> </div>
 
-<a name="lab150"></a><h4 class="section">Exercise: 3 stars, optional (beq_nat_trans)</h4>
+<a name="lab153"></a><h4 class="section">Exercise: 3 stars, optional (beq_nat_trans)</h4>
 
 </div>
 <div class="code code-space">
@@ -1851,10 +1844,10 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab151"></a><h4 class="section">Exercise: 3 stars, advanced (split_combine)</h4>
+<a name="lab154"></a><h4 class="section">Exercise: 3 stars, advanced (split_combine)</h4>
  We proved, in an exercise above, that for all lists of pairs,
     <span class="inlinecode"><span class="id" type="var">combine</span></span> is the inverse of <span class="inlinecode"><span class="id" type="tactic">split</span></span>.  How would you formalize the
     statement that <span class="inlinecode"><span class="id" type="tactic">split</span></span> is the inverse of <span class="inlinecode"><span class="id" type="var">combine</span></span>?  When is this
@@ -1884,10 +1877,10 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab152"></a><h4 class="section">Exercise: 3 stars, advanced (filter_exercise)</h4>
+<a name="lab155"></a><h4 class="section">Exercise: 3 stars, advanced (filter_exercise)</h4>
  This one is a bit challenging.  Pay attention to the form of your
     induction hypothesis. 
 </div>
@@ -1903,10 +1896,10 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab153"></a><h4 class="section">Exercise: 4 stars, advanced, recommended (forall_exists_challenge)</h4>
+<a name="lab156"></a><h4 class="section">Exercise: 4 stars, advanced, recommended (forall_exists_challenge)</h4>
  Define two recursive <span class="inlinecode"><span class="id" type="var">Fixpoints</span></span>, <span class="inlinecode"><span class="id" type="var">forallb</span></span> and <span class="inlinecode"><span class="id" type="var">existsb</span></span>.  The
     first checks whether every element in a list satisfies a given
     predicate:
@@ -1946,8 +1939,7 @@ We get stuck at this point because the context does not
 <div class="paragraph"> </div>
 
     Finally, prove a theorem <span class="inlinecode"><span class="id" type="var">existsb_existsb'</span></span> stating that
-    <span class="inlinecode"><span class="id" type="var">existsb'</span></span> and <span class="inlinecode"><span class="id" type="var">existsb</span></span> have the same behavior.
-
+    <span class="inlinecode"><span class="id" type="var">existsb'</span></span> and <span class="inlinecode"><span class="id" type="var">existsb</span></span> have the same behavior. 
 </div>
 <div class="code code-tight">
 
@@ -1956,7 +1948,7 @@ We get stuck at this point because the context does not
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
   

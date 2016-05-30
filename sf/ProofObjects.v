@@ -1,6 +1,6 @@
 (** * ProofObjects: The Curry-Howard Correspondence *)
 
-(** "_Algorithms are the computational  content of proofs_."  --Robert Harper *)
+(** "_Algorithms are the computational content of proofs_."  --Robert Harper *)
 
 Require Export IndProp.
 
@@ -52,10 +52,12 @@ Print ev.
     and [:] as "is a proof of" or "is evidence for" -- is called the
     _Curry-Howard correspondence_.  It proposes a deep connection
     between the world of logic and the world of computation:
-<<
+
                  propositions  ~  types
                  proofs        ~  data values
->>
+
+    See [Wadler 2015] for a brief history and an up-to-date exposition.
+
     Many useful insights follow from this connection.  To begin with,
     it gives us a natural interpretation of the type of the [ev_SS]
     constructor: *)
@@ -96,7 +98,9 @@ Check (ev_SS 2 (ev_SS 0 ev_0)).
     think of [ev_SS] as a primitive "evidence constructor" that, when
     applied to a particular number, wants to be further applied to
     evidence that that number is even; its type,
-    forall n, ev n -> ev (S (S n)),
+
+      forall n, ev n -> ev (S (S n)),
+
     expresses this functionality, in the same way that the polymorphic
     type [forall X, list X] expresses the fact that the constructor
     [nil] can be thought of as a function from types to empty lists
@@ -105,7 +109,7 @@ Check (ev_SS 2 (ev_SS 0 ev_0)).
 (** You may recall (as seen in the [Logic] chapter) that we can
     use function application syntax to instantiate universally
     quantified variables in lemmas, as well as to supply evidence for
-    assumptions that these lemmas impose. For instance, *)
+    assumptions that these lemmas impose. For instance: *)
 
 Theorem ev_4': ev 4.
 Proof.
@@ -221,8 +225,7 @@ Check ev_plus4'.
 
 (** Recall that [fun n => blah] means "the function that, given [n],
     yields [blah]," and that Coq treats [4 + n] and [S (S (S (S n)))]
-    as synonyms. Another equivalent way to write this definition is:
-    *)
+    as synonyms. Another equivalent way to write this definition is: *)
 
 Definition ev_plus4'' (n : nat) (H : ev n) : ev (4 + n) :=
   ev_SS (S (S n)) (ev_SS n H).
@@ -348,7 +351,6 @@ Module Or.
 Inductive or (P Q : Prop) : Prop :=
 | or_introl : P -> or P Q
 | or_intror : Q -> or P Q.
-
 
 End Or.
 
@@ -583,7 +585,7 @@ Definition quiz6 : exists x,  x + 3 = 4
    Now, though, the form of the [refl_equal] constructor does give us
    some extra information: it tells us that the two arguments to [eq]
    must be the same!  The [inversion] tactic adds this fact to the
-   context.  *)
+   context. *)
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 

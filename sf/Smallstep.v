@@ -5,17 +5,15 @@ Require Import Coq.Arith.EqNat.
 Require Import Coq.omega.Omega.
 Require Import Coq.Lists.List.
 Import ListNotations.
-
 Require Import SfLib.
 Require Import Maps.
 Require Import Imp.
 
-
-(** The evaluators we have seen so far (e.g., the ones for
-    [aexp]s, [bexp]s, and commands) have been formulated in a
-    "big-step" style: they specify how a given expression can be
-    evaluated to its final value (or a command plus a store to a final
-    store) "all in one big step."
+(** The evaluators we have seen so far (for [aexp]s, [bexp]s,
+    commands, ...) have been formulated in a "big-step" style: they
+    specify how a given expression can be evaluated to its final
+    value (or a command plus a store to a final store) "all in one big
+    step."
 
     This style is simple and natural for many purposes -- indeed,
     Gilles Kahn, who popularized it, called it _natural semantics_.
@@ -99,6 +97,7 @@ Fixpoint evalF (t : tm) : nat :=
     style, but formulated as an inductively defined relation.  Again,
     we use the notation [t \\ n] for "[t] evaluates to [n]." *)
 (**
+
                                --------                                (E_Const)
                                C n \\ n
 
@@ -106,6 +105,7 @@ Fixpoint evalF (t : tm) : nat :=
                                t2 \\ n2
                            ------------------                          (E_Plus)
                            P t1 t2 \\ n1 + n2
+
 *)
 
 Reserved Notation " t '\\' n " (at level 50, left associativity).
@@ -134,9 +134,8 @@ Module SimpleArith1.
                               t2 ==> t2'
                       ---------------------------                    (ST_Plus2)
                       P (C n1) t2 ==> P (C n1) t2'
+
 *)
-
-
 
 Reserved Notation " t '==>' t' " (at level 40).
 
@@ -163,7 +162,6 @@ Inductive step : tm -> tm -> Prop :=
       itself; the other two rules tell how to find it.
 
     - A term that is just a constant cannot take a step. *)
-
 
 (** Let's pause and check a couple of examples of reasoning with
     the [step] relation... *)
@@ -204,7 +202,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 End SimpleArith1.
 
 (* ########################################################### *)
@@ -214,16 +211,12 @@ End SimpleArith1.
     so it is helpful to generalize a bit and state a few definitions
     and theorems about relations in general.  (The optional chapter
     [Rel.v] develops some of these ideas in a bit more detail; it may
-    be useful if the treatment here is too dense.) *)
+    be useful if the treatment here is too dense.) 
 
-(** A _binary relation_ on a set [X] is a family of propositions
+    A _binary relation_ on a set [X] is a family of propositions
     parameterized by two elements of [X] -- i.e., a proposition about
     pairs of elements of [X].  *)
 
-(**  Should we be getting this (and deterministic, multi, etc.)
-    from the standard library?  Arguably yes, though the naming in the
-    library is awkward in places. 
- *)
 Definition relation (X: Type) := X->X->Prop.
 
 (** Our main examples of such relations in this chapter will be
@@ -261,6 +254,7 @@ Definition relation (X: Type) := X->X->Prop.
         other is [ST_Plus2], since this would imply that [x] has the
         form [P t1 t2] where [t1] has both the form [P t11 t12] and the
         form [C n]. [] *)
+
 (** Formally: *)
 
 Definition deterministic {X: Type} (R: relation X) :=
@@ -307,8 +301,7 @@ Qed.
     consecutive inversions will solve the goal.)
 
     Let's see how a proof of the previous theorem can be simplified
-    using this tactic...
-*)
+    using this tactic... *)
 
 Theorem step_deterministic_alt: deterministic step.
 Proof.
@@ -341,10 +334,9 @@ End SimpleArith2.
         here, a single "add" operation.
 
       - The _halting states_ of the machine are ones where there is no
-        more computation to be done.
-*)
-(**
-    We can then execute a term [t] as follows:
+        more computation to be done. *)
+
+(** We can then execute a term [t] as follows:
 
       - Take [t] as the starting state of the machine.
 
@@ -378,6 +370,7 @@ Inductive value : tm -> Prop :=
                               t2 ==> t2'
                          --------------------                        (ST_Plus2)
                          P v1 t2 ==> P v1 t2'
+
 *)
 (** Again, the variable names here carry important information:
     by convention, [v1] ranges only over values, while [t1] and [t2]
@@ -539,12 +532,11 @@ Proof.
 
 (** Why is this interesting?
 
-    It's interesting, because [value] is a syntactic concept -- it is
-    defined by looking at the form of a term -- while [normal_form] is
-    a semantic one -- it is defined by looking at how the term steps.
-    It is not obvious that these concepts should coincide!  Indeed, we
-    could easily have written the definitions so that they would _not_
-    coincide. *)
+    Because [value] is a syntactic concept -- it is defined by looking
+    at the form of a term -- while [normal_form] is a semantic one --
+    it is defined by looking at how the term steps.  It is not obvious
+    that these concepts should coincide!  Indeed, we could easily have
+    written the definitions so that they would _not_ coincide. *)
 
 (** **** Exercise: 3 stars, optional (value_not_same_as_normal_form)  *)
 (** We might, for example, mistakenly define [value] so that it
@@ -573,8 +565,6 @@ Inductive step : tm -> tm -> Prop :=
       P v1 t2 ==> P v1 t2'
 
   where " t '==>' t' " := (step t t').
-
-
 
 Lemma value_not_same_as_normal_form :
   exists v, value v /\ ~ normal_form step v.
@@ -610,7 +600,6 @@ Inductive step : tm -> tm -> Prop :=
 
   where " t '==>' t' " := (step t t').
 
-
 Lemma value_not_same_as_normal_form :
   exists v, value v /\ ~ normal_form step v.
 Proof.
@@ -619,7 +608,6 @@ Proof.
 (** [] *)
 End Temp2.
 
-(* ########################################################### *)
 (** **** Exercise: 3 stars, optional (value_not_same_as_normal_form')  *)
 (** Finally, we might define [value] and [step] so that there is some
     term that is not a value but that cannot take a step in the [step]
@@ -746,12 +734,14 @@ Module Temp5.
     value in a single step, even if the guard has not yet been reduced
     to a value. For example, we would like this proposition to be
     provable:
+
          tif
             (tif ttrue ttrue ttrue)
             tfalse
             tfalse
      ==>
          tfalse.
+
 *)
 
 (** Write an extra clause for the step relation that achieves this
@@ -863,13 +853,15 @@ Inductive multi {X:Type} (R: relation X) : relation X :=
        - [x = y], or 
        - [R x y], or 
        - there is some nonempty sequence [z1], [z2], ..., [zn] such that 
+
            R x z1 
            R z1 z2 
            ...  
            R zn y.
+
     Thus, if [R] describes a single-step of computation, then [z1]...[zn] 
-    is the sequence of intermediate steps of computation between [x] and [y].
-*)
+    is the sequence of intermediate steps of computation between [x] and 
+    [y]. *)
 
 (** We write [==>*] for the [multi step] relation on terms. *)
 
@@ -1093,7 +1085,8 @@ Proof.
            just equalities: *)
         rewrite nf_same_as_value. apply v_const.
     - (* P *)
-      inversion IHt1 as [t1' H1]; clear IHt1. inversion IHt2 as [t2' H2]; clear IHt2.
+      inversion IHt1 as [t1' H1]; clear IHt1.
+      inversion IHt2 as [t2' H2]; clear IHt2.
       inversion H1 as [H11 H12]; clear H1. inversion H2 as [H21 H22]; clear H2.
       rewrite nf_same_as_value in H12. rewrite nf_same_as_value in H22.
       inversion H12 as [n1]. inversion H22 as [n2].
@@ -1112,7 +1105,7 @@ Proof.
           rewrite nf_same_as_value. apply v_const.  Qed.
 
 (* ########################################################### *)
-(** ** Equivalence of Big-Step and Small-Step Reduction *)
+(** ** Equivalence of Big-Step Evaluation and Small-Step Reduction *)
 
 (** Having defined the operational semantics of our tiny programming
     language in two different ways (big-step and small-step), it makes
@@ -1125,6 +1118,7 @@ Theorem eval__multistep : forall t n,
   t \\ n -> t ==>* C n.
 
 (** The key ideas in the proof can be seen in the following picture:
+
        P t1 t2 ==>            (by ST_Plus1)
        P t1' t2 ==>           (by ST_Plus1)
        P t1'' t2 ==>          (by ST_Plus1)
@@ -1135,6 +1129,7 @@ Theorem eval__multistep : forall t n,
        ...
        P (C n1) (C n2) ==>    (by ST_PlusConstConst)
        C (n1 + n2)
+
     That is, the multistep reduction of a term of the form [P t1 t2]
     proceeds in three phases:
        - First, we use [ST_Plus1] some number of times to reduce [t1]
@@ -1176,11 +1171,12 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-(** The fact that small-step reduction implies big-step is now
-    straightforward to prove, once it is stated correctly.
+(** The fact that small-step reduction implies big-step evaluation is
+    now straightforward to prove, once it is stated correctly.
 
     The proof proceeds by induction on the multi-step reduction
     sequence that is buried in the hypothesis [normal_form_of t t']. *)
+
 (** Make sure you understand the statement before you start to
     work on the proof.  *)
 
@@ -1266,9 +1262,9 @@ End Combined.
 (** * Small-Step Imp *)
 
 (** Now for a more serious example: a small-step version of the Imp
-    operational semantics.  *)
+    operational semantics. *)
 
-(** The small-step evaluation relations for arithmetic and
+(** The small-step reduction relations for arithmetic and
     boolean expressions are straightforward extensions of the tiny
     language we've been working up to now.  To make them easier to
     read, we introduce the symbolic notations [==>a] and [==>b] for
@@ -1377,12 +1373,12 @@ Inductive astep : state -> aexp -> aexp -> Prop :=
               subcommand.
 
        - We reduce a [WHILE] command by transforming it into a
-         conditional followed by the same [WHILE].  *)
+         conditional followed by the same [WHILE]. *)
 
 (** (There are other ways of achieving the effect of the latter
    trick, but they all share the feature that the original [WHILE]
    command needs to be saved somewhere while a single copy of the loop
-   body is being evaluated.) *)
+   body is being reduced.) *)
 
 Reserved Notation " t '/' st '==>' t' '/' st' "
                   (at level 40, st at level 39, t' at level 39).
@@ -1481,16 +1477,11 @@ Inductive cstep : (com * state)  -> (com * state) -> Prop :=
       (PAR SKIP WITH SKIP END) / st ==> SKIP / st
   where " t '/' st '==>' t' '/' st' " := (cstep (t,st) (t',st')).
 
-
 Definition cmultistep := multi cstep.
 
 Notation " t '/' st '==>*' t' '/' st' " :=
    (multi cstep  (t,st) (t',st'))
    (at level 40, st at level 39, t' at level 39).
-
-
-
-
 
 (** Among the many interesting properties of this language is the fact
     that the following program can terminate with the variable [X] set
@@ -1670,5 +1661,5 @@ Proof.
 (* FILL IN HERE *) Admitted.
 (** [] *)
 
-(** $Date: 2016-03-07 12:44:57 -0500 (Mon, 07 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 

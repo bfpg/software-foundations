@@ -37,3 +37,4 @@ UseTactics.vo UseTactics.glob UseTactics.v.beautified: UseTactics.v Maps.vo Imp.
 UseAuto.vo UseAuto.glob UseAuto.v.beautified: UseAuto.v SfLib.vo Maps.vo Stlc.vo LibTactics.vo Imp.vo StlcProp.vo Smallstep.vo References.vo Sub.vo
 PE.vo PE.glob PE.v.beautified: PE.v SfLib.vo Maps.vo Imp.vo
 Postscript.vo Postscript.glob Postscript.v.beautified: Postscript.v
+Bib.vo Bib.glob Bib.v.beautified: Bib.v

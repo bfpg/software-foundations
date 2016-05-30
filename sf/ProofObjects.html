@@ -27,7 +27,7 @@
 
 <div class="paragraph"> </div>
 
- <div class="quote">"<i>Algorithms are the computational  content of proofs</i>."  &mdash;Robert Harper</div> 
+ <div class="quote">"<i>Algorithms are the computational content of proofs</i>."  &mdash;Robert Harper</div> 
 </div>
 <div class="code code-tight">
 
@@ -107,6 +107,10 @@ Suppose we introduce an alternative pronunciation of "<span class="inlinecode">:
                  propositions  ~  types
                  proofs        ~  data values
 </pre>
+    See <a href="Bib.html#Wadler 2015"><font color="gray">[Wadler 2015]</font></a> for a brief history and an up-to-date exposition.
+
+<div class="paragraph"> </div>
+
     Many useful insights follow from this connection.  To begin with,
     it gives us a natural interpretation of the type of the <span class="inlinecode"><span class="id" type="var">ev_SS</span></span>
     constructor: 
@@ -180,7 +184,7 @@ The expression <span class="inlinecode"><span class="id" type="var">ev_SS</span>
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&forall;</span><span class="id" type="var">n</span>,&nbsp;<span class="id" type="var">ev</span>&nbsp;<span class="id" type="var">n</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">ev</span>&nbsp;(<span class="id" type="var">S</span>&nbsp;(<span class="id" type="var">S</span>&nbsp;<span class="id" type="var">n</span>)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&forall;</span><span class="id" type="var">n</span>,&nbsp;<span class="id" type="var">ev</span>&nbsp;<span class="id" type="var">n</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">ev</span>&nbsp;(<span class="id" type="var">S</span>&nbsp;(<span class="id" type="var">S</span>&nbsp;<span class="id" type="var">n</span>)),
 <div class="paragraph"> </div>
 
 </div>
@@ -190,10 +194,10 @@ The expression <span class="inlinecode"><span class="id" type="var">ev_SS</span>
     with elements of that type. 
 <div class="paragraph"> </div>
 
- You may recall (as seen in the <span class="inlinecode"><span class="id" type="var">Logic</span></span> chapter) that we can
+ You may recall (as seen in the <a href="Logic.html"><font color="gray">Logic</font></a> chapter) that we can
     use function application syntax to instantiate universally
     quantified variables in lemmas, as well as to supply evidence for
-    assumptions that these lemmas impose. For instance, 
+    assumptions that these lemmas impose. For instance: 
 </div>
 <div class="code code-tight">
 
@@ -219,7 +223,7 @@ We can now see that this feature is a trivial consequence of the
 </div>
 
 <div class="doc">
-<a name="lab240"></a><h1 class="section">Proof Scripts</h1>
+<a name="lab243"></a><h1 class="section">Proof Scripts</h1>
 
 <div class="paragraph"> </div>
 
@@ -296,7 +300,7 @@ All these different ways of building the proof lead to exactly the
 </div>
 
 <div class="doc">
-<a name="lab241"></a><h4 class="section">Exercise: 1 star (eight_is_even)</h4>
+<a name="lab244"></a><h4 class="section">Exercise: 1 star (eight_is_even)</h4>
  Give a tactic proof and a proof object showing that <span class="inlinecode"><span class="id" type="var">ev</span></span> <span class="inlinecode">8</span>. 
 </div>
 <div class="code code-tight">
@@ -312,7 +316,7 @@ All these different ways of building the proof lead to exactly the
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -320,7 +324,7 @@ All these different ways of building the proof lead to exactly the
 </div>
 
 <div class="doc">
-<a name="lab242"></a><h1 class="section">Quantifiers, Implications, Functions</h1>
+<a name="lab245"></a><h1 class="section">Quantifiers, Implications, Functions</h1>
 
 <div class="paragraph"> </div>
 
@@ -381,8 +385,7 @@ What is the proof object corresponding to <span class="inlinecode"><span class="
 <div class="doc">
 Recall that <span class="inlinecode"><span class="id" type="keyword">fun</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode"><span class="id" type="var">blah</span></span> means "the function that, given <span class="inlinecode"><span class="id" type="var">n</span></span>,
     yields <span class="inlinecode"><span class="id" type="var">blah</span></span>," and that Coq treats <span class="inlinecode">4</span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">n</span></span> and <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode">(<span class="id" type="var">S</span></span> <span class="inlinecode">(<span class="id" type="var">S</span></span> <span class="inlinecode">(<span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">n</span>)))</span>
-    as synonyms. Another equivalent way to write this definition is:
-    
+    as synonyms. Another equivalent way to write this definition is: 
 </div>
 <div class="code code-tight">
 
@@ -465,7 +468,7 @@ In general, "<span class="inlinecode"><span class="id" type="var">P</span></span
 </div>
 
 <div class="doc">
-<a name="lab243"></a><h1 class="section">Connectives as Inductive Types</h1>
+<a name="lab246"></a><h1 class="section">Connectives as Inductive Types</h1>
 
 <div class="paragraph"> </div>
 
@@ -484,7 +487,7 @@ In general, "<span class="inlinecode"><span class="id" type="var">P</span></span
 </div>
 
 <div class="doc">
-<a name="lab244"></a><h2 class="section">Conjunction</h2>
+<a name="lab247"></a><h2 class="section">Conjunction</h2>
 
 
 <div class="paragraph"> </div>
@@ -511,7 +514,7 @@ In general, "<span class="inlinecode"><span class="id" type="var">P</span></span
 
 <div class="doc">
 Notice the similarity with the definition of the <span class="inlinecode"><span class="id" type="var">prod</span></span> type,
-    given in chapter <span class="inlinecode"><span class="id" type="var">Poly</span></span>; the only difference is that <span class="inlinecode"><span class="id" type="var">prod</span></span> takes
+    given in chapter <a href="Poly.html"><font color="gray">Poly</font></a>; the only difference is that <span class="inlinecode"><span class="id" type="var">prod</span></span> takes
     <span class="inlinecode"><span class="id" type="keyword">Type</span></span> arguments, whereas <span class="inlinecode"><span class="id" type="var">and</span></span> takes <span class="inlinecode"><span class="id" type="keyword">Prop</span></span> arguments. 
 </div>
 <div class="code code-tight">
@@ -571,7 +574,7 @@ This shows why the inductive definition of <span class="inlinecode"><span class=
 </div>
 
 <div class="doc">
-<a name="lab245"></a><h4 class="section">Exercise: 2 stars, optional (conj_fact)</h4>
+<a name="lab248"></a><h4 class="section">Exercise: 2 stars, optional (conj_fact)</h4>
  Construct a proof object demonstrating the following proposition. 
 </div>
 <div class="code code-tight">
@@ -582,10 +585,10 @@ This shows why the inductive definition of <span class="inlinecode"><span class=
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab246"></a><h2 class="section">Disjunction</h2>
+<a name="lab249"></a><h2 class="section">Disjunction</h2>
 
 
 <div class="paragraph"> </div>
@@ -620,7 +623,7 @@ This declaration explains the behavior of the <span class="inlinecode"><span cla
     involving <span class="inlinecode"><span class="id" type="var">or</span></span>, without resorting to tactics. 
 <div class="paragraph"> </div>
 
-<a name="lab247"></a><h4 class="section">Exercise: 2 stars, optional (or_commut'')</h4>
+<a name="lab250"></a><h4 class="section">Exercise: 2 stars, optional (or_commut'')</h4>
  Try to write down an explicit proof object for <span class="inlinecode"><span class="id" type="var">or_commut</span></span> (without
     using <span class="inlinecode"><span class="id" type="keyword">Print</span></span> to peek at the ones we already defined!). 
 </div>
@@ -632,10 +635,10 @@ This declaration explains the behavior of the <span class="inlinecode"><span cla
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab248"></a><h2 class="section">Existential Quantification</h2>
+<a name="lab251"></a><h2 class="section">Existential Quantification</h2>
 
 
 <div class="paragraph"> </div>
@@ -695,7 +698,7 @@ Here's how to define an explicit proof object involving <span class="inlinecode"
 </div>
 
 <div class="doc">
-<a name="lab249"></a><h4 class="section">Exercise: 2 stars, optional (ex_ev_Sn)</h4>
+<a name="lab252"></a><h4 class="section">Exercise: 2 stars, optional (ex_ev_Sn)</h4>
  Complete the definition of the following proof object: 
 </div>
 <div class="code code-tight">
@@ -706,10 +709,10 @@ Here's how to define an explicit proof object involving <span class="inlinecode"
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab250"></a><h2 class="section"><span class="inlinecode"><span class="id" type="var">True</span></span> and <span class="inlinecode"><span class="id" type="var">False</span></span></h2>
+<a name="lab253"></a><h2 class="section"><span class="inlinecode"><span class="id" type="var">True</span></span> and <span class="inlinecode"><span class="id" type="var">False</span></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -753,7 +756,7 @@ That is, <span class="inlinecode"><span class="id" type="var">False</span></span
 </div>
 
 <div class="doc">
-<a name="lab251"></a><h1 class="section">Programming with Tactics</h1>
+<a name="lab254"></a><h1 class="section">Programming with Tactics</h1>
 
 <div class="paragraph"> </div>
 
@@ -808,7 +811,7 @@ Notice that we terminate the <span class="inlinecode"><span class="id" type="key
 </div>
 
 <div class="doc">
-<a name="lab252"></a><h1 class="section">Equality</h1>
+<a name="lab255"></a><h1 class="section">Equality</h1>
 
 <div class="paragraph"> </div>
 
@@ -843,7 +846,7 @@ The way to think about this definition is that, given a set <span class="inlinec
     <span class="inlinecode"><span class="id" type="var">X</span></span> yields evidence that <span class="inlinecode"><span class="id" type="var">x</span></span> is equal to <span class="inlinecode"><span class="id" type="var">x</span></span>. 
 <div class="paragraph"> </div>
 
-<a name="lab253"></a><h4 class="section">Exercise: 2 stars (leibniz_equality)</h4>
+<a name="lab256"></a><h4 class="section">Exercise: 2 stars (leibniz_equality)</h4>
  The inductive definition of equality corresponds to <i>Leibniz
     equality</i>: what we mean when we say "<span class="inlinecode"><span class="id" type="var">x</span></span> and <span class="inlinecode"><span class="id" type="var">y</span></span> are equal" is
     that every property on <span class="inlinecode"><span class="id" type="var">P</span></span> that is true of <span class="inlinecode"><span class="id" type="var">x</span></span> is also true of
@@ -859,7 +862,7 @@ The way to think about this definition is that, given a set <span class="inlinec
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  We can use <span class="inlinecode"><span class="id" type="var">eq_refl</span></span> to construct evidence that, for example, <span class="inlinecode">2</span> <span class="inlinecode">=</span>
@@ -914,7 +917,7 @@ The <span class="inlinecode"><span class="id" type="tactic">reflexivity</span></
 </div>
 
 <div class="doc">
-<a name="lab254"></a><h2 class="section">Inversion, Again</h2>
+<a name="lab257"></a><h2 class="section">Inversion, Again</h2>
 
 <div class="paragraph"> </div>
 
@@ -1004,7 +1007,7 @@ The <span class="inlinecode"><span class="id" type="tactic">reflexivity</span></
    Now, though, the form of the <span class="inlinecode"><span class="id" type="var">refl_equal</span></span> constructor does give us
    some extra information: it tells us that the two arguments to <span class="inlinecode"><span class="id" type="var">eq</span></span>
    must be the same!  The <span class="inlinecode"><span class="id" type="tactic">inversion</span></span> tactic adds this fact to the
-   context.  
+   context. 
 <div class="paragraph"> </div>
 
   

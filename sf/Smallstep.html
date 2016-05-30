@@ -34,8 +34,6 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.omega.Omega.html#"><span class="id" type="library">Coq.omega.Omega</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Lists.List.html#"><span class="id" type="library">Coq.Lists.List</span></a>.<br/>
 <span class="id" type="keyword">Import</span> <span class="id" type="var">ListNotations</span>.<br/>
-
-<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="SfLib.html#"><span class="id" type="library">SfLib</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
@@ -44,11 +42,11 @@
 </div>
 
 <div class="doc">
-The evaluators we have seen so far (e.g., the ones for
-    <span class="inlinecode"><span class="id" type="var">aexp</span></span>s, <span class="inlinecode"><span class="id" type="var">bexp</span></span>s, and commands) have been formulated in a
-    "big-step" style: they specify how a given expression can be
-    evaluated to its final value (or a command plus a store to a final
-    store) "all in one big step."
+The evaluators we have seen so far (for <span class="inlinecode"><span class="id" type="var">aexp</span></span>s, <span class="inlinecode"><span class="id" type="var">bexp</span></span>s,
+    commands, ...) have been formulated in a "big-step" style: they
+    specify how a given expression can be evaluated to its final
+    value (or a command plus a store to a final store) "all in one big
+    step."
 
 <div class="paragraph"> </div>
 
@@ -123,7 +121,7 @@ The evaluators we have seen so far (e.g., the ones for
 </div>
 
 <div class="doc">
-<a name="lab482"></a><h1 class="section">A Toy Language</h1>
+<a name="lab484"></a><h1 class="section">A Toy Language</h1>
 
 <div class="paragraph"> </div>
 
@@ -342,7 +340,7 @@ Things to notice:
 </div>
 
 <div class="doc">
-<a name="lab483"></a><h4 class="section">Exercise: 1 star (test_step_2)</h4>
+<a name="lab485"></a><h4 class="section">Exercise: 1 star (test_step_2)</h4>
  Right-hand sides of sums can take a step only when the
     left-hand side is finished: if <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> can take a step to <span class="inlinecode"><span class="id" type="var">t<sub>2</sub>'</span></span>,
     then <span class="inlinecode"><span class="id" type="var">P</span></span> <span class="inlinecode">(<span class="id" type="var">C</span></span> <span class="inlinecode"><span class="id" type="var">n</span>)</span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> steps to <span class="inlinecode"><span class="id" type="var">P</span></span> <span class="inlinecode">(<span class="id" type="var">C</span></span> <span class="inlinecode"><span class="id" type="var">n</span>)</span>
@@ -368,7 +366,7 @@ Things to notice:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -379,7 +377,7 @@ Things to notice:
 </div>
 
 <div class="doc">
-<a name="lab484"></a><h1 class="section">Relations</h1>
+<a name="lab486"></a><h1 class="section">Relations</h1>
 
 <div class="paragraph"> </div>
 
@@ -388,19 +386,16 @@ Things to notice:
     and theorems about relations in general.  (The optional chapter
     <span class="inlinecode"><span class="id" type="var">Rel.v</span></span> develops some of these ideas in a bit more detail; it may
     be useful if the treatment here is too dense.) 
+
 <div class="paragraph"> </div>
 
- A <i>binary relation</i> on a set <span class="inlinecode"><span class="id" type="var">X</span></span> is a family of propositions
+    A <i>binary relation</i> on a set <span class="inlinecode"><span class="id" type="var">X</span></span> is a family of propositions
     parameterized by two elements of <span class="inlinecode"><span class="id" type="var">X</span></span> &mdash; i.e., a proposition about
     pairs of elements of <span class="inlinecode"><span class="id" type="var">X</span></span>.  
-<div class="paragraph"> </div>
-
- <div style="background-color:lightgray; color:red; margin:10px; padding:10px; "> Should we be getting this (and deterministic, multi, etc.)
-    from the standard library?  Arguably yes, though the naming in the
-    library is awkward in places. 
-</div> 
 </div>
 <div class="code code-tight">
+
+<br/>
 <span class="id" type="keyword">Definition</span> <a name="relation"><span class="id" type="definition">relation</span></a> (<span class="id" type="var">X</span>: <span class="id" type="keyword">Type</span>) := <a class="idref" href="Smallstep.html#X"><span class="id" type="variable">X</span></a><span style="font-family: arial;">&rarr;</span><a class="idref" href="Smallstep.html#X"><span class="id" type="variable">X</span></a><span style="font-family: arial;">&rarr;</span><span class="id" type="keyword">Prop</span>.<br/>
 
 <br/>
@@ -460,9 +455,12 @@ Our main examples of such relations in this chapter will be
 <li> Similarly, it cannot happen that one is <span class="inlinecode"><span class="id" type="var">ST_Plus1</span></span> and the
         other is <span class="inlinecode"><span class="id" type="var">ST_Plus2</span></span>, since this would imply that <span class="inlinecode"><span class="id" type="var">x</span></span> has the
         form <span class="inlinecode"><span class="id" type="var">P</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> where <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> has both the form <span class="inlinecode"><span class="id" type="var">P</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span></span> and the
-        form <span class="inlinecode"><span class="id" type="var">C</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span>. <font size=-2>&#9744;</font> 
+        form <span class="inlinecode"><span class="id" type="var">C</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span>. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
+
+<div class="paragraph"> </div>
+
  Formally: 
 </div>
 <div class="code code-tight">
@@ -522,8 +520,7 @@ There is some annoying repetition in this proof.  Each use of
 <div class="paragraph"> </div>
 
     Let's see how a proof of the previous theorem can be simplified
-    using this tactic...
-
+    using this tactic... 
 </div>
 <div class="code code-tight">
 
@@ -548,7 +545,7 @@ There is some annoying repetition in this proof.  Each use of
 </div>
 
 <div class="doc">
-<a name="lab485"></a><h2 class="section">Values</h2>
+<a name="lab487"></a><h2 class="section">Values</h2>
 
 <div class="paragraph"> </div>
 
@@ -577,14 +574,13 @@ There is some annoying repetition in this proof.  Each use of
 
 </li>
 <li> The <i>halting states</i> of the machine are ones where there is no
-        more computation to be done.
-
+        more computation to be done. 
 </li>
 </ul>
 
 <div class="paragraph"> </div>
 
-    We can then execute a term <span class="inlinecode"><span class="id" type="var">t</span></span> as follows:
+ We can then execute a term <span class="inlinecode"><span class="id" type="var">t</span></span> as follows:
 
 <div class="paragraph"> </div>
 
@@ -707,7 +703,7 @@ Having introduced the idea of values, we can use it in the
 </div>
 
 <div class="doc">
-<a name="lab486"></a><h4 class="section">Exercise: 3 stars, recommended (redo_determinism)</h4>
+<a name="lab488"></a><h4 class="section">Exercise: 3 stars, recommended (redo_determinism)</h4>
  As a sanity check on this change, let's re-verify determinism.
 
 <div class="paragraph"> </div>
@@ -744,7 +740,7 @@ Having introduced the idea of values, we can use it in the
 
 </li>
 <li> The cases when both derivations end with <span class="inlinecode"><span class="id" type="var">ST_Plus1</span></span> or
-      <span class="inlinecode"><span class="id" type="var">ST_Plus2</span></span> follow by the induction hypothesis. <font size=-2>&#9744;</font> 
+      <span class="inlinecode"><span class="id" type="var">ST_Plus2</span></span> follow by the induction hypothesis. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
@@ -765,7 +761,7 @@ Having introduced the idea of values, we can use it in the
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -773,7 +769,7 @@ Having introduced the idea of values, we can use it in the
 </div>
 
 <div class="doc">
-<a name="lab487"></a><h2 class="section">Strong Progress and Normal Forms</h2>
+<a name="lab489"></a><h2 class="section">Strong Progress and Normal Forms</h2>
 
 <div class="paragraph"> </div>
 
@@ -822,7 +818,7 @@ Having introduced the idea of values, we can use it in the
 
 
 </li>
-<li> If <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> can take a step, then so can <span class="inlinecode"><span class="id" type="var">t</span></span>, by <span class="inlinecode"><span class="id" type="var">ST_Plus1</span></span>.  <font size=-2>&#9744;</font> 
+<li> If <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> can take a step, then so can <span class="inlinecode"><span class="id" type="var">t</span></span>, by <span class="inlinecode"><span class="id" type="var">ST_Plus1</span></span>.  <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 
 </li>
 </ul>
@@ -944,15 +940,14 @@ Why is this interesting?
 
 <div class="paragraph"> </div>
 
-    It's interesting, because <span class="inlinecode"><span class="id" type="var">value</span></span> is a syntactic concept &mdash; it is
-    defined by looking at the form of a term &mdash; while <span class="inlinecode"><span class="id" type="var">normal_form</span></span> is
-    a semantic one &mdash; it is defined by looking at how the term steps.
-    It is not obvious that these concepts should coincide!  Indeed, we
-    could easily have written the definitions so that they would <i>not</i>
-    coincide. 
+    Because <span class="inlinecode"><span class="id" type="var">value</span></span> is a syntactic concept &mdash; it is defined by looking
+    at the form of a term &mdash; while <span class="inlinecode"><span class="id" type="var">normal_form</span></span> is a semantic one &mdash;
+    it is defined by looking at how the term steps.  It is not obvious
+    that these concepts should coincide!  Indeed, we could easily have
+    written the definitions so that they would <i>not</i> coincide. 
 <div class="paragraph"> </div>
 
-<a name="lab488"></a><h4 class="section">Exercise: 3 stars, optional (value_not_same_as_normal_form)</h4>
+<a name="lab490"></a><h4 class="section">Exercise: 3 stars, optional (value_not_same_as_normal_form)</h4>
  We might, for example, mistakenly define <span class="inlinecode"><span class="id" type="var">value</span></span> so that it
     includes some terms that are not finished reducing.  (Even if you
     don't work this exercise and the following ones in Coq, make sure
@@ -994,7 +989,7 @@ Why is this interesting?
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 <span class="id" type="keyword">End</span> <a class="idref" href="Smallstep.html#Temp1"><span class="id" type="module">Temp1</span></a>.<br/>
@@ -1003,7 +998,7 @@ Why is this interesting?
 </div>
 
 <div class="doc">
-<a name="lab489"></a><h4 class="section">Exercise: 2 stars, optional (value_not_same_as_normal_form)</h4>
+<a name="lab491"></a><h4 class="section">Exercise: 2 stars, optional (value_not_same_as_normal_form)</h4>
  Alternatively, we might mistakenly define <span class="inlinecode"><span class="id" type="var">step</span></span> so that it
     permits something designated as a value to reduce further. 
 </div>
@@ -1048,15 +1043,16 @@ Why is this interesting?
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
+<span class="id" type="keyword">End</span> <a class="idref" href="Smallstep.html#Temp2"><span class="id" type="module">Temp2</span></a>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab490"></a><h4 class="section">Exercise: 3 stars, optional (value_not_same_as_normal_form')</h4>
+<a name="lab492"></a><h4 class="section">Exercise: 3 stars, optional (value_not_same_as_normal_form')</h4>
  Finally, we might define <span class="inlinecode"><span class="id" type="var">value</span></span> and <span class="inlinecode"><span class="id" type="var">step</span></span> so that there is some
     term that is not a value but that cannot take a step in the <span class="inlinecode"><span class="id" type="var">step</span></span>
     relation.  Such terms are said to be <i>stuck</i>. In this case this is
@@ -1102,7 +1098,7 @@ Why is this interesting?
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1113,7 +1109,7 @@ Why is this interesting?
 </div>
 
 <div class="doc">
-<a name="lab491"></a><h3 class="section">Additional Exercises</h3>
+<a name="lab493"></a><h3 class="section">Additional Exercises</h3>
 
 </div>
 <div class="code code-space">
@@ -1161,7 +1157,7 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<a name="lab492"></a><h4 class="section">Exercise: 1 star (smallstep_bools)</h4>
+<a name="lab494"></a><h4 class="section">Exercise: 1 star (smallstep_bools)</h4>
  Which of the following propositions are provable?  (This is just a
     thought exercise, but for an extra challenge feel free to prove
     your answers in Coq.) 
@@ -1204,10 +1200,10 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab493"></a><h4 class="section">Exercise: 3 stars, optional (progress_bool)</h4>
+<a name="lab495"></a><h4 class="section">Exercise: 3 stars, optional (progress_bool)</h4>
  Just as we proved a progress theorem for plus expressions, we can
     do so for boolean expressions, as well. 
 </div>
@@ -1221,10 +1217,10 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab494"></a><h4 class="section">Exercise: 2 stars, optional (step_deterministic)</h4>
+<a name="lab496"></a><h4 class="section">Exercise: 2 stars, optional (step_deterministic)</h4>
 
 </div>
 <div class="code code-space">
@@ -1235,7 +1231,7 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1246,7 +1242,7 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<a name="lab495"></a><h4 class="section">Exercise: 2 stars (smallstep_bool_shortcut)</h4>
+<a name="lab497"></a><h4 class="section">Exercise: 2 stars (smallstep_bool_shortcut)</h4>
  Suppose we want to add a "short circuit" to the step relation for
     boolean expressions, so that it can recognize when the <span class="inlinecode"><span class="id" type="keyword">then</span></span> and
     <span class="inlinecode"><span class="id" type="keyword">else</span></span> branches of a conditional are the same value (either
@@ -1308,10 +1304,10 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab496"></a><h4 class="section">Exercise: 3 stars, optional (properties_of_altered_step)</h4>
+<a name="lab498"></a><h4 class="section">Exercise: 3 stars, optional (properties_of_altered_step)</h4>
  It can be shown that the determinism and strong progress theorems
     for the step relation in the lecture notes also hold for the
     definition of step given above.  After we add the clause
@@ -1375,7 +1371,7 @@ Here is another very simple language whose terms, instead of being
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1387,7 +1383,7 @@ Here is another very simple language whose terms, instead of being
 </div>
 
 <div class="doc">
-<a name="lab497"></a><h1 class="section">Multi-Step Reduction</h1>
+<a name="lab499"></a><h1 class="section">Multi-Step Reduction</h1>
 
 <div class="paragraph"> </div>
 
@@ -1449,7 +1445,7 @@ Since we'll want to reuse the idea of multi-step reduction many
 </div>
 
 <div class="doc">
-(In the <span class="inlinecode"><span class="id" type="var">Rel</span></span> chapter and the Coq standard library, this relation
+(In the <a href="Rel.html"><font color="gray">Rel</font></a> chapter and the Coq standard library, this relation
     is called <span class="inlinecode"><span class="id" type="var">clos_refl_trans_1n</span></span>.  We give it a shorter name here
     for the sake of readability.)
 
@@ -1483,8 +1479,8 @@ Since we'll want to reuse the idea of multi-step reduction many
 </li>
 </ul>
     Thus, if <span class="inlinecode"><span class="id" type="var">R</span></span> describes a single-step of computation, then <span class="inlinecode"><span class="id" type="var">z<sub>1</sub></span></span>...<span class="inlinecode"><span class="id" type="var">zn</span></span> 
-    is the sequence of intermediate steps of computation between <span class="inlinecode"><span class="id" type="var">x</span></span> and <span class="inlinecode"><span class="id" type="var">y</span></span>.
-
+    is the sequence of intermediate steps of computation between <span class="inlinecode"><span class="id" type="var">x</span></span> and 
+    <span class="inlinecode"><span class="id" type="var">y</span></span>. 
 <div class="paragraph"> </div>
 
  We write <span class="inlinecode"><span style="font-family: arial;">&rArr;*</span></span> for the <span class="inlinecode"><span class="id" type="var">multi</span></span> <span class="inlinecode"><span class="id" type="var">step</span></span> relation on terms. 
@@ -1564,7 +1560,7 @@ In particular, for the <span class="inlinecode"><span class="id" type="var">mult
 </div>
 
 <div class="doc">
-<a name="lab498"></a><h2 class="section">Examples</h2>
+<a name="lab500"></a><h2 class="section">Examples</h2>
 
 <div class="paragraph"> </div>
 
@@ -1621,7 +1617,7 @@ Here's an alternate proof of the same fact that uses <span class="inlinecode"><s
 </div>
 
 <div class="doc">
-<a name="lab499"></a><h4 class="section">Exercise: 1 star, optional (test_multistep_2)</h4>
+<a name="lab501"></a><h4 class="section">Exercise: 1 star, optional (test_multistep_2)</h4>
 
 </div>
 <div class="code code-space">
@@ -1632,10 +1628,10 @@ Here's an alternate proof of the same fact that uses <span class="inlinecode"><s
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab500"></a><h4 class="section">Exercise: 1 star, optional (test_multistep_3)</h4>
+<a name="lab502"></a><h4 class="section">Exercise: 1 star, optional (test_multistep_3)</h4>
 
 </div>
 <div class="code code-space">
@@ -1648,10 +1644,10 @@ Here's an alternate proof of the same fact that uses <span class="inlinecode"><s
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab501"></a><h4 class="section">Exercise: 2 stars (test_multistep_4)</h4>
+<a name="lab503"></a><h4 class="section">Exercise: 2 stars (test_multistep_4)</h4>
 
 </div>
 <div class="code code-space">
@@ -1670,7 +1666,7 @@ Here's an alternate proof of the same fact that uses <span class="inlinecode"><s
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1678,7 +1674,7 @@ Here's an alternate proof of the same fact that uses <span class="inlinecode"><s
 </div>
 
 <div class="doc">
-<a name="lab502"></a><h2 class="section">Normal Forms Again</h2>
+<a name="lab504"></a><h2 class="section">Normal Forms Again</h2>
 
 <div class="paragraph"> </div>
 
@@ -1706,7 +1702,7 @@ We have already seen that, for our language, single-step reduction is
     normal form of <span class="inlinecode"><span class="id" type="var">t</span></span>." 
 <div class="paragraph"> </div>
 
-<a name="lab503"></a><h4 class="section">Exercise: 3 stars, optional (normal_forms_unique)</h4>
+<a name="lab505"></a><h4 class="section">Exercise: 3 stars, optional (normal_forms_unique)</h4>
 
 </div>
 <div class="code code-space">
@@ -1723,7 +1719,7 @@ We have already seen that, for our language, single-step reduction is
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Indeed, something stronger is true for this language (though not
@@ -1773,7 +1769,7 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
 </div>
 
 <div class="doc">
-<a name="lab504"></a><h4 class="section">Exercise: 2 stars (multistep_congr_2)</h4>
+<a name="lab506"></a><h4 class="section">Exercise: 2 stars (multistep_congr_2)</h4>
 
 </div>
 <div class="code code-space">
@@ -1786,7 +1782,7 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  With these lemmas in hand, the main proof is a straightforward
@@ -1827,7 +1823,7 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
 <div class="paragraph"> </div>
 
       It is clear that our choice of <span class="inlinecode"><span class="id" type="var">t'</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">C</span></span> <span class="inlinecode">(<span class="id" type="var">n<sub>1</sub></span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">n<sub>2</sub></span>)</span> is a value,
-      which is in turn a normal form. <font size=-2>&#9744;</font> 
+      which is in turn a normal form. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
@@ -1851,7 +1847,8 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;just&nbsp;equalities:&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Smallstep.html#nf_same_as_value"><span class="id" type="lemma">nf_same_as_value</span></a>. <span class="id" type="tactic">apply</span> <a class="idref" href="Smallstep.html#v_const"><span class="id" type="constructor">v_const</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;- <span class="comment">(*&nbsp;P&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">IHt1</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">H<sub>1</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">IHt1</span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">IHt2</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>2</sub>'</span> <span class="id" type="var">H<sub>2</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">IHt2</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">IHt1</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">H<sub>1</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">IHt1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">IHt2</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>2</sub>'</span> <span class="id" type="var">H<sub>2</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">IHt2</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>1</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">H<sub>11</sub></span> <span class="id" type="var">H<sub>12</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>1</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>2</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">H<sub>21</sub></span> <span class="id" type="var">H<sub>22</sub></span>]; <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>2</sub></span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Smallstep.html#nf_same_as_value"><span class="id" type="lemma">nf_same_as_value</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>12</sub></span>. <span class="id" type="tactic">rewrite</span> <a class="idref" href="Smallstep.html#nf_same_as_value"><span class="id" type="lemma">nf_same_as_value</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>22</sub></span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>12</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">n<sub>1</sub></span>]. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>22</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">n<sub>2</sub></span>].<br/>
@@ -1874,7 +1871,7 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
 </div>
 
 <div class="doc">
-<a name="lab505"></a><h2 class="section">Equivalence of Big-Step and Small-Step Reduction</h2>
+<a name="lab507"></a><h2 class="section">Equivalence of Big-Step Evaluation and Small-Step Reduction</h2>
 
 <div class="paragraph"> </div>
 
@@ -1885,7 +1882,7 @@ To prove that <span class="inlinecode"><span class="id" type="var">step</span></
     details are left as an exercise. 
 <div class="paragraph"> </div>
 
-<a name="lab506"></a><h4 class="section">Exercise: 3 stars (eval__multistep)</h4>
+<a name="lab508"></a><h4 class="section">Exercise: 3 stars (eval__multistep)</h4>
 
 </div>
 <div class="code code-space">
@@ -1951,16 +1948,16 @@ The key ideas in the proof can be seen in the following picture:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab507"></a><h4 class="section">Exercise: 3 stars, advanced (eval__multistep_inf)</h4>
+<a name="lab509"></a><h4 class="section">Exercise: 3 stars, advanced (eval__multistep_inf)</h4>
  Write a detailed informal version of the proof of <span class="inlinecode"><span class="id" type="var">eval__multistep</span></span>.
 
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
-<font size=-2>&#9744;</font>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
 
 <div class="paragraph"> </div>
 
@@ -1968,7 +1965,7 @@ The key ideas in the proof can be seen in the following picture:
     relation between single-step reduction and big-step evaluation. 
 <div class="paragraph"> </div>
 
-<a name="lab508"></a><h4 class="section">Exercise: 3 stars (step__eval)</h4>
+<a name="lab510"></a><h4 class="section">Exercise: 3 stars (step__eval)</h4>
 
 </div>
 <div class="code code-space">
@@ -1982,20 +1979,23 @@ The key ideas in the proof can be seen in the following picture:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
- The fact that small-step reduction implies big-step is now
-    straightforward to prove, once it is stated correctly.
+ The fact that small-step reduction implies big-step evaluation is
+    now straightforward to prove, once it is stated correctly.
 
 <div class="paragraph"> </div>
 
     The proof proceeds by induction on the multi-step reduction
-    sequence that is buried in the hypothesis <span class="inlinecode"><span class="id" type="var">normal_form_of</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>.  Make sure you understand the statement before you start to
+    sequence that is buried in the hypothesis <span class="inlinecode"><span class="id" type="var">normal_form_of</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>. 
+<div class="paragraph"> </div>
+
+ Make sure you understand the statement before you start to
     work on the proof.  
 <div class="paragraph"> </div>
 
-<a name="lab509"></a><h4 class="section">Exercise: 3 stars (multistep__eval)</h4>
+<a name="lab511"></a><h4 class="section">Exercise: 3 stars (multistep__eval)</h4>
 
 </div>
 <div class="code code-space">
@@ -2006,7 +2006,7 @@ The key ideas in the proof can be seen in the following picture:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2014,11 +2014,11 @@ The key ideas in the proof can be seen in the following picture:
 </div>
 
 <div class="doc">
-<a name="lab510"></a><h2 class="section">Additional Exercises</h2>
+<a name="lab512"></a><h2 class="section">Additional Exercises</h2>
 
 <div class="paragraph"> </div>
 
-<a name="lab511"></a><h4 class="section">Exercise: 3 stars, optional (interp_tm)</h4>
+<a name="lab513"></a><h4 class="section">Exercise: 3 stars, optional (interp_tm)</h4>
  Remember that we also defined big-step evaluation of terms as a
     function <span class="inlinecode"><span class="id" type="var">evalF</span></span>.  Prove that it is equivalent to the existing
     semantics.  (Hint: we just proved that <span class="inlinecode"><span class="id" type="var">eval</span></span> and <span class="inlinecode"><span class="id" type="var">multistep</span></span> are
@@ -2035,10 +2035,10 @@ The key ideas in the proof can be seen in the following picture:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab512"></a><h4 class="section">Exercise: 4 stars (combined_properties)</h4>
+<a name="lab514"></a><h4 class="section">Exercise: 4 stars (combined_properties)</h4>
  We've considered arithmetic and conditional expressions
     separately.  This exercise explores how the two interact. 
 </div>
@@ -2114,7 +2114,7 @@ Earlier, we separately proved for both plus- and if-expressions...
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2125,15 +2125,15 @@ Earlier, we separately proved for both plus- and if-expressions...
 </div>
 
 <div class="doc">
-<a name="lab513"></a><h1 class="section">Small-Step Imp</h1>
+<a name="lab515"></a><h1 class="section">Small-Step Imp</h1>
 
 <div class="paragraph"> </div>
 
  Now for a more serious example: a small-step version of the Imp
-    operational semantics.  
+    operational semantics. 
 <div class="paragraph"> </div>
 
- The small-step evaluation relations for arithmetic and
+ The small-step reduction relations for arithmetic and
     boolean expressions are straightforward extensions of the tiny
     language we've been working up to now.  To make them easier to
     read, we introduce the symbolic notations <span class="inlinecode"><span style="font-family: arial;">&rArr;</span><span class="id" type="var"><sub>a</sub></span></span> and <span class="inlinecode"><span style="font-family: arial;">&rArr;</span><span class="id" type="var"><sub>b</sub></span></span> for
@@ -2276,7 +2276,7 @@ The semantics of commands is the interesting part.  We need two
 
 </li>
 <li> We reduce a <span class="inlinecode"><span class="id" type="var">WHILE</span></span> command by transforming it into a
-         conditional followed by the same <span class="inlinecode"><span class="id" type="var">WHILE</span></span>.  
+         conditional followed by the same <span class="inlinecode"><span class="id" type="var">WHILE</span></span>. 
 </li>
 </ul>
 
@@ -2285,7 +2285,7 @@ The semantics of commands is the interesting part.  We need two
  (There are other ways of achieving the effect of the latter
    trick, but they all share the feature that the original <span class="inlinecode"><span class="id" type="var">WHILE</span></span>
    command needs to be saved somewhere while a single copy of the loop
-   body is being evaluated.) 
+   body is being reduced.) 
 </div>
 <div class="code code-tight">
 
@@ -2323,7 +2323,7 @@ The semantics of commands is the interesting part.  We need two
 </div>
 
 <div class="doc">
-<a name="lab514"></a><h1 class="section">Concurrent Imp</h1>
+<a name="lab516"></a><h1 class="section">Concurrent Imp</h1>
 
 <div class="paragraph"> </div>
 
@@ -2523,7 +2523,7 @@ It can also terminate with <span class="inlinecode"><span class="id" type="var">
 More generally... 
 <div class="paragraph"> </div>
 
-<a name="lab515"></a><h4 class="section">Exercise: 3 stars, optional</h4>
+<a name="lab517"></a><h4 class="section">Exercise: 3 stars, optional</h4>
 
 </div>
 <div class="code code-space">
@@ -2535,10 +2535,10 @@ More generally...
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab516"></a><h4 class="section">Exercise: 3 stars, optional</h4>
+<a name="lab518"></a><h4 class="section">Exercise: 3 stars, optional</h4>
 
 </div>
 <div class="code code-space">
@@ -2551,7 +2551,7 @@ More generally...
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  ... the above loop can exit with <span class="inlinecode"><span class="id" type="var">X</span></span> having any value
@@ -2598,12 +2598,12 @@ More generally...
 </div>
 
 <div class="doc">
-<a name="lab517"></a><h1 class="section">A Small-Step Stack Machine</h1>
+<a name="lab519"></a><h1 class="section">A Small-Step Stack Machine</h1>
 
 <div class="paragraph"> </div>
 
  Our last example is a small-step semantics for the stack machine
-    example from the <span class="inlinecode"><span class="id" type="var">Imp</span></span> chapter. 
+    example from the <a href="Imp.html"><font color="gray">Imp</font></a> chapter. 
 </div>
 <div class="code code-tight">
 
@@ -2642,9 +2642,9 @@ More generally...
 </div>
 
 <div class="doc">
-<a name="lab518"></a><h4 class="section">Exercise: 3 stars, advanced (compiler_is_correct)</h4>
+<a name="lab520"></a><h4 class="section">Exercise: 3 stars, advanced (compiler_is_correct)</h4>
  Remember the definition of <span class="inlinecode"><span class="id" type="var">compile</span></span> for <span class="inlinecode"><span class="id" type="var">aexp</span></span> given in the
-    <span class="inlinecode"><span class="id" type="var">Imp</span></span> chapter. We want now to prove <span class="inlinecode"><span class="id" type="var">compile</span></span> correct with respect
+    <a href="Imp.html"><font color="gray">Imp</font></a> chapter. We want now to prove <span class="inlinecode"><span class="id" type="var">compile</span></span> correct with respect
     to the stack machine.
 
 <div class="paragraph"> </div>
@@ -2665,7 +2665,7 @@ More generally...
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
   

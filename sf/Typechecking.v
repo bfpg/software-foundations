@@ -1,10 +1,4 @@
-(** * MoreStlc: A Typechecker for STLC *)
-
-Require Import Coq.Bool.Bool.
-
-Require Import SfLib.
-Require Import Maps.
-Require Import Stlc.
+(** * Typechecking: A Typechecker for STLC *)
 
 (** The [has_type] relation of the STLC defines what it means for a
     term to belong to a type (in some context).  But it doesn't, by
@@ -16,7 +10,13 @@ Require Import Stlc.
     straightforward to translate the typing rules into clauses of a
     typechecking _function_ that takes a term and a context and either
     returns the term's type or else signals that the term is not
-    typable. *)
+    typable.  This short chapter constructs such a function and proves
+    it correct. *)
+
+Require Import Coq.Bool.Bool.
+Require Import SfLib.
+Require Import Maps.
+Require Import Stlc.
 
 Module STLCChecker.
 Import STLC.
@@ -60,14 +60,14 @@ Proof with auto.
 (* ###################################################################### *)
 (** ** The Typechecker *)
 
-(** Now here's the typechecker.  It works by walking over the
-    structure of the given term, returning either [Some T] or [None].
-    Each time we make a recursive call to find out the types of the
-    subterms, we need to pattern-match on the results to make sure
-    that they are not [None].  Also, in the [tapp] case, we use
-    pattern matching to extract the left- and right-hand sides of the
-    function's arrow type (and fail if the type of the function is not
-    [TArrow T11 T12] for some [T1] and [T2]). *)
+(** The typechecker works by walking over the structure of the given
+    term, returning either [Some T] or [None].  Each time we make a
+    recursive call to find out the types of the subterms, we need to
+    pattern-match on the results to make sure that they are not
+    [None].  Also, in the [tapp] case, we use pattern matching to
+    extract the left- and right-hand sides of the function's arrow
+    type (and fail if the type of the function is not [TArrow T11 T12]
+    for some [T1] and [T2]). *)
 
 Fixpoint type_check (Gamma:context) (t:tm) : option ty :=
   match t with
@@ -97,8 +97,8 @@ Fixpoint type_check (Gamma:context) (t:tm) : option ty :=
 (* ###################################################################### *)
 (** ** Properties *)
 
-(** To verify that this typechecking algorithm is the correct one, we
-    show that it is _sound_ and _complete_ for the original [has_type]
+(** To verify that this typechecking algorithm is correct, we show
+    that it is _sound_ and _complete_ for the original [has_type]
     relation -- that is, [type_check] and [has_type] define the same
     partial function. *)
 
@@ -158,4 +158,4 @@ Qed.
 
 End STLCChecker.
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-26 12:03:56 -0400 (Thu, 26 May 2016) $ *)

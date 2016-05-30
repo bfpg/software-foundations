@@ -29,6 +29,7 @@ Require Export Logic.
     helpful to have a lightweight notation that makes them easy to
     read and write.  _Inference rules_ are one such notation: *)
 (**
+
                               ------------                        (ev_0)
                                  ev 0
 
@@ -50,13 +51,16 @@ Require Export Logic.
     applications into a _proof tree_. Here's how we might transcribe
     the above proof that [4] is even: *)
 (**
+
                 ------  (ev_0)
                  ev 0
                 ------ (ev_SS)
                  ev 2
                 ------ (ev_SS)
                  ev 4
+
 *)
+
 (** Why call this a "tree" (rather than a "stack", for example)?
     Because, in general, inference rules can have multiple premises.
     We will see examples of this below. *)
@@ -83,8 +87,7 @@ Inductive ev : nat -> Prop :=
     In contrast, the definition of [list] names the [X] parameter
     _globally_, to the _left_ of the colon, forcing the result of
     [nil] and [cons] to be the same ([list X]).  Had we tried to bring
-    [nat] to the left in defining [ev], we would have seen an error:
-    *)
+    [nat] to the left in defining [ev], we would have seen an error: *)
 
 Fail Inductive wrong_ev (n : nat) : Prop :=
 | wrong_ev_0 : wrong_ev 0
@@ -120,7 +123,6 @@ Proof.
   apply ev_SS. apply ev_SS. apply Hn.
 Qed.
 
-
 (** More generally, we can show that any number multiplied by 2 is even: *)
 
 (** **** Exercise: 1 star (ev_double)  *)
@@ -141,6 +143,7 @@ Proof.
     build evidence that some number is even, but also that these two
     constructors are the _only_ ways to build evidence that numbers
     are even (in the sense of [ev]). *)
+
 (** In other words, if someone gives us evidence [E] for the assertion
     [ev n], then we know that [E] must have one of two shapes:
 
@@ -349,7 +352,9 @@ Proof.
     on [E], we were able to reduce the original result to an similar
     one that involves a _different_ piece of evidence for [ev]: [E'].
     More formally, we can finish our proof by showing that
-    exists k', n' = double k',
+
+        exists k', n' = double k',
+
     which is the same as the original statement, but with [n'] instead
     of [n].  Indeed, it is not difficult to convince Coq that this
     intermediate result suffices. *)
@@ -467,7 +472,6 @@ Proof.
 
 Module LeModule.
 
-
 (** One useful example is the "less than or equal to"
     relation on numbers. *)
 
@@ -483,13 +487,13 @@ Inductive le : nat -> nat -> Prop :=
 
 Notation "m <= n" := (le m n).
 
-
 (** Proofs of facts about [<=] using the constructors [le_n] and
     [le_S] follow the same patterns as proofs about properties, like
     [ev] above. We can [apply] the constructors to prove [<=]
     goals (e.g., to show that [3<=3] or [3<=6]), and we can use
     tactics like [inversion] to extract information from [<=]
-    hypotheses in the context (e.g., to prove that [(2 <= 1) -> 2+2=5].) *)
+    hypotheses in the context (e.g., to prove that [(2 <= 1) ->
+    2+2=5].) *)
 
 (** Here are some sanity checks on the definition.  (Notice that,
     although these are the same kind of simple "unit tests" as we gave
@@ -570,12 +574,10 @@ Theorem n_le_m__Sn_le_Sm : forall n m,
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
 Theorem Sn_le_Sm__n_le_m : forall n m,
   S n <= S m -> n <= m.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 
 Theorem le_plus_l : forall a b,
   a <= a + b.
@@ -671,16 +673,21 @@ End R.
 (** A list is a _subsequence_ of another list if all of the elements
     in the first list occur in the same order in the second list,
     possibly with some extra elements in between. For example,
-    [1;2;3]
+
+      [1;2;3]
+
     is a subsequence of each of the lists
-    [1;2;3]
-    [1;1;1;2;2;3]
-    [1;2;7;3]
-    [5;6;1;9;9;2;7;3;8]
+
+      [1;2;3]
+      [1;1;1;2;2;3]
+      [1;2;7;3]
+      [5;6;1;9;9;2;7;3;8]
+
     but it is _not_ a subsequence of any of the lists
-    [1;2]
-    [1;3]
-    [5;6;2;1;7;3;8]
+
+      [1;2]
+      [1;3]
+      [5;6;2;1;7;3;8].
 
     - Define an inductive proposition [subseq] on [list nat] that
       captures what it means to be a subsequence. (Hint: You'll need
@@ -696,24 +703,24 @@ End R.
     - (Optional, harder) Prove [subseq_trans] that subsequence is
       transitive -- that is, if [l1] is a subsequence of [l2] and [l2]
       is a subsequence of [l3], then [l1] is a subsequence of [l3].
-      Hint: choose your induction carefully!
-*)
+      Hint: choose your induction carefully! *)
 
 (* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (R_provability)  *)
 (** Suppose we give Coq the following definition:
+
     Inductive R : nat -> list nat -> Prop :=
       | c1 : R 0 []
       | c2 : forall n l, R n l -> R (S n) (n :: l)
       | c3 : forall n l, R (S n) l -> R n l.
+
     Which of the following propositions are provable?
 
     - [R 2 [1;0]]
     - [R 1 [1;2;1;0]]
-    - [R 6 [3;2;1;0]]
-*)
+    - [R 6 [3;2;1;0]]  *)
 
 (** [] *)
 
@@ -728,9 +735,9 @@ End R.
     already seen, and does not seem to offer any concrete benefit over
     them.  To give a better sense of the power of inductive
     definitions, we now show how to use them to model a classic
-    concept in computer science: _regular expressions_. *)
+    concept in computer science: _regular expressions_. 
 
-(** Regular expressions are a simple language for describing strings,
+    Regular expressions are a simple language for describing strings,
     defined as elements of the following inductive type.  (The names
     of the constructors should become clear once we explain their
     meaning below.)  *)
@@ -810,6 +817,7 @@ Inductive exp_match {T} : list T -> reg_exp T -> Prop :=
 Notation "s =~ re" := (exp_match s re) (at level 80).
 
 (**
+
                           ----------------                    (MEmpty)
                            [] =~ EmptyStr
 
@@ -855,8 +863,6 @@ Notation "s =~ re" := (exp_match s re) (at level 80).
     to prove that the constructors given in the inductive declaration
     and the ones that would arise from a more literal transcription of
     the informal rules are indeed equivalent.) *)
-
-(* ############################################################ *)
 
 (** Let's illustrate these rules with a few examples. *)
 
@@ -1034,7 +1040,6 @@ Proof.
       apply (IH1 Hin).
     + (* In x s2 *)
       apply (IH2 Hin).
-
 Qed.
 
 (** **** Exercise: 4 stars (re_not_empty)  *)
@@ -1089,7 +1094,9 @@ Proof.
 
 (** ... but most of them get stuck.  For [MChar], for instance, we
     must show that
+
     s2 =~ Char x' -> x' :: s2 =~ Char x',
+
     which is clearly impossible. *)
 
   - (* MChar. Stuck... *)
@@ -1184,22 +1191,20 @@ Proof.
 (** [] *)
 
 (* ############################################################ *)
-
 (** **** Exercise: 5 stars, advanced (pumping)  *)
-
-Module Pumping.
-
 (** One of the first interesting theorems in the theory of regular
     expressions is the so-called _pumping lemma_, which states,
     informally, that any sufficiently long string [s] matching a
     regular expression [re] can be "pumped" by repeating some middle
     section of [s] an arbitrary number of times to produce a new
-    string also matching [re]. *)
+    string also matching [re]. 
 
-(** To begin, we need to define "sufficiently long."  Since we are
+    To begin, we need to define "sufficiently long."  Since we are
     working in a constructive logic, we actually need to be able to
     calculate, for each regular expression [re], the minimum length
     for strings [s] to guarantee "pumpability." *)
+
+Module Pumping.
 
 Fixpoint pumping_constant {T} (re : reg_exp T) : nat :=
   match re with
@@ -1269,17 +1274,16 @@ Proof.
   (* FILL IN HERE *) Admitted.
 
 End Pumping.
-
 (** [] *)
 
 (* ####################################################### *)
 (** * Improving Reflection *)
 
 (** We've seen in the [Logic] chapter that we often need to
-    relate boolean computations to statements in
-    [Prop]. Unfortunately, performing this conversion by hand can
-    result in tedious proof scripts. Consider the proof of the
-    following theorem: *)
+    relate boolean computations to statements in [Prop].
+    Unfortunately, performing this conversion by hand can result in
+    tedious proof scripts.  Consider the proof of the following
+    theorem: *)
 
 Theorem filter_not_empty_In : forall n l,
   filter (beq_nat n) l <> [] ->
@@ -1406,13 +1410,19 @@ Qed.
       captures what it means to be a palindrome. (Hint: You'll need
       three cases.  Your definition should be based on the structure
       of the list; just having a single constructor
+
         c : forall l, l = rev l -> pal l
+
       may seem obvious, but will not work very well.)
 
-    - Prove [pal_app_rev] that
+    - Prove ([pal_app_rev]) that
+
        forall l, pal (l ++ rev l).
-    - Prove [pal_rev] that
+
+    - Prove ([pal_rev] that)
+
        forall l, pal l -> l = rev l.
+
 *)
 
 (* FILL IN HERE *)
@@ -1422,7 +1432,9 @@ Qed.
 (** Again, the converse direction is significantly more difficult, due
     to the lack of evidence.  Using your definition of [pal] from the
     previous exercise, prove that
+
      forall l, l = rev l -> pal l.
+
 *)
 
 (* FILL IN HERE *)
@@ -1436,11 +1448,17 @@ Qed.
     A list [l] is an "in-order merge" of [l1] and [l2] if it contains
     all the same elements as [l1] and [l2], in the same order as [l1]
     and [l2], but possibly interleaved.  For example,
+
     [1;4;6;2;3]
+
     is an in-order merge of
+
     [1;6;2]
+
     and
+
     [4;3].
+
     Now, suppose we have a set [X], a function [test: X->bool], and a
     list [l] of type [list X].  Suppose further that [l] is an
     in-order merge of two lists, [l1] and [l2], such that every item
@@ -1512,7 +1530,6 @@ Qed.
 Inductive nostutter {X:Type} : list X -> Prop :=
  (* FILL IN HERE *)
 .
-
 (** Make sure each of these tests succeeds, but feel free to change
     the suggested proof (in comments) if the given one doesn't work
     for you.  Your definition might be different from ours and still
@@ -1598,7 +1615,6 @@ Proof.
    intros X l1. induction l1 as [|x l1' IHl1'].
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 
 (** $Date: 2015-08-11 12:03:04 -0400 (Tue, 11 Aug 2015) $ *)

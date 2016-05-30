@@ -26,10 +26,8 @@ Require Import Coq.Arith.Arith.
 Require Import Coq.Arith.EqNat.
 Require Import Coq.Lists.List.
 Import ListNotations.
-
 Require Import Maps.
 Require Import Imp.
-
 
 (* ####################################################### *)
 (** ** Lexical Analysis *)
@@ -117,8 +115,7 @@ Proof. reflexivity. Qed.
 (* ####################################################### *)
 (** ** Parsing *)
 
-(* ####################################################### *)
-(** *** Options with Errors *)
+(** *** Options With Errors *)
 
 (** An [option] type with error messages: *)
 
@@ -146,7 +143,6 @@ Notation "'DO' ( x , y ) <-- e1 ; e2 'OR' e3"
        end)
    (right associativity, at level 60, e2 at next level).
 
-(* ####################################################### *)
 (** *** Symbol Table *)
 
 (** Build a mapping from [tokens] to [nats].  A real parser would do
@@ -165,7 +161,6 @@ Fixpoint build_symtable (xs : list token) (n : nat)
     else build_symtable xs n
   end.
 
-(* ####################################################### *)
 (** *** Generic Combinators for Building Parsers *)
 
 Open Scope string_scope.
@@ -206,7 +201,6 @@ Definition firstExpect {T} (t : token) (p : parser T)
 Definition expect (t : token) : parser unit :=
   firstExpect t (fun xs => SomeE(tt, xs)).
 
-(* ####################################################### *)
 (** *** A Recursive-Descent Parser for Imp *)
 
 (** Identifiers: *)
@@ -259,6 +253,7 @@ Fixpoint parsePrimaryExp (steps:nat) symtable
           DO (u, rest') <== expect ")" rest ;
           SomeE(e,rest'))
   end
+
 with parseProductExp (steps:nat) symtable
                      (xs : list token) :=
   match steps with
@@ -271,6 +266,7 @@ with parseProductExp (steps:nat) symtable
             steps' rest;
     SomeE (fold_left AMult es e, rest')
   end
+
 with parseSumExp (steps:nat) symtable (xs : list token)  :=
   match steps with
   | 0 => NoneE "Too many recursive calls"
@@ -333,6 +329,7 @@ match steps with
                NoneE 
       "Expected '==' or '<=' after arithmetic expression")
 end
+
 with parseConjunctionExp (steps:nat)
                          (symtable : string->nat)
                          (xs : list token) :=
@@ -512,4 +509,4 @@ Compute parse "
      []).
 *)
 
-(** $Date: 2016-02-29 10:14:50 -0500 (Mon, 29 Feb 2016) $ *)
+(** $Date: 2016-05-26 12:03:56 -0400 (Thu, 26 May 2016) $ *)

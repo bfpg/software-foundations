@@ -1,7 +1,7 @@
 (** * Poly: Polymorphism and Higher-Order Functions *)
 
-(* FINAL REMINDER: Please do not put solutions to the exercises in
-   publicly accessible places.  Thank you! *)
+(* REMINDER: Please do not put solutions to the exercises in
+   publicly accessible places.  Thank you!! *)
 
 Require Export Lists.
 
@@ -12,8 +12,7 @@ Require Export Lists.
     concepts of functional programming.  The critical new ideas are
     _polymorphism_ (abstracting functions over the types of the data
     they manipulate) and _higher-order functions_ (treating functions
-    as data).  We begin with polymorphism.
-*)
+    as data).  We begin with polymorphism. *)
 
 (* ###################################################### *)
 (** ** Polymorphic Lists *)
@@ -50,9 +49,9 @@ Inductive list (X:Type) : Type :=
     [natlist] in the types of the constructors have been replaced by
     [list X].  (We can re-use the constructor names [nil] and [cons]
     because the earlier definition of [natlist] was inside of a
-    [Module] definition that is now out of scope.) *)
+    [Module] definition that is now out of scope.) 
 
-(** What sort of thing is [list] itself?  One good way to think
+    What sort of thing is [list] itself?  One good way to think
     about it is that [list] is a _function_ from [Type]s to
     [Inductive] definitions; or, to put it another way, [list] is a
     function from [Type]s to [Type]s.  For any particular type [X],
@@ -93,7 +92,6 @@ Check (cons nat 2 (cons nat 1 (nil nat))).
     list-processing functions that we wrote before.  Here is [repeat],
     for example: *)
 
-
 Fixpoint repeat (X : Type) (x : X) (count : nat) : list X :=
   match count with
   | 0 => nil X
@@ -113,9 +111,6 @@ Proof. reflexivity.  Qed.
 Example test_repeat2 :
   repeat bool false 1 = cons bool false (nil bool).
 Proof. reflexivity.  Qed.
-
-
-
 
 Module MumbleGrumble.
 
@@ -145,7 +140,6 @@ Inductive grumble (X:Type) : Type :=
 (** [] *)
 
 End MumbleGrumble.
-
 
 (* ###################################################### *)
 (** *** Type Annotation Inference *)
@@ -207,9 +201,13 @@ Check repeat.
     This may sound similar to type annotation inference -- indeed, the
     two procedures rely on the same underlying mechanisms.  Instead of
     simply omitting the types of some arguments to a function, like
+
       repeat' X x count : list X :=
+
     we can also replace the types with [_]
+
       repeat' (X : _) (x : _) (count : _) : list X :=
+
     to tell Coq to attempt to infer the missing information.
 
     Using implicit arguments, the [count] function can be written
@@ -364,10 +362,6 @@ Notation "x ++ y" := (app x y)
 
 Definition list123''' := [1; 2; 3].
 
-
-
-
-
 (* ###################################################### *)
 (** *** Exercises *)
 
@@ -468,9 +462,10 @@ Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
     - What is the type of [combine] (i.e., what does [Check
       @combine] print?)
     - What does
+
         Compute (combine [1;2] [false;false;true;true]).
-      print?   []
-*)
+
+      print?   [] *)
 
 (** **** Exercise: 2 stars, recommended (split)  *)
 (** The function [split] is the right inverse of [combine]: it takes a
@@ -602,7 +597,6 @@ Example test_filter2:
   = [ [3]; [4]; [8] ].
 Proof. reflexivity.  Qed.
 
-
 (** We can use [filter] to give a concise version of the
     [countoddmembers] function from the [Lists] chapter. *)
 
@@ -668,16 +662,17 @@ Example test_filter_even_gt7_2 :
 
 (** **** Exercise: 3 stars (partition)  *)
 (** Use [filter] to write a Coq function [partition]:
-  partition : forall X : Type,
-              (X -> bool) -> list X -> list X * list X
+
+      partition : forall X : Type,
+                  (X -> bool) -> list X -> list X * list X
+
    Given a set [X], a test function of type [X -> bool] and a [list
    X], [partition] should return a pair of lists.  The first member of
    the pair is the sublist of the original list containing the
    elements that satisfy the test, and the second is the sublist
    containing those that fail the test.  The order of elements in the
    two sublists should be the same as their order in the original
-   list.
-*)
+   list. *)
 
 Definition partition {X : Type}
                      (test : X -> bool)
@@ -727,8 +722,6 @@ Example test_map3:
   = [[true;false];[false;true];[true;false];[false;true]].
 Proof. reflexivity.  Qed.
 
-
-
 (** *** Exercises *)
 
 (** **** Exercise: 3 stars (map_rev)  *)
@@ -748,8 +741,10 @@ Proof.
     which maps a [list X] to a [list Y] using a function [f] of type
     [X -> list Y].  Your definition should work by 'flattening' the
     results of [f], like so:
+
         flat_map (fun n => [n;n+1;n+2]) [1;5;10]
       = [1; 2; 3; 5; 6; 7; 10; 11; 12].
+
 *)
 
 Fixpoint flat_map {X Y:Type} (f:X -> list Y) (l:list X)
@@ -803,11 +798,14 @@ Fixpoint fold {X Y:Type} (f: X->Y->Y) (l:list X) (b:Y)
     means [1+2+3+4].  To make this precise, we also need a "starting
     element" that serves as the initial second input to [f].  So, for
     example,
-   fold plus [1;2;3;4] 0
+
+       fold plus [1;2;3;4] 0
+
     yields
-   1 + (2 + (3 + (4 + 0))).
-    Some more examples:
-*)
+
+       1 + (2 + (3 + (4 + 0))).
+
+    Some more examples: *)
 
 Check (fold andb).
 (* ===> fold andb : list bool -> bool -> bool *)
@@ -823,7 +821,6 @@ Proof. reflexivity. Qed.
 Example fold_example3 :
   fold app  [[1];[];[2;3];[4]] [] = [1;2;3;4].
 Proof. reflexivity. Qed.
-
 
 (** **** Exercise: 1 star, advanced (fold_types_different)  *)
 (** Observe that the type of [fold] is parameterized by _two_ type
@@ -969,13 +966,17 @@ Proof.
 
 (** **** Exercise: 2 stars, advanced (nth_error_informal)  *)
 (** Recall the definition of the [nth_error] function:
+
    Fixpoint nth_error {X : Type} (l : list X) (n : nat) : option X :=
      match l with
      | [] => None
      | a :: l' => if beq_nat n O then Some a else nth_error l' (pred n)
      end.
+
    Write an informal proof of the following theorem:
+
    forall X n l, length l = n -> @nth_error X l n = None
+
 (* FILL IN HERE *)
 *)
 (** [] *)
@@ -991,7 +992,7 @@ Module Church.
 Definition nat := forall X : Type, (X -> X) -> X -> X.
 
 (** Let's see how to write some numbers with this notation. Iterating
-    a function once should be the same as just applying it. Thus, *)
+    a function once should be the same as just applying it.  Thus: *)
 
 Definition one : nat :=
   fun (X : Type) (f : X -> X) (x : X) => f x.
@@ -1002,7 +1003,7 @@ Definition two : nat :=
   fun (X : Type) (f : X -> X) (x : X) => f (f x).
 
 (** Defining [zero] is somewhat trickier: how can we "apply a function
-    zero times"? The answer is actually simple: just return the
+    zero times"?  The answer is actually simple: just return the
     argument untouched. *)
 
 Definition zero : nat :=
@@ -1086,5 +1087,5 @@ End Church.
 
 End Exercises.
 
-(** $Date: 2016-02-25 10:37:36 -0500 (Thu, 25 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 

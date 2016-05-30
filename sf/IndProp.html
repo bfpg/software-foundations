@@ -35,11 +35,11 @@
 </div>
 
 <div class="doc">
-<a name="lab194"></a><h1 class="section">Inductively Defined Propositions</h1>
+<a name="lab197"></a><h1 class="section">Inductively Defined Propositions</h1>
 
 <div class="paragraph"> </div>
 
- In the <span class="inlinecode"><span class="id" type="var">Logic</span></span> chapter we looked at several ways of writing
+ In the <a href="Logic.html"><font color="gray">Logic</font></a> chapter we looked at several ways of writing
     propositions, including conjunction, disjunction, and quantifiers.
     In this chapter, we bring a new tool into the mix: <i>inductive
     definitions</i>.
@@ -134,6 +134,9 @@
 <div class="paragraph"> </div>
 
 </div>
+
+<div class="paragraph"> </div>
+
  Why call this a "tree" (rather than a "stack", for example)?
     Because, in general, inference rules can have multiple premises.
     We will see examples of this below. 
@@ -170,8 +173,7 @@ This definition is different in one crucial respect from
     In contrast, the definition of <span class="inlinecode"><span class="id" type="var">list</span></span> names the <span class="inlinecode"><span class="id" type="var">X</span></span> parameter
     <i>globally</i>, to the <i>left</i> of the colon, forcing the result of
     <span class="inlinecode"><span class="id" type="var">nil</span></span> and <span class="inlinecode"><span class="id" type="var">cons</span></span> to be the same (<span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">X</span></span>).  Had we tried to bring
-    <span class="inlinecode"><span class="id" type="var">nat</span></span> to the left in defining <span class="inlinecode"><span class="id" type="var">ev</span></span>, we would have seen an error:
-    
+    <span class="inlinecode"><span class="id" type="var">nat</span></span> to the left in defining <span class="inlinecode"><span class="id" type="var">ev</span></span>, we would have seen an error: 
 </div>
 <div class="code code-tight">
 
@@ -239,7 +241,7 @@ We can also prove theorems that have hypotheses involving <span class="inlinecod
 More generally, we can show that any number multiplied by 2 is even: 
 <div class="paragraph"> </div>
 
-<a name="lab195"></a><h4 class="section">Exercise: 1 star (ev_double)</h4>
+<a name="lab198"></a><h4 class="section">Exercise: 1 star (ev_double)</h4>
 
 </div>
 <div class="code code-space">
@@ -250,7 +252,7 @@ More generally, we can show that any number multiplied by 2 is even:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -258,7 +260,7 @@ More generally, we can show that any number multiplied by 2 is even:
 </div>
 
 <div class="doc">
-<a name="lab196"></a><h1 class="section">Using Evidence in Proofs</h1>
+<a name="lab199"></a><h1 class="section">Using Evidence in Proofs</h1>
 
 <div class="paragraph"> </div>
 
@@ -271,7 +273,10 @@ More generally, we can show that any number multiplied by 2 is even:
     only that the constructors <span class="inlinecode"><span class="id" type="var">ev_0</span></span> and <span class="inlinecode"><span class="id" type="var">ev_SS</span></span> are valid ways to
     build evidence that some number is even, but also that these two
     constructors are the <i>only</i> ways to build evidence that numbers
-    are even (in the sense of <span class="inlinecode"><span class="id" type="var">ev</span></span>).  In other words, if someone gives us evidence <span class="inlinecode"><span class="id" type="var">E</span></span> for the assertion
+    are even (in the sense of <span class="inlinecode"><span class="id" type="var">ev</span></span>). 
+<div class="paragraph"> </div>
+
+ In other words, if someone gives us evidence <span class="inlinecode"><span class="id" type="var">E</span></span> for the assertion
     <span class="inlinecode"><span class="id" type="var">ev</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span>, then we know that <span class="inlinecode"><span class="id" type="var">E</span></span> must have one of two shapes:
 
 <div class="paragraph"> </div>
@@ -294,7 +299,7 @@ More generally, we can show that any number multiplied by 2 is even:
     few examples to see what this means in practice. 
 <div class="paragraph"> </div>
 
-<a name="lab197"></a><h2 class="section">Inversion on Evidence</h2>
+<a name="lab200"></a><h2 class="section">Inversion on Evidence</h2>
 
 <div class="paragraph"> </div>
 
@@ -490,7 +495,7 @@ By using <span class="inlinecode"><span class="id" type="tactic">inversion</span
 </div>
 
 <div class="doc">
-<a name="lab198"></a><h4 class="section">Exercise: 1 star (inversion_practice)</h4>
+<a name="lab201"></a><h4 class="section">Exercise: 1 star (inversion_practice)</h4>
  Prove the following results using <span class="inlinecode"><span class="id" type="tactic">inversion</span></span>. 
 </div>
 <div class="code code-tight">
@@ -509,7 +514,7 @@ By using <span class="inlinecode"><span class="id" type="tactic">inversion</span
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  The way we've used <span class="inlinecode"><span class="id" type="tactic">inversion</span></span> here may seem a bit
@@ -540,7 +545,7 @@ By using <span class="inlinecode"><span class="id" type="tactic">inversion</span
 </div>
 
 <div class="doc">
-<a name="lab199"></a><h2 class="section">Induction on Evidence</h2>
+<a name="lab202"></a><h2 class="section">Induction on Evidence</h2>
 
 <div class="paragraph"> </div>
 
@@ -596,7 +601,7 @@ Unfortunately, the second case is harder.  We need to show <span class="inlineco
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">k'</span>,&nbsp;<span class="id" type="var">n'</span>&nbsp;=&nbsp;<span class="id" type="var">double</span>&nbsp;<span class="id" type="var">k'</span>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">k'</span>,&nbsp;<span class="id" type="var">n'</span>&nbsp;=&nbsp;<span class="id" type="var">double</span>&nbsp;<span class="id" type="var">k'</span>,
 <div class="paragraph"> </div>
 
 </div>
@@ -618,7 +623,7 @@ Unfortunately, the second case is harder.  We need to show <span class="inlineco
 
 <div class="doc">
 If this looks familiar, it is no coincidence: We've encountered
-    similar problems in the <span class="inlinecode"><span class="id" type="keyword">Induction</span></span> chapter, when trying to use
+    similar problems in the <a href="Induction.html"><font color="gray">Induction</font></a> chapter, when trying to use
     case analysis to prove results that required induction.  And once
     again the solution is... induction!
 
@@ -688,7 +693,7 @@ As we will see in later chapters, induction on evidence is a
     this technique, to help you familiarize yourself with it. 
 <div class="paragraph"> </div>
 
-<a name="lab200"></a><h4 class="section">Exercise: 2 stars (ev_sum)</h4>
+<a name="lab203"></a><h4 class="section">Exercise: 2 stars (ev_sum)</h4>
 
 </div>
 <div class="code code-space">
@@ -698,10 +703,10 @@ As we will see in later chapters, induction on evidence is a
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab201"></a><h4 class="section">Exercise: 4 stars, advanced (ev_alternate)</h4>
+<a name="lab204"></a><h4 class="section">Exercise: 4 stars, advanced (ev_alternate)</h4>
  In general, there may be multiple ways of defining a
     property inductively.  For example, here's a (slightly contrived)
     alternative definition for <span class="inlinecode"><span class="id" type="var">ev</span></span>: 
@@ -730,10 +735,10 @@ Prove that this definition is logically equivalent to
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab202"></a><h4 class="section">Exercise: 3 stars, advanced, recommended (ev_ev__ev)</h4>
+<a name="lab205"></a><h4 class="section">Exercise: 3 stars, advanced, recommended (ev_ev__ev)</h4>
  Finding the appropriate thing to do induction on is a
     bit tricky here: 
 </div>
@@ -747,10 +752,10 @@ Prove that this definition is logically equivalent to
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab203"></a><h4 class="section">Exercise: 3 stars, optional (ev_plus_plus)</h4>
+<a name="lab206"></a><h4 class="section">Exercise: 3 stars, optional (ev_plus_plus)</h4>
  This exercise just requires applying existing lemmas.  No
     induction or even case analysis is needed, though some of the
     rewriting may be tedious. 
@@ -765,7 +770,7 @@ Prove that this definition is logically equivalent to
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -773,7 +778,7 @@ Prove that this definition is logically equivalent to
 </div>
 
 <div class="doc">
-<a name="lab204"></a><h1 class="section">Inductive Relations</h1>
+<a name="lab207"></a><h1 class="section">Inductive Relations</h1>
 
 <div class="paragraph"> </div>
 
@@ -787,6 +792,7 @@ Prove that this definition is logically equivalent to
 <div class="code code-tight">
 
 <br/>
+<span class="id" type="keyword">Module</span> <a name="LeModule"><span class="id" type="module">LeModule</span></a>.<br/>
 
 <br/>
 </div>
@@ -821,7 +827,8 @@ Proofs of facts about <span class="inlinecode">≤</span> using the constructors
     <span class="inlinecode"><span class="id" type="var">ev</span></span> above. We can <span class="inlinecode"><span class="id" type="tactic">apply</span></span> the constructors to prove <span class="inlinecode">≤</span>
     goals (e.g., to show that <span class="inlinecode">3≤3</span> or <span class="inlinecode">3≤6</span>), and we can use
     tactics like <span class="inlinecode"><span class="id" type="tactic">inversion</span></span> to extract information from <span class="inlinecode">≤</span>
-    hypotheses in the context (e.g., to prove that <span class="inlinecode">(2</span> <span class="inlinecode">≤</span> <span class="inlinecode">1)</span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode">2+2=5</span>.) 
+    hypotheses in the context (e.g., to prove that <span class="inlinecode">(2</span> <span class="inlinecode">≤</span> <span class="inlinecode">1)</span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span>
+    <span class="inlinecode">2+2=5</span>.) 
 <div class="paragraph"> </div>
 
  Here are some sanity checks on the definition.  (Notice that,
@@ -864,6 +871,9 @@ The "strictly less than" relation <span class="inlinecode"><span class="id" type
 <div class="code code-tight">
 
 <br/>
+<span class="id" type="keyword">End</span> <a class="idref" href="IndProp.html#LeModule"><span class="id" type="module">LeModule</span></a>.<br/>
+
+<br/>
 <span class="id" type="keyword">Definition</span> <a name="lt"><span class="id" type="definition">lt</span></a> (<span class="id" type="var">n</span> <span class="id" type="var">m</span>:<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) := <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Peano.html#le"><span class="id" type="inductive">le</span></a> (<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#S"><span class="id" type="constructor">S</span></a> <a class="idref" href="IndProp.html#n"><span class="id" type="variable">n</span></a>) <a class="idref" href="IndProp.html#m"><span class="id" type="variable">m</span></a>.<br/>
 
 <br/>
@@ -894,7 +904,7 @@ Here are a few more simple relations on numbers:
 </div>
 
 <div class="doc">
-<a name="lab205"></a><h4 class="section">Exercise: 2 stars, recommended (total_relation)</h4>
+<a name="lab208"></a><h4 class="section">Exercise: 2 stars, recommended (total_relation)</h4>
  Define an inductive binary relation <span class="inlinecode"><span class="id" type="var">total_relation</span></span> that holds
     between every pair of natural numbers. 
 </div>
@@ -905,10 +915,10 @@ Here are a few more simple relations on numbers:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab206"></a><h4 class="section">Exercise: 2 stars (empty_relation)</h4>
+<a name="lab209"></a><h4 class="section">Exercise: 2 stars (empty_relation)</h4>
  Define an inductive binary relation <span class="inlinecode"><span class="id" type="var">empty_relation</span></span> (on numbers)
     that never holds. 
 </div>
@@ -919,10 +929,10 @@ Here are a few more simple relations on numbers:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab207"></a><h4 class="section">Exercise: 3 stars, optional (le_exercises)</h4>
+<a name="lab210"></a><h4 class="section">Exercise: 3 stars, optional (le_exercises)</h4>
  Here are a number of facts about the <span class="inlinecode">≤</span> and <span class="inlinecode">&lt;</span> relations that
     we are going to need later in the course.  The proofs make good
     practice exercises. 
@@ -1012,7 +1022,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<a name="lab208"></a><h4 class="section">Exercise: 2 stars, optional (leb_iff)</h4>
+<a name="lab211"></a><h4 class="section">Exercise: 2 stars, optional (leb_iff)</h4>
 
 </div>
 <div class="code code-space">
@@ -1023,7 +1033,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1034,7 +1044,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<a name="lab209"></a><h4 class="section">Exercise: 3 stars, recommended (R_provability2)</h4>
+<a name="lab212"></a><h4 class="section">Exercise: 3 stars, recommended (R_provability2)</h4>
  We can define three-place relations, four-place relations,
     etc., in just the same way as binary relations.  For example,
     consider the following three-place relation on numbers: 
@@ -1092,11 +1102,11 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
-<font size=-2>&#9744;</font>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
 
 <div class="paragraph"> </div>
 
-<a name="lab210"></a><h4 class="section">Exercise: 3 stars, optional (R_fact)</h4>
+<a name="lab213"></a><h4 class="section">Exercise: 3 stars, optional (R_fact)</h4>
  The relation <span class="inlinecode"><span class="id" type="var">R</span></span> above actually encodes a familiar function.
     Figure out which function; then state and prove this equivalence
     in Coq? 
@@ -1114,7 +1124,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1125,7 +1135,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<a name="lab211"></a><h4 class="section">Exercise: 4 stars, advanced (subsequence)</h4>
+<a name="lab214"></a><h4 class="section">Exercise: 4 stars, advanced (subsequence)</h4>
  A list is a <i>subsequence</i> of another list if all of the elements
     in the first list occur in the same order in the second list,
     possibly with some extra elements in between. For example,
@@ -1133,7 +1143,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;[1;2;3]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;2;3]
 <div class="paragraph"> </div>
 
 </div>
@@ -1142,10 +1152,10 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;[1;2;3]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[1;1;1;2;2;3]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[1;2;7;3]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[5;6;1;9;9;2;7;3;8]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;2;3]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;1;1;2;2;3]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;2;7;3]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[5;6;1;9;9;2;7;3;8]
 <div class="paragraph"> </div>
 
 </div>
@@ -1154,9 +1164,9 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;[1;2]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[1;3]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[5;6;2;1;7;3;8]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;2]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;3]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[5;6;2;1;7;3;8].
 <div class="paragraph"> </div>
 
 </div>
@@ -1190,8 +1200,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <li> (Optional, harder) Prove <span class="inlinecode"><span class="id" type="var">subseq_trans</span></span> that subsequence is
       transitive &mdash; that is, if <span class="inlinecode"><span class="id" type="var">l<sub>1</sub></span></span> is a subsequence of <span class="inlinecode"><span class="id" type="var">l<sub>2</sub></span></span> and <span class="inlinecode"><span class="id" type="var">l<sub>2</sub></span></span>
       is a subsequence of <span class="inlinecode"><span class="id" type="var">l<sub>3</sub></span></span>, then <span class="inlinecode"><span class="id" type="var">l<sub>1</sub></span></span> is a subsequence of <span class="inlinecode"><span class="id" type="var">l<sub>3</sub></span></span>.
-      Hint: choose your induction carefully!
-
+      Hint: choose your induction carefully! 
 </li>
 </ul>
 
@@ -1203,10 +1212,10 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab212"></a><h4 class="section">Exercise: 2 stars, optional (R_provability)</h4>
+<a name="lab215"></a><h4 class="section">Exercise: 2 stars, optional (R_provability)</h4>
  Suppose we give Coq the following definition:
 
 <div class="paragraph"> </div>
@@ -1230,14 +1239,13 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 <li> <span class="inlinecode"><span class="id" type="var">R</span></span> <span class="inlinecode">1</span> <span class="inlinecode">[1;2;1;0]</span>
 
 </li>
-<li> <span class="inlinecode"><span class="id" type="var">R</span></span> <span class="inlinecode">6</span> <span class="inlinecode">[3;2;1;0]</span>
-
+<li> <span class="inlinecode"><span class="id" type="var">R</span></span> <span class="inlinecode">6</span> <span class="inlinecode">[3;2;1;0]</span>  
 </li>
 </ul>
 
 <div class="paragraph"> </div>
 
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1245,7 +1253,7 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
 </div>
 
 <div class="doc">
-<a name="lab213"></a><h1 class="section">Case Study: Regular Expressions</h1>
+<a name="lab216"></a><h1 class="section">Case Study: Regular Expressions</h1>
 
 <div class="paragraph"> </div>
 
@@ -1257,9 +1265,10 @@ Hint: This theorem can easily be proved without using <span class="inlinecode"><
     them.  To give a better sense of the power of inductive
     definitions, we now show how to use them to model a classic
     concept in computer science: <i>regular expressions</i>. 
+
 <div class="paragraph"> </div>
 
- Regular expressions are a simple language for describing strings,
+    Regular expressions are a simple language for describing strings,
     defined as elements of the following inductive type.  (The names
     of the constructors should become clear once we explain their
     meaning below.)  
@@ -1503,16 +1512,9 @@ Once again, for readability, we can also display this definition
     to prove that the constructors given in the inductive declaration
     and the ones that would arise from a more literal transcription of
     the informal rules are indeed equivalent.) 
-</div>
-<div class="code code-tight">
+<div class="paragraph"> </div>
 
-<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Let's illustrate these rules with a few examples. 
+ Let's illustrate these rules with a few examples. 
 </div>
 <div class="code code-tight">
 
@@ -1613,7 +1615,7 @@ We can also prove general facts about <span class="inlinecode"><span class="id" 
     exactly the same shape expected by <span class="inlinecode"><span class="id" type="var">MStarApp</span></span>.) 
 <div class="paragraph"> </div>
 
-<a name="lab214"></a><h4 class="section">Exercise: 3 stars (exp_match_ex<sub>1</sub>)</h4>
+<a name="lab217"></a><h4 class="section">Exercise: 3 stars (exp_match_ex<sub>1</sub>)</h4>
  The following lemmas show that the informal matching rules given
     at the beginning of the chapter can be obtained from the formal
     inductive definition. 
@@ -1638,7 +1640,7 @@ We can also prove general facts about <span class="inlinecode"><span class="id" 
 
 <div class="doc">
 The next lemma is stated in terms of the <span class="inlinecode"><span class="id" type="var">fold</span></span> function from the
-    <span class="inlinecode"><span class="id" type="var">Poly</span></span> chapter: If <span class="inlinecode"><span class="id" type="var">ss</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode">(<span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">T</span>)</span> represents a sequence of
+    <a href="Poly.html"><font color="gray">Poly</font></a> chapter: If <span class="inlinecode"><span class="id" type="var">ss</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode">(<span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">T</span>)</span> represents a sequence of
     strings <span class="inlinecode"><span class="id" type="var">s<sub>1</sub></span>,</span> <span class="inlinecode">...,</span> <span class="inlinecode"><span class="id" type="var">sn</span></span>, then <span class="inlinecode"><span class="id" type="var">fold</span></span> <span class="inlinecode"><span class="id" type="var">app</span></span> <span class="inlinecode"><span class="id" type="var">ss</span></span> <span class="inlinecode">[]</span> is the result of
     concatenating them all together. 
 </div>
@@ -1653,10 +1655,10 @@ The next lemma is stated in terms of the <span class="inlinecode"><span class="i
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab215"></a><h4 class="section">Exercise: 4 stars (reg_exp_of_list)</h4>
+<a name="lab218"></a><h4 class="section">Exercise: 4 stars (reg_exp_of_list)</h4>
  Prove that <span class="inlinecode"><span class="id" type="var">reg_exp_of_list</span></span> satisfies the following
     specification: 
 </div>
@@ -1670,7 +1672,7 @@ The next lemma is stated in terms of the <span class="inlinecode"><span class="i
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Since the definition of <span class="inlinecode"><span class="id" type="var">exp_match</span></span> has a recursive
@@ -1759,15 +1761,13 @@ Something interesting happens in the <span class="inlinecode"><span class="id" t
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> (<span class="id" type="var">IH<sub>1</sub></span> <span class="id" type="var">Hin</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;In&nbsp;x&nbsp;s<sub>2</sub>&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> (<span class="id" type="var">IH<sub>2</sub></span> <span class="id" type="var">Hin</span>).<br/>
-
-<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab216"></a><h4 class="section">Exercise: 4 stars (re_not_empty)</h4>
+<a name="lab219"></a><h4 class="section">Exercise: 4 stars (re_not_empty)</h4>
  Write a recursive function <span class="inlinecode"><span class="id" type="var">re_not_empty</span></span> that tests whether a
     regular expression matches some string. Prove that your function
     is correct. 
@@ -1786,10 +1786,10 @@ Something interesting happens in the <span class="inlinecode"><span class="id" t
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab217"></a><h2 class="section">The <span class="inlinecode"><span class="id" type="var">remember</span></span> Tactic</h2>
+<a name="lab220"></a><h2 class="section">The <span class="inlinecode"><span class="id" type="var">remember</span></span> Tactic</h2>
 
 <div class="paragraph"> </div>
 
@@ -1983,7 +1983,7 @@ In the interesting cases (those that correspond to <span class="inlinecode"><spa
 </div>
 
 <div class="doc">
-<a name="lab218"></a><h4 class="section">Exercise: 4 stars (exp_match_ex<sub>2</sub>)</h4>
+<a name="lab221"></a><h4 class="section">Exercise: 4 stars (exp_match_ex<sub>2</sub>)</h4>
 
 <div class="paragraph"> </div>
 
@@ -2004,42 +2004,33 @@ In the interesting cases (those that correspond to <span class="inlinecode"><spa
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
 <br/>
-
-<br/>
 </div>
 
 <div class="doc">
-<a name="lab219"></a><h4 class="section">Exercise: 5 stars, advanced (pumping)</h4>
-
-</div>
-<div class="code code-space">
-
-<br/>
-<span class="id" type="keyword">Module</span> <a name="Pumping"><span class="id" type="module">Pumping</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-One of the first interesting theorems in the theory of regular
+<a name="lab222"></a><h4 class="section">Exercise: 5 stars, advanced (pumping)</h4>
+ One of the first interesting theorems in the theory of regular
     expressions is the so-called <i>pumping lemma</i>, which states,
     informally, that any sufficiently long string <span class="inlinecode"><span class="id" type="var">s</span></span> matching a
     regular expression <span class="inlinecode"><span class="id" type="var">re</span></span> can be "pumped" by repeating some middle
     section of <span class="inlinecode"><span class="id" type="var">s</span></span> an arbitrary number of times to produce a new
     string also matching <span class="inlinecode"><span class="id" type="var">re</span></span>. 
+
 <div class="paragraph"> </div>
 
- To begin, we need to define "sufficiently long."  Since we are
+    To begin, we need to define "sufficiently long."  Since we are
     working in a constructive logic, we actually need to be able to
     calculate, for each regular expression <span class="inlinecode"><span class="id" type="var">re</span></span>, the minimum length
     for strings <span class="inlinecode"><span class="id" type="var">s</span></span> to guarantee "pumpability." 
 </div>
 <div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Module</span> <a name="Pumping"><span class="id" type="module">Pumping</span></a>.<br/>
 
 <br/>
 <span class="id" type="keyword">Fixpoint</span> <a name="Pumping.pumping_constant"><span class="id" type="definition">pumping_constant</span></a> {<span class="id" type="var">T</span>} (<span class="id" type="var">re</span> : <a class="idref" href="IndProp.html#Pumping.reg_exp"><span class="id" type="inductive">reg_exp</span></a> <a class="idref" href="IndProp.html#T"><span class="id" type="variable">T</span></a>) : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> :=<br/>
@@ -2134,12 +2125,10 @@ To streamline the proof (which you are to fill in), the <span class="inlinecode"
 
 <br/>
 <span class="id" type="keyword">End</span> <a class="idref" href="IndProp.html#Pumping"><span class="id" type="module">Pumping</span></a>.<br/>
-
-<br/>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2147,15 +2136,15 @@ To streamline the proof (which you are to fill in), the <span class="inlinecode"
 </div>
 
 <div class="doc">
-<a name="lab220"></a><h1 class="section">Improving Reflection</h1>
+<a name="lab223"></a><h1 class="section">Improving Reflection</h1>
 
 <div class="paragraph"> </div>
 
- We've seen in the <span class="inlinecode"><span class="id" type="var">Logic</span></span> chapter that we often need to
-    relate boolean computations to statements in
-    <span class="inlinecode"><span class="id" type="keyword">Prop</span></span>. Unfortunately, performing this conversion by hand can
-    result in tedious proof scripts. Consider the proof of the
-    following theorem: 
+ We've seen in the <a href="Logic.html"><font color="gray">Logic</font></a> chapter that we often need to
+    relate boolean computations to statements in <span class="inlinecode"><span class="id" type="keyword">Prop</span></span>.
+    Unfortunately, performing this conversion by hand can result in
+    tedious proof scripts.  Consider the proof of the following
+    theorem: 
 </div>
 <div class="code code-tight">
 
@@ -2238,7 +2227,7 @@ The <span class="inlinecode"><span class="id" type="var">reflect</span></span> p
 </div>
 
 <div class="doc">
-<a name="lab221"></a><h4 class="section">Exercise: 2 stars, recommended (reflect_iff)</h4>
+<a name="lab224"></a><h4 class="section">Exercise: 2 stars, recommended (reflect_iff)</h4>
 
 </div>
 <div class="code code-space">
@@ -2248,7 +2237,7 @@ The <span class="inlinecode"><span class="id" type="var">reflect</span></span> p
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  The advantage of <span class="inlinecode"><span class="id" type="var">reflect</span></span> over the normal "if and only if"
@@ -2327,11 +2316,11 @@ Although this technique arguably gives us only a small gain
 </div>
 
 <div class="doc">
-<a name="lab222"></a><h1 class="section">Additional Exercises</h1>
+<a name="lab225"></a><h1 class="section">Additional Exercises</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab223"></a><h4 class="section">Exercise: 4 stars, recommended (palindromes)</h4>
+<a name="lab226"></a><h4 class="section">Exercise: 4 stars, recommended (palindromes)</h4>
  A palindrome is a sequence that reads the same backwards as
     forwards.
 
@@ -2356,7 +2345,7 @@ Although this technique arguably gives us only a small gain
 
 
 </li>
-<li> Prove <span class="inlinecode"><span class="id" type="var">pal_app_rev</span></span> that
+<li> Prove (<span class="inlinecode"><span class="id" type="var">pal_app_rev</span></span>) that
 
 <div class="paragraph"> </div>
 
@@ -2367,7 +2356,7 @@ Although this technique arguably gives us only a small gain
 </div>
 
 </li>
-<li> Prove <span class="inlinecode"><span class="id" type="var">pal_rev</span></span> that
+<li> Prove (<span class="inlinecode"><span class="id" type="var">pal_rev</span></span> that)
 
 <div class="paragraph"> </div>
 
@@ -2388,10 +2377,10 @@ Although this technique arguably gives us only a small gain
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab224"></a><h4 class="section">Exercise: 5 stars, optional (palindrome_converse)</h4>
+<a name="lab227"></a><h4 class="section">Exercise: 5 stars, optional (palindrome_converse)</h4>
  Again, the converse direction is significantly more difficult, due
     to the lack of evidence.  Using your definition of <span class="inlinecode"><span class="id" type="var">pal</span></span> from the
     previous exercise, prove that
@@ -2412,10 +2401,10 @@ Although this technique arguably gives us only a small gain
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab225"></a><h4 class="section">Exercise: 4 stars, advanced (filter_challenge)</h4>
+<a name="lab228"></a><h4 class="section">Exercise: 4 stars, advanced (filter_challenge)</h4>
  Let's prove that our definition of <span class="inlinecode"><span class="id" type="var">filter</span></span> from the <span class="inlinecode"><span class="id" type="var">Poly</span></span>
     chapter matches an abstract specification.  Here is the
     specification, written out informally in English:
@@ -2471,10 +2460,10 @@ Although this technique arguably gives us only a small gain
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab226"></a><h4 class="section">Exercise: 5 stars, advanced, optional (filter_challenge_2)</h4>
+<a name="lab229"></a><h4 class="section">Exercise: 5 stars, advanced, optional (filter_challenge_2)</h4>
  A different way to characterize the behavior of <span class="inlinecode"><span class="id" type="var">filter</span></span> goes like
     this: Among all subsequences of <span class="inlinecode"><span class="id" type="var">l</span></span> with the property that <span class="inlinecode"><span class="id" type="var">test</span></span>
     evaluates to <span class="inlinecode"><span class="id" type="var">true</span></span> on all their members, <span class="inlinecode"><span class="id" type="var">filter</span></span> <span class="inlinecode"><span class="id" type="var">test</span></span> <span class="inlinecode"><span class="id" type="var">l</span></span> is the
@@ -2487,10 +2476,10 @@ Although this technique arguably gives us only a small gain
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab227"></a><h4 class="section">Exercise: 4 stars, advanced (NoDup)</h4>
+<a name="lab230"></a><h4 class="section">Exercise: 4 stars, advanced (NoDup)</h4>
  Recall the definition of the <span class="inlinecode"><span class="id" type="var">In</span></span> property from the <span class="inlinecode"><span class="id" type="var">Logic</span></span>
     chapter, which asserts that a value <span class="inlinecode"><span class="id" type="var">x</span></span> appears at least once in a
     list <span class="inlinecode"><span class="id" type="var">l</span></span>: 
@@ -2548,10 +2537,10 @@ Finally, state and prove one or more interesting theorems relating
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab228"></a><h4 class="section">Exercise: 3 stars, recommended (nostutter)</h4>
+<a name="lab231"></a><h4 class="section">Exercise: 3 stars, recommended (nostutter)</h4>
  Formulating inductive definitions of properties is an important
     skill you'll need in this course.  Try to solve this exercise
     without any help at all.
@@ -2571,8 +2560,6 @@ Finally, state and prove one or more interesting theorems relating
 <span class="id" type="keyword">Inductive</span> <a name="nostutter"><span class="id" type="inductive">nostutter</span></a> {<span class="id" type="var">X</span>:<span class="id" type="keyword">Type</span>} : <a class="idref" href="Poly.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="var">X</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
 &nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
 .<br/>
-
-<br/>
 </div>
 
 <div class="doc">
@@ -2624,10 +2611,10 @@ Make sure each of these tests succeeds, but feel free to change
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab229"></a><h4 class="section">Exercise: 4 stars, advanced (pigeonhole principle)</h4>
+<a name="lab232"></a><h4 class="section">Exercise: 4 stars, advanced (pigeonhole principle)</h4>
  The <i>pigeonhole principle</i> states a basic fact about counting: if
    we distribute more than <span class="inlinecode"><span class="id" type="var">n</span></span> items into <span class="inlinecode"><span class="id" type="var">n</span></span> pigeonholes, some
    pigeonhole must contain at least two items.  As often happens, this
@@ -2693,7 +2680,7 @@ Now, here's a way to formalize the pigeonhole principle.  Suppose
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
   

@@ -1,20 +1,19 @@
 (** * Induction: Proof by Induction *)
 
-(** The next line imports all of our definitions from the
-    previous chapter. *)
+(** First, we import all of our definitions from the previous
+    chapter. *)
 
 Require Export Basics.
 
-(** For it to work, you need to use [coqc] to compile [Basics.v]
-    into [Basics.vo].  This is like making a .class file from a .java
-    file, or a .o file from a .c file.
-
-    Here are two ways to compile your code:
+(** For the [Require Export] to work, you first need to use
+    [coqc] to compile [Basics.v] into [Basics.vo].  This is like
+    making a .class file from a .java file, or a .o file from a .c
+    file.  There are two ways to do it:
 
      - In CoqIDE:
 
-         Open [Basics.v].
-         In the "Compile" menu, click on "Compile Buffer".
+         Open [Basics.v].  In the "Compile" menu, click on "Compile
+         Buffer".
 
      - From the command line:
 
@@ -108,6 +107,11 @@ Proof.
   - (* n = S n' *)
     simpl. rewrite -> IHn'. reflexivity.  Qed.
 
+(** (The use of the [intros] tactic in these proofs is actually
+    redundant.  When applied to a goal that contains quantified
+    variables, the [induction] tactic will automatically move them
+    into the context as needed.) *)
+
 (** **** Exercise: 2 stars, recommended (basic_induction)  *)
 (** Prove the following using induction. You might need previously
     proven results. *)
@@ -117,28 +121,21 @@ Theorem mult_0_r : forall n:nat,
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
 Theorem plus_n_Sm : forall n m : nat, 
   S (n + m) = n + (S m).
 Proof.
   (* FILL IN HERE *) Admitted.
-
-
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
-
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
-
 
 (** **** Exercise: 2 stars (double_plus)  *)
 (** Consider the following function, which doubles its argument: *)
@@ -156,7 +153,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 2 stars, optional (evenb_S)  *)
 (** One inconveninent aspect of our definition of [evenb n] is that it
     may need to perform a recursive call on [n - 2]. This makes proofs
@@ -170,16 +166,13 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 1 star (destruct_induction)  *)
-(** Briefly explain the difference between the tactics
-    [destruct] and [induction].
+(** Briefly explain the difference between the tactics [destruct] 
+    and [induction].
 
 (* FILL IN HERE *)
-
 *)
 (** [] *)
-
 
 (* ###################################################################### *)
 (** * Proofs Within Proofs *)
@@ -266,7 +259,6 @@ Theorem plus_swap : forall n m p : nat,
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
     in the proof of this one.  You may find that [plus_swap] comes in
@@ -277,7 +269,6 @@ Theorem mult_comm : forall m n : nat,
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 (** **** Exercise: 3 stars, optional (more_exercises)  *)
 (** Take a piece of paper.  For each of the following theorems, first
@@ -292,7 +283,6 @@ Theorem leb_refl : forall n:nat,
   true = leb n n.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 
 Theorem zero_nbeq_S : forall n:nat,
   beq_nat 0 (S n) = false.
@@ -309,7 +299,6 @@ Theorem plus_ble_compat_l : forall n m p : nat,
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
 Theorem S_nbeq_0 : forall n:nat,
   beq_nat (S n) 0 = false.
 Proof.
@@ -318,7 +307,6 @@ Proof.
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -340,7 +328,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 2 stars, optional (beq_nat_refl)  *)
 (** Prove the following theorem.  (Putting the [true] on the left-hand
     side of the equality may look odd, but this is how the theorem is
@@ -354,7 +341,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 2 stars, optional (plus_swap')  *)
 (** The [replace] tactic allows you to specify a particular subterm to
    rewrite and what you want it rewritten to: [replace (t) with (u)]
@@ -363,8 +349,7 @@ Proof.
    useful when a plain [rewrite] acts on the wrong part of the goal.
 
    Use the [replace] tactic to do a proof of [plus_swap'], just like
-   [plus_swap] but without needing [assert (n + m = m + n)].
-*)
+   [plus_swap] but without needing [assert (n + m = m + n)]. *)
 
 Theorem plus_swap' : forall n m p : nat,
   n + (m + p) = m + (n + p).
@@ -373,18 +358,21 @@ Proof.
 (** [] *)
 
 (** **** Exercise: 3 stars, recommended (binary_commute)  *)
-(** Recall the [increment] and [binary-to-unary] functions that you
+(** Recall the [incr] and [bin_to_nat] functions that you
     wrote for the [binary] exercise in the [Basics] chapter.  Prove
     that the following diagram commutes:
-             binnat ------- incr ------> binnat
+
+               bin --------- incr -------> bin
                 |                           |
-            bin2unary                    bin2unary
+            bin_to_nat                  bin_to_nat
                 |                           |
                 v                           v
                nat ---------- S ---------> nat
+
     That is, incrementing a binary number and then converting it to 
-    unary yields the same result as first converting it to unary 
-    and then incrementing.  Name your theorem [bin_to_nat_pres_incr].
+    a (unary) natural number yields the same result as first converting
+    it to a natural number and then incrementing.  
+    Name your theorem [bin_to_nat_pres_incr] ("pres" for "preserves").
 
     Before you start working on this exercise, please copy the
     definitions from your solution to the [binary] exercise here so
@@ -394,8 +382,6 @@ Proof.
 
 (* FILL IN HERE *)
 (** [] *)
-
-
 
 (** **** Exercise: 5 stars, advanced (binary_inverse)  *)
 (** This exercise is a continuation of the previous exercise about
@@ -420,8 +406,7 @@ Proof.
         part is tricky!)
 
     Again, feel free to change your earlier definitions if this helps
-    here.
-*)
+    here. *)
 
 (* FILL IN HERE *)
 (** [] *)
@@ -429,7 +414,7 @@ Proof.
 (* ###################################################################### *)
 (** * Formal vs. Informal Proof (Optional) *)
 
-(** #<div class="quote proofs are algorithms; formal proofs are code." *)
+(** "_Informal proofs are algorithms; formal proofs are code_." *)
 
 (** The question of what constitutes a proof of a mathematical
     claim has challenged philosophers for millennia, but a rough and
@@ -504,20 +489,31 @@ Proof.
 
     A (pedantic) mathematician might write the proof something like
     this: *)
+
 (** - _Theorem_: For any [n], [m] and [p],
+
       n + (m + p) = (n + m) + p.
+
     _Proof_: By induction on [n].
 
     - First, suppose [n = 0].  We must show
+
         0 + (m + p) = (0 + m) + p.
+
       This follows directly from the definition of [+].
 
     - Next, suppose [n = S n'], where
+
         n' + (m + p) = (n' + m) + p.
+
       We must show
+
         (S n') + (m + p) = ((S n') + m) + p.
+
       By the definition of [+], this follows from
+
         S (n' + (m + p)) = S ((n' + m) + p),
+
       which is immediate from the induction hypothesis.  _Qed_. *)
 
 
@@ -533,14 +529,13 @@ Proof.
     things stand). *)
 
 (** **** Exercise: 2 stars, advanced, recommended (plus_comm_informal)  *)
-(** Translate your solution for [plus_comm] into an informal proof. *)
+(** Translate your solution for [plus_comm] into an informal proof:
 
-(** Theorem: Addition is commutative.
+    Theorem: Addition is commutative.
 
     Proof: (* FILL IN HERE *)
 *)
 (** [] *)
-
 
 (** **** Exercise: 2 stars, optional (beq_nat_refl_informal)  *)
 (** Write an informal proof of the following theorem, using the
@@ -552,4 +547,4 @@ Proof.
     Proof: (* FILL IN HERE *)
 [] *)
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

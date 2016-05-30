@@ -27,8 +27,8 @@
 
 <div class="paragraph"> </div>
 
- The next line imports all of our definitions from the
-    previous chapter. 
+ First, we import all of our definitions from the previous
+    chapter. 
 </div>
 <div class="code code-tight">
 
@@ -39,13 +39,10 @@
 </div>
 
 <div class="doc">
-For it to work, you need to use <span class="inlinecode"><span class="id" type="var">coqc</span></span> to compile <span class="inlinecode"><span class="id" type="var">Basics.v</span></span>
-    into <span class="inlinecode"><span class="id" type="var">Basics.vo</span></span>.  This is like making a .class file from a .java
-    file, or a .o file from a .c file.
-
-<div class="paragraph"> </div>
-
-    Here are two ways to compile your code:
+For the <span class="inlinecode"><span class="id" type="keyword">Require</span></span> <span class="inlinecode"><span class="id" type="keyword">Export</span></span> to work, you first need to use
+    <span class="inlinecode"><span class="id" type="var">coqc</span></span> to compile <span class="inlinecode"><span class="id" type="var">Basics.v</span></span> into <span class="inlinecode"><span class="id" type="var">Basics.vo</span></span>.  This is like
+    making a .class file from a .java file, or a .o file from a .c
+    file.  There are two ways to do it:
 
 <div class="paragraph"> </div>
 
@@ -54,8 +51,8 @@ For it to work, you need to use <span class="inlinecode"><span class="id" type="
 
 <div class="paragraph"> </div>
 
-         Open <span class="inlinecode"><span class="id" type="var">Basics.v</span></span>.
-         In the "Compile" menu, click on "Compile Buffer".
+         Open <span class="inlinecode"><span class="id" type="var">Basics.v</span></span>.  In the "Compile" menu, click on "Compile
+         Buffer".
 
 <div class="paragraph"> </div>
 
@@ -80,7 +77,7 @@ For it to work, you need to use <span class="inlinecode"><span class="id" type="
 </div>
 
 <div class="doc">
-<a name="lab40"></a><h1 class="section">Proof by Induction</h1>
+<a name="lab41"></a><h1 class="section">Proof by Induction</h1>
 
 <div class="paragraph"> </div>
 
@@ -216,7 +213,13 @@ Like <span class="inlinecode"><span class="id" type="tactic">destruct</span></sp
 </div>
 
 <div class="doc">
-<a name="lab41"></a><h4 class="section">Exercise: 2 stars, recommended (basic_induction)</h4>
+(The use of the <span class="inlinecode"><span class="id" type="tactic">intros</span></span> tactic in these proofs is actually
+    redundant.  When applied to a goal that contains quantified
+    variables, the <span class="inlinecode"><span class="id" type="tactic">induction</span></span> tactic will automatically move them
+    into the context as needed.) 
+<div class="paragraph"> </div>
+
+<a name="lab42"></a><h4 class="section">Exercise: 2 stars, recommended (basic_induction)</h4>
  Prove the following using induction. You might need previously
     proven results. 
 </div>
@@ -248,10 +251,10 @@ Like <span class="inlinecode"><span class="id" type="tactic">destruct</span></sp
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab42"></a><h4 class="section">Exercise: 2 stars (double_plus)</h4>
+<a name="lab43"></a><h4 class="section">Exercise: 2 stars (double_plus)</h4>
  Consider the following function, which doubles its argument: 
 </div>
 <div class="code code-tight">
@@ -278,10 +281,10 @@ Use induction to prove this simple fact about <span class="inlinecode"><span cla
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab43"></a><h4 class="section">Exercise: 2 stars, optional (evenb_S)</h4>
+<a name="lab44"></a><h4 class="section">Exercise: 2 stars, optional (evenb_S)</h4>
  One inconveninent aspect of our definition of <span class="inlinecode"><span class="id" type="var">evenb</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> is that it
     may need to perform a recursive call on <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">-</span> <span class="inlinecode">2</span>. This makes proofs
     about <span class="inlinecode"><span class="id" type="var">evenb</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> harder when done by induction on <span class="inlinecode"><span class="id" type="var">n</span></span>, since we may
@@ -298,20 +301,17 @@ Use induction to prove this simple fact about <span class="inlinecode"><span cla
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab44"></a><h4 class="section">Exercise: 1 star (destruct_induction)</h4>
- Briefly explain the difference between the tactics
-    <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> and <span class="inlinecode"><span class="id" type="tactic">induction</span></span>.
+<a name="lab45"></a><h4 class="section">Exercise: 1 star (destruct_induction)</h4>
+ Briefly explain the difference between the tactics <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> 
+    and <span class="inlinecode"><span class="id" type="tactic">induction</span></span>.
 
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
-
-<div class="paragraph"> </div>
-
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -319,7 +319,7 @@ Use induction to prove this simple fact about <span class="inlinecode"><span cla
 </div>
 
 <div class="doc">
-<a name="lab45"></a><h1 class="section">Proofs Within Proofs</h1>
+<a name="lab46"></a><h1 class="section">Proofs Within Proofs</h1>
 
 <div class="paragraph"> </div>
 
@@ -415,11 +415,11 @@ To get <span class="inlinecode"><span class="id" type="var">plus_comm</span></sp
 </div>
 
 <div class="doc">
-<a name="lab46"></a><h1 class="section">More Exercises</h1>
+<a name="lab47"></a><h1 class="section">More Exercises</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab47"></a><h4 class="section">Exercise: 3 stars, recommended (mult_comm)</h4>
+<a name="lab48"></a><h4 class="section">Exercise: 3 stars, recommended (mult_comm)</h4>
  Use <span class="inlinecode"><span class="id" type="tactic">assert</span></span> to help prove this theorem.  You shouldn't need to
     use induction on <span class="inlinecode"><span class="id" type="var">plus_swap</span></span>. 
 </div>
@@ -450,10 +450,10 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab48"></a><h4 class="section">Exercise: 3 stars, optional (more_exercises)</h4>
+<a name="lab49"></a><h4 class="section">Exercise: 3 stars, optional (more_exercises)</h4>
  Take a piece of paper.  For each of the following theorems, first
     <i>think</i> about whether (a) it can be proved using only
     simplification and rewriting, (b) it also requires case
@@ -523,10 +523,10 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab49"></a><h4 class="section">Exercise: 2 stars, optional (beq_nat_refl)</h4>
+<a name="lab50"></a><h4 class="section">Exercise: 2 stars, optional (beq_nat_refl)</h4>
  Prove the following theorem.  (Putting the <span class="inlinecode"><span class="id" type="var">true</span></span> on the left-hand
     side of the equality may look odd, but this is how the theorem is
     stated in the Coq standard library, so we follow suit.  Rewriting
@@ -543,10 +543,10 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab50"></a><h4 class="section">Exercise: 2 stars, optional (plus_swap')</h4>
+<a name="lab51"></a><h4 class="section">Exercise: 2 stars, optional (plus_swap')</h4>
  The <span class="inlinecode"><span class="id" type="tactic">replace</span></span> tactic allows you to specify a particular subterm to
    rewrite and what you want it rewritten to: <span class="inlinecode"><span class="id" type="tactic">replace</span></span> <span class="inlinecode">(<span class="id" type="var">t</span>)</span> <span class="inlinecode"><span class="id" type="keyword">with</span></span> <span class="inlinecode">(<span class="id" type="var">u</span>)</span>
    replaces (all copies of) expression <span class="inlinecode"><span class="id" type="var">t</span></span> in the goal by expression
@@ -556,8 +556,7 @@ Now prove commutativity of multiplication.  (You will probably
 <div class="paragraph"> </div>
 
    Use the <span class="inlinecode"><span class="id" type="tactic">replace</span></span> tactic to do a proof of <span class="inlinecode"><span class="id" type="var">plus_swap'</span></span>, just like
-   <span class="inlinecode"><span class="id" type="var">plus_swap</span></span> but without needing <span class="inlinecode"><span class="id" type="tactic">assert</span></span> <span class="inlinecode">(<span class="id" type="var">n</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">m</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">m</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">n</span>)</span>.
-
+   <span class="inlinecode"><span class="id" type="var">plus_swap</span></span> but without needing <span class="inlinecode"><span class="id" type="tactic">assert</span></span> <span class="inlinecode">(<span class="id" type="var">n</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">m</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">m</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" type="var">n</span>)</span>. 
 </div>
 <div class="code code-tight">
 
@@ -569,20 +568,20 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab51"></a><h4 class="section">Exercise: 3 stars, recommended (binary_commute)</h4>
- Recall the <span class="inlinecode"><span class="id" type="var">increment</span></span> and <span class="inlinecode"><span class="id" type="var">binary</span>-<span class="id" type="var">to</span>-<span class="id" type="var">unary</span></span> functions that you
-    wrote for the <span class="inlinecode"><span class="id" type="var">binary</span></span> exercise in the <span class="inlinecode"><span class="id" type="var">Basics</span></span> chapter.  Prove
+<a name="lab52"></a><h4 class="section">Exercise: 3 stars, recommended (binary_commute)</h4>
+ Recall the <span class="inlinecode"><span class="id" type="var">incr</span></span> and <span class="inlinecode"><span class="id" type="var">bin_to_nat</span></span> functions that you
+    wrote for the <span class="inlinecode"><span class="id" type="var">binary</span></span> exercise in the <a href="Basics.html"><font color="gray">Basics</font></a> chapter.  Prove
     that the following diagram commutes:
 
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">binnat</span>&nbsp;-------&nbsp;<span class="id" type="var">incr</span>&nbsp;------&gt;&nbsp;<span class="id" type="var">binnat</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">bin</span>&nbsp;---------&nbsp;<span class="id" type="var">incr</span>&nbsp;-------&gt;&nbsp;<span class="id" type="var">bin</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">bin2unary</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">bin2unary</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">bin_to_nat</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">bin_to_nat</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">v</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">v</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">nat</span>&nbsp;----------&nbsp;<span class="id" type="var">S</span>&nbsp;---------&gt;&nbsp;<span class="id" type="var">nat</span>
@@ -590,8 +589,9 @@ Now prove commutativity of multiplication.  (You will probably
 
 </div>
     That is, incrementing a binary number and then converting it to 
-    unary yields the same result as first converting it to unary 
-    and then incrementing.  Name your theorem <span class="inlinecode"><span class="id" type="var">bin_to_nat_pres_incr</span></span>.
+    a (unary) natural number yields the same result as first converting
+    it to a natural number and then incrementing.  
+    Name your theorem <span class="inlinecode"><span class="id" type="var">bin_to_nat_pres_incr</span></span> ("pres" for "preserves").
 
 <div class="paragraph"> </div>
 
@@ -608,10 +608,10 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab52"></a><h4 class="section">Exercise: 5 stars, advanced (binary_inverse)</h4>
+<a name="lab53"></a><h4 class="section">Exercise: 5 stars, advanced (binary_inverse)</h4>
  This exercise is a continuation of the previous exercise about
     binary numbers.  You will need your definitions and theorems from
     there to complete this one.
@@ -642,8 +642,7 @@ Now prove commutativity of multiplication.  (You will probably
 <div class="paragraph"> </div>
 
     Again, feel free to change your earlier definitions if this helps
-    here.
-
+    here. 
 </div>
 <div class="code code-tight">
 
@@ -652,7 +651,7 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -660,31 +659,36 @@ Now prove commutativity of multiplication.  (You will probably
 </div>
 
 <div class="doc">
-<a name="lab53"></a><h1 class="section">Formal vs. Informal Proof (Optional)</h1>
+<a name="lab54"></a><h1 class="section">Formal vs. Informal Proof (Optional)</h1>
 
 <div class="paragraph"> </div>
 
- <div class="quote proofs are algorithms; formal proofs are code."&lt;/div&gt; *)
+ <div class="quote">"<i>Informal proofs are algorithms; formal proofs are code</i>."</div> 
+<div class="paragraph"> </div>
 
-(** The question of what constitutes a proof of a mathematical
+ The question of what constitutes a proof of a mathematical
     claim has challenged philosophers for millennia, but a rough and
     ready definition could be this: A proof of a mathematical
-    proposition [P] is a written (or spoken) text that instills in the
-    reader or hearer the certainty that [P] is true.  That is, a proof
+    proposition <span class="inlinecode"><span class="id" type="var">P</span></span> is a written (or spoken) text that instills in the
+    reader or hearer the certainty that <span class="inlinecode"><span class="id" type="var">P</span></span> is true.  That is, a proof
     is an act of communication.
+
+<div class="paragraph"> </div>
 
     Acts of communication may involve different sorts of readers.  On
     one hand, the "reader" can be a program like Coq, in which case
-    the "belief" that is instilled is that [P] can be mechanically
+    the "belief" that is instilled is that <span class="inlinecode"><span class="id" type="var">P</span></span> can be mechanically
     derived from a certain set of formal logical rules, and the proof
     is a recipe that guides the program in checking this fact.  Such
-    recipes are _formal_ proofs.
+    recipes are <i>formal</i> proofs.
+
+<div class="paragraph"> </div>
 
     Alternatively, the reader can be a human being, in which case the
     proof will be written in English or some other natural language,
-    and will thus necessarily be _informal_.  Here, the criteria for
+    and will thus necessarily be <i>informal</i>.  Here, the criteria for
     success are less clearly specified.  A "valid" proof is one that
-    makes the reader believe [P].  But the same proof may be read by
+    makes the reader believe <span class="inlinecode"><span class="id" type="var">P</span></span>.  But the same proof may be read by
     many different readers, some of whom may be convinced by a
     particular way of phrasing the argument, while others may not be.
     Some readers may be particularly pedantic, inexperienced, or just
@@ -698,107 +702,180 @@ Now prove commutativity of multiplication.  (You will probably
     single way of writing an informal proof that is guaranteed to
     convince every conceivable reader.
 
+<div class="paragraph"> </div>
+
     In practice, however, mathematicians have developed a rich set of
     conventions and idioms for writing about complex mathematical
-    objects that -- at least within a certain community -- make
+    objects that &mdash; at least within a certain community &mdash; make
     communication fairly reliable.  The conventions of this stylized
     form of communication give a fairly clear standard for judging
     proofs good or bad.
 
+<div class="paragraph"> </div>
+
     Because we are using Coq in this course, we will be working
     heavily with formal proofs.  But this doesn't mean we can
     completely forget about informal ones!  Formal proofs are useful
-    in many ways, but they are _not_ very efficient ways of
-    communicating ideas between human beings. *)
+    in many ways, but they are <i>not</i> very efficient ways of
+    communicating ideas between human beings. 
+<div class="paragraph"> </div>
 
-(** For example, here is a proof that addition is associative: *)
+ For example, here is a proof that addition is associative: 
+</div>
+<div class="code code-tight">
 
-Theorem plus_assoc' : forall n m p : nat,
-  n + (m + p) = (n + m) + p.
-Proof. intros n m p. induction n as [| n' IHn']. reflexivity.
-  simpl. rewrite -> IHn'. reflexivity.  Qed.
+<br/>
+<span class="id" type="keyword">Theorem</span> <a name="plus_assoc'"><span class="id" type="lemma">plus_assoc'</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">n</span> <span class="id" type="var">m</span> <span class="id" type="var">p</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>,<br/>
+&nbsp;&nbsp;<a class="idref" href="Induction.html#n"><span class="id" type="variable">n</span></a> + (<a class="idref" href="Induction.html#m"><span class="id" type="variable">m</span></a> + <a class="idref" href="Induction.html#p"><span class="id" type="variable">p</span></a>) = (<a class="idref" href="Induction.html#n"><span class="id" type="variable">n</span></a> + <a class="idref" href="Induction.html#m"><span class="id" type="variable">m</span></a>) + <a class="idref" href="Induction.html#p"><span class="id" type="variable">p</span></a>.<br/>
+<span class="id" type="keyword">Proof</span>. <span class="id" type="tactic">intros</span> <span class="id" type="var">n</span> <span class="id" type="var">m</span> <span class="id" type="var">p</span>. <span class="id" type="tactic">induction</span> <span class="id" type="var">n</span> <span class="id" type="keyword">as</span> [| <span class="id" type="var">n'</span> <span class="id" type="var">IHn'</span>]. <span class="id" type="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">rewrite</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">IHn'</span>. <span class="id" type="tactic">reflexivity</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
-(** Coq is perfectly happy with this.  For a human, however, it
+<br/>
+</div>
+
+<div class="doc">
+Coq is perfectly happy with this.  For a human, however, it
     is difficult to make much sense of it.  We can use comments and
-    bullets to show the structure a little more clearly... *)
+    bullets to show the structure a little more clearly... 
+</div>
+<div class="code code-tight">
 
-Theorem plus_assoc'' : forall n m p : nat,
-  n + (m + p) = (n + m) + p.
-Proof.
-  intros n m p. induction n as [| n' IHn'].
-  - (* n = 0 *)
-    reflexivity.
-  - (* n = S n' *)
-    simpl. rewrite -> IHn'. reflexivity.   Qed.
+<br/>
+<span class="id" type="keyword">Theorem</span> <a name="plus_assoc''"><span class="id" type="lemma">plus_assoc''</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">n</span> <span class="id" type="var">m</span> <span class="id" type="var">p</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>,<br/>
+&nbsp;&nbsp;<a class="idref" href="Induction.html#n"><span class="id" type="variable">n</span></a> + (<a class="idref" href="Induction.html#m"><span class="id" type="variable">m</span></a> + <a class="idref" href="Induction.html#p"><span class="id" type="variable">p</span></a>) = (<a class="idref" href="Induction.html#n"><span class="id" type="variable">n</span></a> + <a class="idref" href="Induction.html#m"><span class="id" type="variable">m</span></a>) + <a class="idref" href="Induction.html#p"><span class="id" type="variable">p</span></a>.<br/>
+<span class="id" type="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">n</span> <span class="id" type="var">m</span> <span class="id" type="var">p</span>. <span class="id" type="tactic">induction</span> <span class="id" type="var">n</span> <span class="id" type="keyword">as</span> [| <span class="id" type="var">n'</span> <span class="id" type="var">IHn'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;n&nbsp;=&nbsp;0&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;n&nbsp;=&nbsp;S&nbsp;n'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">simpl</span>. <span class="id" type="tactic">rewrite</span> <span style="font-family: arial;">&rarr;</span> <span class="id" type="var">IHn'</span>. <span class="id" type="tactic">reflexivity</span>. <span class="id" type="keyword">Qed</span>.<br/>
 
-(** ... and if you're used to Coq you may be able to step
+<br/>
+</div>
+
+<div class="doc">
+... and if you're used to Coq you may be able to step
     through the tactics one after the other in your mind and imagine
     the state of the context and goal stack at each point, but if the
     proof were even a little bit more complicated this would be next
     to impossible.
 
+<div class="paragraph"> </div>
+
     A (pedantic) mathematician might write the proof something like
-    this: *)
-(** - _Theorem_: For any [n], [m] and [p],
-[[
-      n + (m + p) = (n + m) + p.
-]]
-    _Proof_: By induction on [n].
+    this: 
+<div class="paragraph"> </div>
 
-    - First, suppose [n = 0].  We must show
-[[
-        0 + (m + p) = (0 + m) + p.
-]]
-      This follows directly from the definition of [+].
 
-    - Next, suppose [n = S n'], where
-[[
-        n' + (m + p) = (n' + m) + p.
-]]
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> <i>Theorem</i>: For any <span class="inlinecode"><span class="id" type="var">n</span></span>, <span class="inlinecode"><span class="id" type="var">m</span></span> and <span class="inlinecode"><span class="id" type="var">p</span></span>,
+
+<div class="paragraph"> </div>
+
+<div class="code code-tight">
+&nbsp;&nbsp;&nbsp;<span class="id" type="var">n</span>&nbsp;+&nbsp;(<span class="id" type="var">m</span>&nbsp;+&nbsp;<span class="id" type="var">p</span>)&nbsp;=&nbsp;(<span class="id" type="var">n</span>&nbsp;+&nbsp;<span class="id" type="var">m</span>)&nbsp;+&nbsp;<span class="id" type="var">p</span>.
+<div class="paragraph"> </div>
+
+</div>
+    <i>Proof</i>: By induction on <span class="inlinecode"><span class="id" type="var">n</span></span>.
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> First, suppose <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">=</span> <span class="inlinecode">0</span>.  We must show
+
+<div class="paragraph"> </div>
+
+<div class="code code-tight">
+&nbsp;&nbsp;0&nbsp;+&nbsp;(<span class="id" type="var">m</span>&nbsp;+&nbsp;<span class="id" type="var">p</span>)&nbsp;=&nbsp;(0&nbsp;+&nbsp;<span class="id" type="var">m</span>)&nbsp;+&nbsp;<span class="id" type="var">p</span>.
+<div class="paragraph"> </div>
+
+</div>
+      This follows directly from the definition of <span class="inlinecode">+</span>.
+
+<div class="paragraph"> </div>
+
+
+</li>
+<li> Next, suppose <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span class="id" type="var">n'</span></span>, where
+
+<div class="paragraph"> </div>
+
+<div class="code code-tight">
+&nbsp;&nbsp;<span class="id" type="var">n'</span>&nbsp;+&nbsp;(<span class="id" type="var">m</span>&nbsp;+&nbsp;<span class="id" type="var">p</span>)&nbsp;=&nbsp;(<span class="id" type="var">n'</span>&nbsp;+&nbsp;<span class="id" type="var">m</span>)&nbsp;+&nbsp;<span class="id" type="var">p</span>.
+<div class="paragraph"> </div>
+
+</div>
       We must show
-[[
-        (S n') + (m + p) = ((S n') + m) + p.
-]]
-      By the definition of [+], this follows from
-[[
-        S (n' + (m + p)) = S ((n' + m) + p),
-]]
-      which is immediate from the induction hypothesis.  _Qed_. *)
 
+<div class="paragraph"> </div>
 
-(** The overall form of the proof is basically similar, and of
+<div class="code code-tight">
+&nbsp;&nbsp;(<span class="id" type="var">S</span>&nbsp;<span class="id" type="var">n'</span>)&nbsp;+&nbsp;(<span class="id" type="var">m</span>&nbsp;+&nbsp;<span class="id" type="var">p</span>)&nbsp;=&nbsp;((<span class="id" type="var">S</span>&nbsp;<span class="id" type="var">n'</span>)&nbsp;+&nbsp;<span class="id" type="var">m</span>)&nbsp;+&nbsp;<span class="id" type="var">p</span>.
+<div class="paragraph"> </div>
+
+</div>
+      By the definition of <span class="inlinecode">+</span>, this follows from
+
+<div class="paragraph"> </div>
+
+<div class="code code-tight">
+&nbsp;&nbsp;<span class="id" type="var">S</span>&nbsp;(<span class="id" type="var">n'</span>&nbsp;+&nbsp;(<span class="id" type="var">m</span>&nbsp;+&nbsp;<span class="id" type="var">p</span>))&nbsp;=&nbsp;<span class="id" type="var">S</span>&nbsp;((<span class="id" type="var">n'</span>&nbsp;+&nbsp;<span class="id" type="var">m</span>)&nbsp;+&nbsp;<span class="id" type="var">p</span>),
+<div class="paragraph"> </div>
+
+</div>
+      which is immediate from the induction hypothesis.  <i>Qed</i>. 
+</li>
+</ul>
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+ The overall form of the proof is basically similar, and of
     course this is no accident: Coq has been designed so that its
-    [induction] tactic generates the same sub-goals, in the same
+    <span class="inlinecode"><span class="id" type="tactic">induction</span></span> tactic generates the same sub-goals, in the same
     order, as the bullet points that a mathematician would write.  But
     there are significant differences of detail: the formal proof is
-    much more explicit in some ways (e.g., the use of [reflexivity])
+    much more explicit in some ways (e.g., the use of <span class="inlinecode"><span class="id" type="tactic">reflexivity</span></span>)
     but much less explicit in others (in particular, the "proof state"
     at any given point in the Coq proof is completely implicit,
     whereas the informal proof reminds the reader several times where
-    things stand). *)
+    things stand). 
+<div class="paragraph"> </div>
 
-(** **** Exercise: 2 stars, advanced, recommended (plus_comm_informal)  *)
-(** Translate your solution for [plus_comm] into an informal proof. *)
+<a name="lab55"></a><h4 class="section">Exercise: 2 stars, advanced, recommended (plus_comm_informal)</h4>
+ Translate your solution for <span class="inlinecode"><span class="id" type="var">plus_comm</span></span> into an informal proof:
 
-(** Theorem: Addition is commutative.
+<div class="paragraph"> </div>
 
-    Proof: (* FILL IN HERE *)
-*)
-(** [] *)
+    Theorem: Addition is commutative.
 
+<div class="paragraph"> </div>
 
-(** **** Exercise: 2 stars, optional (beq_nat_refl_informal)  *)
-(** Write an informal proof of the following theorem, using the
-    informal proof of [plus_assoc] as a model.  Don't just
+    Proof: <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
+<div class="paragraph"> </div>
+
+<a name="lab56"></a><h4 class="section">Exercise: 2 stars, optional (beq_nat_refl_informal)</h4>
+ Write an informal proof of the following theorem, using the
+    informal proof of <span class="inlinecode"><span class="id" type="var">plus_assoc</span></span> as a model.  Don't just
     paraphrase the Coq tactics into English!
 
-    Theorem: [true = beq_nat n n] for any [n].
+<div class="paragraph"> </div>
 
-    Proof: (* FILL IN HERE *)
-[] *)
+    Theorem: <span class="inlinecode"><span class="id" type="var">true</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">beq_nat</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> <span class="inlinecode"><span class="id" type="var">n</span></span> for any <span class="inlinecode"><span class="id" type="var">n</span></span>.
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+<div class="paragraph"> </div>
 
+    Proof: <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
+<div class="paragraph"> </div>
+
+  
 </div>
 <div class="code code-tight">
 </div>

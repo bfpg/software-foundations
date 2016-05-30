@@ -1,7 +1,5 @@
 (** * Tactics: More Basic Tactics *)
 
-Require Export Poly.
-
 (** This chapter introduces several more proof strategies and
     tactics that allow us to prove more interesting properties of
     functional programs.  We will see:
@@ -12,8 +10,9 @@ Require Export Poly.
       the fact that they are injective and disjoint);
     - how to create a strong induction hypothesis (and when such
       strengthening is required); and
-    - more details on how to reason by case analysis.
- *)
+    - more details on how to reason by case analysis. *)
+
+Require Export Poly.
 
 (* ###################################################### *)
 (** * The [apply] Tactic *)
@@ -129,7 +128,6 @@ Proof.
 *)
 (** [] *)
 
-
 (* ###################################################### *)
 (** * The [apply ... with ...] Tactic *)
 
@@ -188,14 +186,15 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (* ###################################################### *)
-(** * The [inversion] tactic *)
+(** * The [inversion] Tactic *)
 
 (** Recall the definition of natural numbers:
+
      Inductive nat : Type :=
        | O : nat
        | S : nat -> nat.
+
     It is obvious from this definition that every number has one of
     two forms: either it is the constructor [O] or it is built by
     applying the constructor [S] to another number.  But there is more
@@ -338,7 +337,9 @@ Proof.
 
 (** To summarize this discussion, suppose [H] is a hypothesis in the
     context or a previously proven lemma of the form
+
       c a1 a2 ... an = d b1 b2 ... bm
+
     for some constructors [c] and [d] and arguments [a1 ... an] and
     [b1 ... bm].  Then [inversion H] has the following effect:
 
@@ -426,12 +427,18 @@ Proof.
     before invoking the [induction] tactic.  For example, suppose
     we want to show that the [double] function is injective -- i.e.,
     that it always maps different arguments to different results:
+
     Theorem double_injective: forall n m, 
       double n = double m -> n = m.
+
     The way we _start_ this proof is a bit delicate: if we begin with
+
       intros n. induction n.
+
     all is well.  But if we begin it with
+
       intros n m. induction n.
+
     we get stuck in the middle of the inductive case... *)
 
 Theorem double_injective_FAILED : forall n m,
@@ -714,7 +721,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 3 stars, optional (double_induction)  *)
 (** Prove the following principle of induction over two naturals. *)
 
@@ -728,17 +734,16 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (* ###################################################### *)
 (** * Unfolding Definitions *)
 
 (** It sometimes happens that we need to manually unfold a Definition
     so that we can manipulate its right-hand side.  For example, if we
-    define *)
+    define... *)
 
 Definition square n := n * n.
 
-(** and try to prove a simple fact about [square]... *)
+(** ... and try to prove a simple fact about [square]... *)
 
 Lemma square_mult : forall n m, square (n * m) = square n * square m.
 Proof.
@@ -766,8 +771,8 @@ Proof.
   rewrite H. rewrite mult_assoc. reflexivity.
 Qed.
 
-(** At this point, a slightly deeper discussion of unfolding and
-    simplification is in order.
+(** At this point, a deeper discussion of unfolding and simplification
+    is in order.
 
     You may already have observed that tactics like [simpl],
     [reflexivity], and [apply] will often unfold the definitions of
@@ -923,7 +928,7 @@ Abort.
 
 (** We get stuck at this point because the context does not
     contain enough information to prove the goal!  The problem is that
-    the substitution peformed by [destruct] is too brutal -- it threw
+    the substitution performed by [destruct] is too brutal -- it threw
     away every occurrence of [beq_nat n 3], but we need to keep some
     memory of this expression and how it was destructed, because we
     need to be able to reason that, since [beq_nat n 3 = true] in this
@@ -1028,8 +1033,7 @@ Proof.
 
       - [generalize dependent x]: move the variable [x] (and anything
         else that depends on it) from the context back to an explicit
-        hypothesis in the goal formula
-*)
+        hypothesis in the goal formula *)
 
 (* ###################################################### *)
 (** * Additional Exercises *)
@@ -1050,7 +1054,7 @@ Proof.
    Proof:
    (* FILL IN HERE *)
 []
- *)
+*)
 
 (** **** Exercise: 3 stars, optional (beq_nat_trans)  *)
 Theorem beq_nat_trans : forall n m p,
@@ -1082,7 +1086,6 @@ Proof.
 (* FILL IN HERE *) Admitted.
 
 
-
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (filter_exercise)  *)
@@ -1101,6 +1104,7 @@ Proof.
 (** Define two recursive [Fixpoints], [forallb] and [existsb].  The
     first checks whether every element in a list satisfies a given
     predicate:
+
       forallb oddb [1;3;5;7;9] = true
 
       forallb negb [false;false] = true
@@ -1108,8 +1112,10 @@ Proof.
       forallb evenb [0;2;4;5] = false
 
       forallb (beq_nat 5) [] = true
+
     The second checks whether there exists an element in the list that
     satisfies a given predicate:
+
       existsb (beq_nat 5) [0;2;3;6] = false
 
       existsb (andb true) [true;true;false] = true
@@ -1117,16 +1123,16 @@ Proof.
       existsb oddb [1;0;0;0;0;3] = true
 
       existsb evenb [] = false
+
     Next, define a _nonrecursive_ version of [existsb] -- call it
     [existsb'] -- using [forallb] and [negb].
 
     Finally, prove a theorem [existsb_existsb'] stating that
-    [existsb'] and [existsb] have the same behavior.
-*)
+    [existsb'] and [existsb] have the same behavior. *)
 
 (* FILL IN HERE *)
 (** [] *)
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 
 

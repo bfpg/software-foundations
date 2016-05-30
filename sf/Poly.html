@@ -37,7 +37,7 @@
 </div>
 
 <div class="doc">
-<a name="lab90"></a><h1 class="section">Polymorphism</h1>
+<a name="lab93"></a><h1 class="section">Polymorphism</h1>
 
 <div class="paragraph"> </div>
 
@@ -45,8 +45,7 @@
     concepts of functional programming.  The critical new ideas are
     <i>polymorphism</i> (abstracting functions over the types of the data
     they manipulate) and <i>higher-order functions</i> (treating functions
-    as data).  We begin with polymorphism.
-
+    as data).  We begin with polymorphism. 
 </div>
 <div class="code code-tight">
 
@@ -54,7 +53,7 @@
 </div>
 
 <div class="doc">
-<a name="lab91"></a><h2 class="section">Polymorphic Lists</h2>
+<a name="lab94"></a><h2 class="section">Polymorphic Lists</h2>
 
 <div class="paragraph"> </div>
 
@@ -106,9 +105,10 @@ This is exactly like the definition of <span class="inlinecode"><span class="id"
     <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">X</span></span>.  (We can re-use the constructor names <span class="inlinecode"><span class="id" type="var">nil</span></span> and <span class="inlinecode"><span class="id" type="var">cons</span></span>
     because the earlier definition of <span class="inlinecode"><span class="id" type="var">natlist</span></span> was inside of a
     <span class="inlinecode"><span class="id" type="keyword">Module</span></span> definition that is now out of scope.) 
+
 <div class="paragraph"> </div>
 
- What sort of thing is <span class="inlinecode"><span class="id" type="var">list</span></span> itself?  One good way to think
+    What sort of thing is <span class="inlinecode"><span class="id" type="var">list</span></span> itself?  One good way to think
     about it is that <span class="inlinecode"><span class="id" type="var">list</span></span> is a <i>function</i> from <span class="inlinecode"><span class="id" type="keyword">Type</span></span>s to
     <span class="inlinecode"><span class="id" type="keyword">Inductive</span></span> definitions; or, to put it another way, <span class="inlinecode"><span class="id" type="var">list</span></span> is a
     function from <span class="inlinecode"><span class="id" type="keyword">Type</span></span>s to <span class="inlinecode"><span class="id" type="keyword">Type</span></span>s.  For any particular type <span class="inlinecode"><span class="id" type="var">X</span></span>,
@@ -210,7 +210,7 @@ To use <span class="inlinecode"><span class="id" type="tactic">repeat</span></sp
 </div>
 
 <div class="doc">
-<a name="lab92"></a><h4 class="section">Exercise: 2 stars (mumble_grumble)</h4>
+<a name="lab95"></a><h4 class="section">Exercise: 2 stars (mumble_grumble)</h4>
  Consider the following two inductively defined types. 
 </div>
 <div class="code code-tight">
@@ -259,7 +259,7 @@ Which of the following are well-typed elements of <span class="inlinecode"><span
 </li>
 </ul>
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -270,7 +270,7 @@ Which of the following are well-typed elements of <span class="inlinecode"><span
 </div>
 
 <div class="doc">
-<a name="lab93"></a><h3 class="section">Type Annotation Inference</h3>
+<a name="lab96"></a><h3 class="section">Type Annotation Inference</h3>
 
 <div class="paragraph"> </div>
 
@@ -329,7 +329,7 @@ It has exactly the same type type as <span class="inlinecode"><span class="id" t
 </div>
 
 <div class="doc">
-<a name="lab94"></a><h3 class="section">Type Argument Synthesis</h3>
+<a name="lab97"></a><h3 class="section">Type Argument Synthesis</h3>
 
 <div class="paragraph"> </div>
 
@@ -423,7 +423,7 @@ In this instance, we don't save much by writing <span class="inlinecode"><span c
 </div>
 
 <div class="doc">
-<a name="lab95"></a><h3 class="section">Implicit Arguments</h3>
+<a name="lab98"></a><h3 class="section">Implicit Arguments</h3>
 
 <div class="paragraph"> </div>
 
@@ -634,11 +634,11 @@ Now lists can be written just the way we'd hope:
 </div>
 
 <div class="doc">
-<a name="lab96"></a><h3 class="section">Exercises</h3>
+<a name="lab99"></a><h3 class="section">Exercises</h3>
 
 <div class="paragraph"> </div>
 
-<a name="lab97"></a><h4 class="section">Exercise: 2 stars, optional (poly_exercises)</h4>
+<a name="lab100"></a><h4 class="section">Exercise: 2 stars, optional (poly_exercises)</h4>
  Here are a few simple exercises, just like ones in the <span class="inlinecode"><span class="id" type="var">Lists</span></span>
     chapter, for practice with polymorphism.  Complete the proofs below. 
 </div>
@@ -664,10 +664,10 @@ Now lists can be written just the way we'd hope:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab98"></a><h4 class="section">Exercise: 2 stars, optional (more_poly_exercises)</h4>
+<a name="lab101"></a><h4 class="section">Exercise: 2 stars, optional (more_poly_exercises)</h4>
  Here are some slightly more interesting ones... 
 </div>
 <div class="code code-tight">
@@ -686,7 +686,7 @@ Now lists can be written just the way we'd hope:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -694,7 +694,7 @@ Now lists can be written just the way we'd hope:
 </div>
 
 <div class="doc">
-<a name="lab99"></a><h2 class="section">Polymorphic Pairs</h2>
+<a name="lab102"></a><h2 class="section">Polymorphic Pairs</h2>
 
 <div class="paragraph"> </div>
 
@@ -791,7 +791,7 @@ The following function takes two lists and combines them
 </div>
 
 <div class="doc">
-<a name="lab100"></a><h4 class="section">Exercise: 1 star, optional (combine_checks)</h4>
+<a name="lab103"></a><h4 class="section">Exercise: 1 star, optional (combine_checks)</h4>
  Try answering the following questions on paper and
     checking your answers in coq:
 
@@ -811,14 +811,13 @@ The following function takes two lists and combines them
 <div class="paragraph"> </div>
 
 </div>
-      print?   <font size=-2>&#9744;</font>
-
+      print?   <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
 <div class="paragraph"> </div>
 
-<a name="lab101"></a><h4 class="section">Exercise: 2 stars, recommended (split)</h4>
+<a name="lab104"></a><h4 class="section">Exercise: 2 stars, recommended (split)</h4>
  The function <span class="inlinecode"><span class="id" type="tactic">split</span></span> is the right inverse of <span class="inlinecode"><span class="id" type="var">combine</span></span>: it takes a
     list of pairs and returns a pair of lists.  In many functional
     languages, it is called <span class="inlinecode"><span class="id" type="var">unzip</span></span>.
@@ -843,7 +842,7 @@ The following function takes two lists and combines them
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -851,7 +850,7 @@ The following function takes two lists and combines them
 </div>
 
 <div class="doc">
-<a name="lab102"></a><h2 class="section">Polymorphic Options</h2>
+<a name="lab105"></a><h2 class="section">Polymorphic Options</h2>
 
 <div class="paragraph"> </div>
 
@@ -907,7 +906,7 @@ We can now rewrite the <span class="inlinecode"><span class="id" type="var">nth_
 </div>
 
 <div class="doc">
-<a name="lab103"></a><h4 class="section">Exercise: 1 star, optional (hd_error_poly)</h4>
+<a name="lab106"></a><h4 class="section">Exercise: 1 star, optional (hd_error_poly)</h4>
  Complete the definition of a polymorphic version of the
     <span class="inlinecode"><span class="id" type="var">hd_error</span></span> function from the last chapter. Be sure that it
     passes the unit tests below. 
@@ -938,7 +937,7 @@ Once again, to force the implicit arguments to be explicit,
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -946,7 +945,7 @@ Once again, to force the implicit arguments to be explicit,
 </div>
 
 <div class="doc">
-<a name="lab104"></a><h1 class="section">Functions as Data</h1>
+<a name="lab107"></a><h1 class="section">Functions as Data</h1>
 
 <div class="paragraph"> </div>
 
@@ -962,7 +961,7 @@ Once again, to force the implicit arguments to be explicit,
 </div>
 
 <div class="doc">
-<a name="lab105"></a><h2 class="section">Higher-Order Functions</h2>
+<a name="lab108"></a><h2 class="section">Higher-Order Functions</h2>
 
 <div class="paragraph"> </div>
 
@@ -1001,7 +1000,7 @@ The argument <span class="inlinecode"><span class="id" type="var">f</span></span
 </div>
 
 <div class="doc">
-<a name="lab106"></a><h2 class="section">Filter</h2>
+<a name="lab109"></a><h2 class="section">Filter</h2>
 
 <div class="paragraph"> </div>
 
@@ -1051,7 +1050,7 @@ For example, if we apply <span class="inlinecode"><span class="id" type="var">fi
 
 <div class="doc">
 We can use <span class="inlinecode"><span class="id" type="var">filter</span></span> to give a concise version of the
-    <span class="inlinecode"><span class="id" type="var">countoddmembers</span></span> function from the <span class="inlinecode"><span class="id" type="var">Lists</span></span> chapter. 
+    <span class="inlinecode"><span class="id" type="var">countoddmembers</span></span> function from the <a href="Lists.html"><font color="gray">Lists</font></a> chapter. 
 </div>
 <div class="code code-tight">
 
@@ -1071,7 +1070,7 @@ We can use <span class="inlinecode"><span class="id" type="var">filter</span></s
 </div>
 
 <div class="doc">
-<a name="lab107"></a><h2 class="section">Anonymous Functions</h2>
+<a name="lab110"></a><h2 class="section">Anonymous Functions</h2>
 
 <div class="paragraph"> </div>
 
@@ -1121,7 +1120,7 @@ The expression <span class="inlinecode">(<span class="id" type="keyword">fun</sp
 </div>
 
 <div class="doc">
-<a name="lab108"></a><h4 class="section">Exercise: 2 stars (filter_even_gt<sub>7</sub>)</h4>
+<a name="lab111"></a><h4 class="section">Exercise: 2 stars (filter_even_gt<sub>7</sub>)</h4>
  Use <span class="inlinecode"><span class="id" type="var">filter</span></span> (instead of <span class="inlinecode"><span class="id" type="keyword">Fixpoint</span></span>) to write a Coq function
     <span class="inlinecode"><span class="id" type="var">filter_even_gt<sub>7</sub></span></span> that takes a list of natural numbers as input
     and returns a list of just those that are even and greater than
@@ -1145,17 +1144,17 @@ The expression <span class="inlinecode">(<span class="id" type="keyword">fun</sp
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab109"></a><h4 class="section">Exercise: 3 stars (partition)</h4>
+<a name="lab112"></a><h4 class="section">Exercise: 3 stars (partition)</h4>
  Use <span class="inlinecode"><span class="id" type="var">filter</span></span> to write a Coq function <span class="inlinecode"><span class="id" type="var">partition</span></span>:
 
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;<span class="id" type="var">partition</span>&nbsp;:&nbsp;<span style="font-family: arial;">&forall;</span><span class="id" type="var">X</span>&nbsp;:&nbsp;<span class="id" type="keyword">Type</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">X</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">bool</span>)&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>&nbsp;*&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">partition</span>&nbsp;:&nbsp;<span style="font-family: arial;">&forall;</span><span class="id" type="var">X</span>&nbsp;:&nbsp;<span class="id" type="keyword">Type</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">X</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">bool</span>)&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>&nbsp;<span style="font-family: arial;">&rarr;</span>&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>&nbsp;*&nbsp;<span class="id" type="var">list</span>&nbsp;<span class="id" type="var">X</span>
 <div class="paragraph"> </div>
 
 </div>
@@ -1165,8 +1164,7 @@ The expression <span class="inlinecode">(<span class="id" type="keyword">fun</sp
    elements that satisfy the test, and the second is the sublist
    containing those that fail the test.  The order of elements in the
    two sublists should be the same as their order in the original
-   list.
-
+   list. 
 </div>
 <div class="code code-tight">
 
@@ -1185,7 +1183,7 @@ The expression <span class="inlinecode">(<span class="id" type="keyword">fun</sp
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1193,7 +1191,7 @@ The expression <span class="inlinecode">(<span class="id" type="keyword">fun</sp
 </div>
 
 <div class="doc">
-<a name="lab110"></a><h2 class="section">Map</h2>
+<a name="lab113"></a><h2 class="section">Map</h2>
 
 <div class="paragraph"> </div>
 
@@ -1258,11 +1256,11 @@ It can even be applied to a list of numbers and
 </div>
 
 <div class="doc">
-<a name="lab111"></a><h3 class="section">Exercises</h3>
+<a name="lab114"></a><h3 class="section">Exercises</h3>
 
 <div class="paragraph"> </div>
 
-<a name="lab112"></a><h4 class="section">Exercise: 3 stars (map_rev)</h4>
+<a name="lab115"></a><h4 class="section">Exercise: 3 stars (map_rev)</h4>
  Show that <span class="inlinecode"><span class="id" type="var">map</span></span> and <span class="inlinecode"><span class="id" type="var">rev</span></span> commute.  You may need to define an
     auxiliary lemma. 
 </div>
@@ -1276,10 +1274,10 @@ It can even be applied to a list of numbers and
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab113"></a><h4 class="section">Exercise: 2 stars, recommended (flat_map)</h4>
+<a name="lab116"></a><h4 class="section">Exercise: 2 stars, recommended (flat_map)</h4>
  The function <span class="inlinecode"><span class="id" type="var">map</span></span> maps a <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">X</span></span> to a <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">Y</span></span> using a function
     of type <span class="inlinecode"><span class="id" type="var">X</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">Y</span></span>.  We can define a similar function, <span class="inlinecode"><span class="id" type="var">flat_map</span></span>,
     which maps a <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">X</span></span> to a <span class="inlinecode"><span class="id" type="var">list</span></span> <span class="inlinecode"><span class="id" type="var">Y</span></span> using a function <span class="inlinecode"><span class="id" type="var">f</span></span> of type
@@ -1311,7 +1309,7 @@ It can even be applied to a list of numbers and
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Lists are not the only inductive type that we can write a
@@ -1332,14 +1330,14 @@ It can even be applied to a list of numbers and
 </div>
 
 <div class="doc">
-<a name="lab114"></a><h4 class="section">Exercise: 2 stars, optional (implicit_args)</h4>
+<a name="lab117"></a><h4 class="section">Exercise: 2 stars, optional (implicit_args)</h4>
  The definitions and uses of <span class="inlinecode"><span class="id" type="var">filter</span></span> and <span class="inlinecode"><span class="id" type="var">map</span></span> use implicit
     arguments in many places.  Replace the curly braces around the
     implicit arguments with parentheses, and then fill in explicit
     type parameters where necessary and use Coq to check that you've
     done so correctly.  (This exercise is not to be turned in; it is
     probably easiest to do it on a <i>copy</i> of this file that you can
-    throw away afterwards.)  <font size=-2>&#9744;</font> 
+    throw away afterwards.)  <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1347,7 +1345,7 @@ It can even be applied to a list of numbers and
 </div>
 
 <div class="doc">
-<a name="lab115"></a><h2 class="section">Fold</h2>
+<a name="lab118"></a><h2 class="section">Fold</h2>
 
 <div class="paragraph"> </div>
 
@@ -1380,7 +1378,7 @@ Intuitively, the behavior of the <span class="inlinecode"><span class="id" type=
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;<span class="id" type="var">fold</span>&nbsp;<span class="id" type="var">plus</span>&nbsp;[1;2;3;4]&nbsp;0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">fold</span>&nbsp;<span class="id" type="var">plus</span>&nbsp;[1;2;3;4]&nbsp;0
 <div class="paragraph"> </div>
 
 </div>
@@ -1389,12 +1387,11 @@ Intuitively, the behavior of the <span class="inlinecode"><span class="id" type=
 <div class="paragraph"> </div>
 
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;1&nbsp;+&nbsp;(2&nbsp;+&nbsp;(3&nbsp;+&nbsp;(4&nbsp;+&nbsp;0))).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;+&nbsp;(2&nbsp;+&nbsp;(3&nbsp;+&nbsp;(4&nbsp;+&nbsp;0))).
 <div class="paragraph"> </div>
 
 </div>
-    Some more examples:
-
+    Some more examples: 
 </div>
 <div class="code code-tight">
 
@@ -1430,7 +1427,7 @@ Intuitively, the behavior of the <span class="inlinecode"><span class="id" type=
 </div>
 
 <div class="doc">
-<a name="lab116"></a><h4 class="section">Exercise: 1 star, advanced (fold_types_different)</h4>
+<a name="lab119"></a><h4 class="section">Exercise: 1 star, advanced (fold_types_different)</h4>
  Observe that the type of <span class="inlinecode"><span class="id" type="var">fold</span></span> is parameterized by <i>two</i> type
     variables, <span class="inlinecode"><span class="id" type="var">X</span></span> and <span class="inlinecode"><span class="id" type="var">Y</span></span>, and the parameter <span class="inlinecode"><span class="id" type="var">f</span></span> is a binary operator
     that takes an <span class="inlinecode"><span class="id" type="var">X</span></span> and a <span class="inlinecode"><span class="id" type="var">Y</span></span> and returns a <span class="inlinecode"><span class="id" type="var">Y</span></span>.  Can you think of a
@@ -1443,7 +1440,7 @@ Intuitively, the behavior of the <span class="inlinecode"><span class="id" type=
 </div>
 
 <div class="doc">
-<a name="lab117"></a><h2 class="section">Functions That Construct Functions</h2>
+<a name="lab120"></a><h2 class="section">Functions That Construct Functions</h2>
 
 <div class="paragraph"> </div>
 
@@ -1523,7 +1520,7 @@ Each <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></s
 </div>
 
 <div class="doc">
-<a name="lab118"></a><h1 class="section">Additional Exercises</h1>
+<a name="lab121"></a><h1 class="section">Additional Exercises</h1>
 
 </div>
 <div class="code code-space">
@@ -1535,7 +1532,7 @@ Each <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></s
 </div>
 
 <div class="doc">
-<a name="lab119"></a><h4 class="section">Exercise: 2 stars (fold_length)</h4>
+<a name="lab122"></a><h4 class="section">Exercise: 2 stars (fold_length)</h4>
  Many common functions on lists can be implemented in terms of
    <span class="inlinecode"><span class="id" type="var">fold</span></span>.  For example, here is an alternative definition of <span class="inlinecode"><span class="id" type="var">length</span></span>: 
 </div>
@@ -1567,10 +1564,10 @@ Prove the correctness of <span class="inlinecode"><span class="id" type="var">fo
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab120"></a><h4 class="section">Exercise: 3 stars (fold_map)</h4>
+<a name="lab123"></a><h4 class="section">Exercise: 3 stars (fold_map)</h4>
  We can also define <span class="inlinecode"><span class="id" type="var">map</span></span> in terms of <span class="inlinecode"><span class="id" type="var">fold</span></span>.  Finish <span class="inlinecode"><span class="id" type="var">fold_map</span></span>
     below. 
 </div>
@@ -1594,10 +1591,10 @@ Write down a theorem <span class="inlinecode"><span class="id" type="var">fold_m
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab121"></a><h4 class="section">Exercise: 2 stars, advanced (currying)</h4>
+<a name="lab124"></a><h4 class="section">Exercise: 2 stars, advanced (currying)</h4>
  In Coq, a function <span class="inlinecode"><span class="id" type="var">f</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">A</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">B</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">C</span></span> really has the type <span class="inlinecode"><span class="id" type="var">A</span></span>
     <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode">(<span class="id" type="var">B</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">C</span>)</span>.  That is, if you give <span class="inlinecode"><span class="id" type="var">f</span></span> a value of type <span class="inlinecode"><span class="id" type="var">A</span></span>, it
     will give you function <span class="inlinecode"><span class="id" type="var">f'</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">B</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">C</span></span>.  If you then give <span class="inlinecode"><span class="id" type="var">f'</span></span> a
@@ -1679,10 +1676,10 @@ Thought exercise: before running the following commands, can you
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab122"></a><h4 class="section">Exercise: 2 stars, advanced (nth_error_informal)</h4>
+<a name="lab125"></a><h4 class="section">Exercise: 2 stars, advanced (nth_error_informal)</h4>
  Recall the definition of the <span class="inlinecode"><span class="id" type="var">nth_error</span></span> function:
 
 <div class="paragraph"> </div>
@@ -1706,10 +1703,10 @@ Thought exercise: before running the following commands, can you
 
 </div>
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab123"></a><h4 class="section">Exercise: 4 stars, advanced (church_numerals)</h4>
+<a name="lab126"></a><h4 class="section">Exercise: 4 stars, advanced (church_numerals)</h4>
  This exercise explores an alternative way of defining natural
     numbers, using the so-called <i>Church numerals</i>, named after
     mathematician Alonzo Church.  We can represent a natural number
@@ -1727,7 +1724,7 @@ Thought exercise: before running the following commands, can you
 
 <div class="doc">
 Let's see how to write some numbers with this notation. Iterating
-    a function once should be the same as just applying it. Thus, 
+    a function once should be the same as just applying it.  Thus: 
 </div>
 <div class="code code-tight">
 
@@ -1752,7 +1749,7 @@ Similarly, <span class="inlinecode"><span class="id" type="var">two</span></span
 
 <div class="doc">
 Defining <span class="inlinecode"><span class="id" type="var">zero</span></span> is somewhat trickier: how can we "apply a function
-    zero times"? The answer is actually simple: just return the
+    zero times"?  The answer is actually simple: just return the
     argument untouched. 
 </div>
 <div class="code code-tight">
@@ -1888,7 +1885,7 @@ Exponentiation:
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 

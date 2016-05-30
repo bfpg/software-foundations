@@ -1,8 +1,5 @@
 (** * HoareAsLogic: Hoare Logic as a Logic *)
 
-Require Import Imp.
-Require Import Hoare.
-
 (** The presentation of Hoare logic in chapter [Hoare] could be
     described as "model-theoretic": the proof rules for each of the
     constructors were presented as _theorems_ about the evaluation
@@ -18,8 +15,10 @@ Require Import Hoare.
     derivations_ in this new logic.
 
     This chapter is optional.  Before reading it, you'll want to read
-    the [ProofObjects] chapter.
-*)
+    the [ProofObjects] chapter. *)
+
+Require Import Imp.
+Require Import Hoare.
 
 (** * Definitions *)
 
@@ -43,9 +42,9 @@ Inductive hoare_proof : Assertion -> com -> Assertion -> Type :=
     (forall st, Q' st -> Q st) ->
     hoare_proof P c Q.
 
-(** We don't need to include axioms corresponding to [hoare_consequence_pre]
-    or [hoare_consequence_post], because these can be proven easily
-    from [H_Consequence]. *)
+(** We don't need to include axioms corresponding to
+    [hoare_consequence_pre] or [hoare_consequence_post], because 
+    these can be proven easily from [H_Consequence]. *)
 
 Lemma H_Consequence_pre : forall (P Q P': Assertion) c,
     hoare_proof P' c Q ->
@@ -65,9 +64,11 @@ Proof.
 
 (** As an example, let's construct a proof object representing a
     derivation for the hoare triple
+
       {{assn_sub X (X+1) (assn_sub X (X+2) (X=3))}} 
       X::=X+1 ;; X::=X+2 
       {{X=3}}.
+
     We can use Coq's tactics to help us construct the proof object. *)
 
 Example sample_proof :
@@ -194,17 +195,15 @@ Proof.
     intro. simpl. eapply False_and_P_imp.
 Qed.
 
-(** As a last step, we can show that the set of [hoare_proof] axioms is
-    sufficient to prove any true fact about (partial) correctness.
+(** As a last step, we can show that the set of [hoare_proof] axioms
+    is sufficient to prove any true fact about (partial) correctness.
     More precisely, any semantic Hoare triple that we can prove can
-    also be proved from these axioms.  Such a set of axioms is said
-    to be _relatively complete_. *)
+    also be proved from these axioms.  Such a set of axioms is said to
+    be _relatively complete_.  Our proof is inspired by this one:
 
-(** This proof is inspired by the one at
-http://www.ps.uni-saarland.de/courses/sem-ws11/script/Hoare.html
-*)
+      http://www.ps.uni-saarland.de/courses/sem-ws11/script/Hoare.html
 
-(** To prove this fact, we'll need to invent some intermediate
+    To carry out the proof, we need to invent some intermediate
     assertions using a technical device known as _weakest
     preconditions_.  Given a command [c] and a desired postcondition
     assertion [Q], the weakest precondition [wp c Q] is an assertion
@@ -279,15 +278,13 @@ Proof.
     Similarly, the triple [{{True} SKIP {{P}}] is valid if and only if
     [forall s, P s] is valid, where [P] is an arbitrary assertion of
     Coq's logic. But it is known that there can be no decision
-    procedure for this logic.
+    procedure for this logic. 
 
-*)
-
-(** Overall, this axiomatic style of presentation gives a clearer
+    Overall, this axiomatic style of presentation gives a clearer
     picture of what it means to "give a proof in Hoare logic."
     However, it is not entirely satisfactory from the point of view of
     writing down such proofs in practice: it is quite verbose.  The
     section of chapter [Hoare2] on formalizing decorated programs
     shows how we can do even better. *)
 
-(** $Date: 2016-03-04 10:01:05 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

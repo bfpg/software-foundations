@@ -52,7 +52,7 @@
 </div>
 
 <div class="doc">
-<a name="lab343"></a><h1 class="section">Internals</h1>
+<a name="lab346"></a><h1 class="section">Internals</h1>
 
 </div>
 <div class="code code-space">
@@ -64,8 +64,6 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Arith.EqNat.html#"><span class="id" type="library">Coq.Arith.EqNat</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Lists.List.html#"><span class="id" type="library">Coq.Lists.List</span></a>.<br/>
 <span class="id" type="keyword">Import</span> <span class="id" type="var">ListNotations</span>.<br/>
-
-<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
 
@@ -73,7 +71,7 @@
 </div>
 
 <div class="doc">
-<a name="lab344"></a><h2 class="section">Lexical Analysis</h2>
+<a name="lab347"></a><h2 class="section">Lexical Analysis</h2>
 
 </div>
 <div class="code code-space">
@@ -178,16 +176,11 @@
 </div>
 
 <div class="doc">
-<a name="lab345"></a><h2 class="section">Parsing</h2>
+<a name="lab348"></a><h2 class="section">Parsing</h2>
 
-</div>
-<div class="code code-space">
+<div class="paragraph"> </div>
 
-<br/>
-</div>
-
-<div class="doc">
-<a name="lab346"></a><h3 class="section">Options with Errors</h3>
+<a name="lab349"></a><h3 class="section">Options With Errors</h3>
 
 <div class="paragraph"> </div>
 
@@ -233,7 +226,7 @@ Some syntactic sugar to make writing nested match-expressions on
 </div>
 
 <div class="doc">
-<a name="lab347"></a><h3 class="section">Symbol Table</h3>
+<a name="lab350"></a><h3 class="section">Symbol Table</h3>
 
 <div class="paragraph"> </div>
 
@@ -260,7 +253,7 @@ Some syntactic sugar to make writing nested match-expressions on
 </div>
 
 <div class="doc">
-<a name="lab348"></a><h3 class="section">Generic Combinators for Building Parsers</h3>
+<a name="lab351"></a><h3 class="section">Generic Combinators for Building Parsers</h3>
 
 </div>
 <div class="code code-space">
@@ -331,7 +324,7 @@ A parser that expects a particular token:
 </div>
 
 <div class="doc">
-<a name="lab349"></a><h3 class="section">A Recursive-Descent Parser for Imp</h3>
+<a name="lab352"></a><h3 class="section">A Recursive-Descent Parser for Imp</h3>
 
 <div class="paragraph"> </div>
 
@@ -402,6 +395,7 @@ Parse arithmetic expressions
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="ImpParser.html#::'DO'_'('_x_','_x_')'_'<=='_x_';'_x"><span class="id" type="notation">DO</span></a> (<span class="id" type="var">u</span>, <span class="id" type="var">rest'</span>) &lt;== <a class="idref" href="ImpParser.html#expect"><span class="id" type="definition">expect</span></a> ")" <span class="id" type="var">rest</span> ;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="ImpParser.html#SomeE"><span class="id" type="constructor">SomeE</span></a>(<span class="id" type="var">e</span>,<span class="id" type="var">rest'</span>))<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+<br/>
 <span class="id" type="keyword">with</span> <a name="parseProductExp"><span class="id" type="definition">parseProductExp</span></a> (<span class="id" type="var">steps</span>:<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) <span class="id" type="var">symtable</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">xs</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="ImpParser.html#token"><span class="id" type="definition">token</span></a>) :=<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="ImpParser.html#steps"><span class="id" type="variable">steps</span></a> <span class="id" type="keyword">with</span><br/>
@@ -414,6 +408,7 @@ Parse arithmetic expressions
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">steps'</span> <span class="id" type="var">rest</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="ImpParser.html#SomeE"><span class="id" type="constructor">SomeE</span></a> (<a class="idref" href="http://coq.inria.fr/library/Coq.Lists.List.html#fold_left"><span class="id" type="definition">fold_left</span></a> <a class="idref" href="Imp.html#AMult"><span class="id" type="constructor">AMult</span></a> <span class="id" type="var">es</span> <span class="id" type="var">e</span>, <span class="id" type="var">rest'</span>)<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+<br/>
 <span class="id" type="keyword">with</span> <a name="parseSumExp"><span class="id" type="definition">parseSumExp</span></a> (<span class="id" type="var">steps</span>:<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) <span class="id" type="var">symtable</span> (<span class="id" type="var">xs</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="ImpParser.html#token"><span class="id" type="definition">token</span></a>)  :=<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="ImpParser.html#steps"><span class="id" type="variable">steps</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;| 0 ⇒ <a class="idref" href="ImpParser.html#NoneE"><span class="id" type="constructor">NoneE</span></a> "Too many recursive calls"<br/>
@@ -484,6 +479,7 @@ Parsing boolean expressions:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="ImpParser.html#NoneE"><span class="id" type="constructor">NoneE</span></a> <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Expected '==' or '≤' after arithmetic expression")<br/>
 <span class="id" type="keyword">end</span><br/>
+<br/>
 <span class="id" type="keyword">with</span> <a name="parseConjunctionExp"><span class="id" type="definition">parseConjunctionExp</span></a> (<span class="id" type="var">steps</span>:<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">symtable</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Strings.String.html#string"><span class="id" type="inductive">string</span></a><span style="font-family: arial;">&rarr;</span><a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="var">xs</span> : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="ImpParser.html#token"><span class="id" type="definition">token</span></a>) :=<br/>
@@ -596,7 +592,7 @@ Parsing commands:
 </div>
 
 <div class="doc">
-<a name="lab350"></a><h1 class="section">Examples</h1>
+<a name="lab353"></a><h1 class="section">Examples</h1>
 
 </div>
 <div class="code code-space">

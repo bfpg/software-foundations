@@ -12,7 +12,6 @@
 
 Require Import Coq.omega.Omega.
 Require Import Coq.Arith.Arith.
-
 Require Import SfLib.
 Require Import Imp.
 Require Import Maps.
@@ -40,10 +39,10 @@ Fixpoint ceval_step1 (st : state) (c : com) : state :=
 (** As we remarked in chapter [Imp], in a traditional functional
     programming language like ML or Haskell we could write the WHILE
     case as follows:
-<<
+
     | WHILE b1 DO c1 END => if (beval st b1) then ceval_step1 st (c1;;
         WHILE b1 DO c1 END) else st
->>
+
     Coq doesn't accept such a definition ([Error: Cannot guess
     decreasing argument of fix]) because the function we want to
     define is not guaranteed to terminate. Indeed, the changed
@@ -53,9 +52,9 @@ Fixpoint ceval_step1 (st : state) (c : com) : state :=
     non-terminating function needs to be rejected. Here is an
     invalid(!) Coq program showing what would go wrong if Coq allowed
     non-terminating recursive functions:
-<<
+
      Fixpoint loop_false (n : nat) : False := loop_false n.
->>
+
     That is, propositions like [False] would become
     provable (e.g., [loop_false 0] would be a proof of [False]), which
     would be a disaster for Coq's logical consistency.
@@ -107,9 +106,9 @@ Fixpoint ceval_step2 (st : state) (c : com) (i : nat) : state :=
     rule for sequencing, the same [i] is passed to both recursive
     calls.  Understanding the exact way that [i] is treated will be
     important in the proof of [ceval__ceval_step], which is given as
-    an exercise below. *)
+    an exercise below. 
 
-(** One thing that is not so nice about this evaluator is that we
+    One thing that is not so nice about this evaluator is that we
     can't tell, from its result, whether it stopped because the
     program terminated normally or because it ran out of gas.  Our
     next version returns an [option state] instead of just a [state],
@@ -382,4 +381,4 @@ Proof.
   rewrite E1 in E2. inversion E2. reflexivity.
   omega. omega.  Qed.
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

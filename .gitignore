@@ -2,3 +2,9 @@
 *.v.d
 *.glob
 *.aux
+sf/imp.ml
+sf/imp.mli
+sf/imp1.ml
+sf/imp1.mli
+sf/imp2.ml
+sf/imp2.mli

@@ -8,11 +8,9 @@ Require Import Coq.omega.Omega.
 Require Import Coq.Lists.List.
 Require Import Coq.Logic.FunctionalExtensionality.
 Import ListNotations.
-
 Require Import SfLib.
 Require Import Maps.
 Require Import Imp.
-
 
 (** *** Some general advice for working on exercises:
 
@@ -83,8 +81,6 @@ Definition cequiv (c1 c2 : com) : Prop :=
   forall (st st' : state),
     (c1 / st \\ st') <-> (c2 / st \\ st').
 
-
-
 (** **** Exercise: 2 stars (equiv_classes)  *)
 
 (** Given the following programs, group together those that are
@@ -93,8 +89,8 @@ Definition cequiv (c1 c2 : com) : Prop :=
     example, if you think programs (a) through (h) are all equivalent
     to each other, but not to (i), your answer should look like this:
 
-    [ [prog_a;prog_b;prog_c;prog_d;prog_e;prog_f;prog_g;prog_h] ;
-      [prog_i] ]
+       [ [prog_a;prog_b;prog_c;prog_d;prog_e;prog_f;prog_g;prog_h] ;
+         [prog_i] ]
 
     Write down your answer below in the definition of
     [equiv_classes]. *)
@@ -216,7 +212,6 @@ Proof.
     inversion H; subst. assumption. inversion H5.
   - (* <- *)
     apply E_IfTrue. reflexivity. assumption.  Qed.
-
 
 (** Of course, few programmers would be tempted to write a conditional
     whose guard is literally [BTrue].  A more interesting case is when
@@ -446,16 +441,14 @@ Proof.
      - (* -> *)
        inversion H; subst. simpl.
        replace (t_update st X (st X)) with st.
-       constructor.
-       apply functional_extensionality. intro.
-       rewrite t_update_same; reflexivity.
+       + constructor.
+       + apply functional_extensionality. intro.
+         rewrite t_update_same; reflexivity.
      - (* <- *)
-       inversion H; subst.
-       assert (st' = (t_update st' X (st' X))).
-          apply functional_extensionality. intro.
-          rewrite t_update_same; reflexivity.
-       rewrite H0 at 2.
-       constructor. reflexivity.
+       replace st' with (t_update st' X (aeval st' (AId X))).
+       + inversion H. subst. apply E_Ass. reflexivity.
+       + apply functional_extensionality. intro.
+         rewrite t_update_same. reflexivity.
 Qed.
 
 (** **** Exercise: 2 stars, recommended (assign_aequiv)  *)
@@ -473,7 +466,7 @@ Proof.
     equivalences we have defined. *)
 
 (* ####################################################### *)
-(** ** Behavioral Equivalence is an Equivalence *)
+(** ** Behavioral Equivalence Is an Equivalence *)
 
 (** First, we verify that the equivalences on [aexps], [bexps], and
     [com]s really are _equivalences_ -- i.e., that they are reflexive,
@@ -538,11 +531,12 @@ Proof.
   apply iff_trans with (c2 / st \\ st'). apply H12. apply H23.  Qed.
 
 (* ######################################################## *)
-(** ** Behavioral Equivalence is a Congruence *)
+(** ** Behavioral Equivalence Is a Congruence *)
 
 (** Less obviously, behavioral equivalence is also a _congruence_.
     That is, the equivalence of two subprograms implies the
     equivalence of the larger programs in which they are embedded:
+
               aequiv a1 a1'
       -----------------------------
       cequiv (i ::= a1) (i ::= a1')
@@ -551,6 +545,7 @@ Proof.
               cequiv c2 c2'
          ------------------------
          cequiv (c1;;c2) (c1';;c2')
+
     ...and so on for the other forms of commands.
 
     (Note that we are using the inference rule notation here not as
@@ -778,7 +773,7 @@ Proof. reflexivity. Qed.
 
 (** Not only can we lift [fold_constants_aexp] to [bexp]s (in the
     [BEq] and [BLe] cases), we can also find constant _boolean_
-    expressions and reduce them in-place. *)
+    expressions and evaluate them in-place. *)
 
 Fixpoint fold_constants_bexp (b : bexp) : bexp :=
   match b with
@@ -931,60 +926,82 @@ Proof.
    show just the case where [b] has the form [BEq a1 a2].
 
    In this case, we must show
+
        beval st (BEq a1 a2)
      = beval st (fold_constants_bexp (BEq a1 a2)).
+
    There are two cases to consider:
 
      - First, suppose [fold_constants_aexp a1 = ANum n1] and
        [fold_constants_aexp a2 = ANum n2] for some [n1] and [n2].
 
        In this case, we have
+
            fold_constants_bexp (BEq a1 a2)
          = if beq_nat n1 n2 then BTrue else BFalse
+
        and
+
            beval st (BEq a1 a2)
          = beq_nat (aeval st a1) (aeval st a2).
+
        By the soundness of constant folding for arithmetic
        expressions (Lemma [fold_constants_aexp_sound]), we know
+
            aeval st a1
          = aeval st (fold_constants_aexp a1)
          = aeval st (ANum n1)
          = n1
+
        and
+
            aeval st a2
          = aeval st (fold_constants_aexp a2)
          = aeval st (ANum n2)
          = n2,
+
        so
+
            beval st (BEq a1 a2)
          = beq_nat (aeval a1) (aeval a2)
          = beq_nat n1 n2.
+
        Also, it is easy to see (by considering the cases [n1 = n2] and
        [n1 <> n2] separately) that
+
            beval st (if beq_nat n1 n2 then BTrue else BFalse)
          = if beq_nat n1 n2 then beval st BTrue else beval st BFalse
          = if beq_nat n1 n2 then true else false
          = beq_nat n1 n2.
+
        So
+
            beval st (BEq a1 a2)
          = beq_nat n1 n2.
          = beval st (if beq_nat n1 n2 then BTrue else BFalse),
+
        as required.
 
      - Otherwise, one of [fold_constants_aexp a1] and
        [fold_constants_aexp a2] is not a constant.  In this case, we
        must show
+
            beval st (BEq a1 a2)
          = beval st (BEq (fold_constants_aexp a1)
                          (fold_constants_aexp a2)),
+
        which, by the definition of [beval], is the same as showing
+
            beq_nat (aeval st a1) (aeval st a2)
          = beq_nat (aeval st (fold_constants_aexp a1))
                    (aeval st (fold_constants_aexp a2)).
+
        But the soundness of constant folding for arithmetic
        expressions ([fold_constants_aexp_sound]) gives us
+
          aeval st a1 = aeval st (fold_constants_aexp a1)
          aeval st a2 = aeval st (fold_constants_aexp a2),
+
        completing the case.  []
 *)
 
@@ -1068,6 +1085,7 @@ Proof.
 
 (** **** Exercise: 4 stars, advanced, optional (optimize_0plus)  *)
 (** Recall the definition [optimize_0plus] from the [Imp] chapter:
+
     Fixpoint optimize_0plus (e:aexp) : aexp :=
       match e with
       | ANum n =>
@@ -1081,14 +1099,17 @@ Proof.
       | AMult e1 e2 =>
           AMult (optimize_0plus e1) (optimize_0plus e2)
       end.
+
    Note that this function is defined over the old [aexp]s,
    without states.
 
    Write a new version of this function that accounts for variables,
    plus analogous ones for [bexp]s and commands:
+
      optimize_0plus_aexp
      optimize_0plus_bexp
      optimize_0plus_com
+
    Prove that these three functions are sound, as we did for
    [fold_constants_*].  Make sure you use the congruence lemmas in
    the proof of [optimize_0plus_com] -- otherwise it will be _long_!
@@ -1112,10 +1133,12 @@ Proof.
     and [c2] is the command [X ::= a1;; Y ::= a2'], where [a2'] is
     formed by substituting [a1] for all occurrences of [X] in [a2].
     For example, [c1] and [c2] might be:
+
        c1  =  (X ::= 42 + 53;;
                Y ::= Y + X)
        c2  =  (X ::= 42 + 53;;
                Y ::= Y + (42 + 53))
+
     Clearly, this _particular_ [c1] and [c2] are equivalent.  Is this
     true in general? *)
 
@@ -1159,31 +1182,44 @@ Definition subst_equiv_property := forall i1 i2 a1 a2,
 
     _Theorem_: It is not the case that, for all [i1], [i2], [a1],
     and [a2],
+
          cequiv (i1 ::= a1;; i2 ::= a2)
                 (i1 ::= a1;; i2 ::= subst_aexp i1 a1 a2).
+
     _Proof_: Suppose, for a contradiction, that for all [i1], [i2],
     [a1], and [a2], we have
+
       cequiv (i1 ::= a1;; i2 ::= a2)
              (i1 ::= a1;; i2 ::= subst_aexp i1 a1 a2).
+
     Consider the following program:
+
          X ::= APlus (AId X) (ANum 1);; Y ::= AId X
+
     Note that
+
          (X ::= APlus (AId X) (ANum 1);; Y ::= AId X)
          / empty_state \\ st1,
+
     where [st1 = { X |-> 1, Y |-> 1 }].
 
     By our assumption, we know that
+
         cequiv (X ::= APlus (AId X) (ANum 1);; Y ::= AId X)
                (X ::= APlus (AId X) (ANum 1);; Y ::= APlus (AId X) (ANum 1))
+
     so, by the definition of [cequiv], we have
+
         (X ::= APlus (AId X) (ANum 1);; Y ::= APlus (AId X) (ANum 1))
         / empty_state \\ st1.
+
     But we can also derive
+
         (X ::= APlus (AId X) (ANum 1);; Y ::= APlus (AId X) (ANum 1))
         / empty_state \\ st2,
+
     where [st2 = { X |-> 1, Y |-> 2 }].  Note that [st1 <> st2]; this
     is a contradiction, since [ceval] is deterministic!  [] *)
-
 
 Theorem subst_inequiv :
   ~ subst_equiv_property.
@@ -1266,6 +1302,7 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
+(* ################################################################## *)
 (** * Extended Exercise: Nondeterministic Imp *)
 
 (** As we have seen (in theorem [ceval_deterministic] in the [Imp]
@@ -1275,8 +1312,10 @@ Proof.
     languages (such as C and its relatives), the order in which
     function arguments are evaluated is unspecified.  The program
     fragment
+
       x = 0;;
       f(++x, x)
+
     might call [f] with arguments [(1, 0)] or [(1, 1)], depending how
     the compiler chooses to order things.  This can be a little
     confusing for programmers, but it gives the compiler writer useful
@@ -1288,8 +1327,10 @@ Proof.
     where [X] is an identifier. The effect of executing [HAVOC X] is
     to assign an _arbitrary_ number to the variable [X],
     nondeterministically. For example, after executing the program:
+
       HAVOC Y;;
       Z ::= Y * 2
+
     the value of [Y] can be any number, while the value of [Z] is
     twice that of [Y] (so [Z] is always even). Note that we are not
     saying anything about the _probabilities_ of the outcomes -- just
@@ -1475,7 +1516,6 @@ Proof. (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced (p3_p4_inquiv)  *)
-
 (** Prove that the following programs are _not_ equivalent. *)
 
 Definition p3 : com :=
@@ -1511,7 +1551,6 @@ Proof. (* FILL IN HERE *) Admitted.
 
 End Himp.
 
-
 (* ####################################################### *)
 (** * Additional Exercises *)
 
@@ -1519,15 +1558,19 @@ End Himp.
 (** This exercise extends the optional [add_for_loop] exercise from
     the [Imp] chapter, where you were asked to extend the language 
     of commands with C-style [for] loops.  Prove that the command:
+
       for (c1 ; b ; c2) {
           c3
       }
+
     is equivalent to:
+
        c1 ;
        WHILE b DO
          c3 ;
          c2
        END
+
 *)
 (* FILL IN HERE *)
 (** [] *)
@@ -1591,6 +1634,7 @@ Definition zprop (c : com) : Prop :=
 Theorem zprop_preserving : forall c c',
   zprop c -> capprox c c' -> zprop c'.
 Proof. (* FILL IN HERE *) Admitted.
-
 (** [] *)
+
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 

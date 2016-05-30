@@ -93,7 +93,6 @@ Proof.
   intros x y. rewrite beq_id_false_iff.
   intros H. apply H. Qed.
 
-
 (* ###################################################################### *)
 (** * Total Maps *)
 

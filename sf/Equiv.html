@@ -36,8 +36,6 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Lists.List.html#"><span class="id" type="library">Coq.Lists.List</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html#"><span class="id" type="library">Coq.Logic.FunctionalExtensionality</span></a>.<br/>
 <span class="id" type="keyword">Import</span> <span class="id" type="var">ListNotations</span>.<br/>
-
-<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="SfLib.html#"><span class="id" type="library">SfLib</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
@@ -46,7 +44,7 @@
 </div>
 
 <div class="doc">
-<a name="lab363"></a><h3 class="section">Some general advice for working on exercises:</h3>
+<a name="lab366"></a><h3 class="section">Some general advice for working on exercises:</h3>
 
 
 <div class="paragraph"> </div>
@@ -90,7 +88,7 @@
 </div>
 
 <div class="doc">
-<a name="lab364"></a><h1 class="section">Behavioral Equivalence</h1>
+<a name="lab367"></a><h1 class="section">Behavioral Equivalence</h1>
 
 <div class="paragraph"> </div>
 
@@ -114,7 +112,7 @@
 </div>
 
 <div class="doc">
-<a name="lab365"></a><h2 class="section">Definitions</h2>
+<a name="lab368"></a><h2 class="section">Definitions</h2>
 
 <div class="paragraph"> </div>
 
@@ -161,7 +159,7 @@ For commands, the situation is a little more subtle.  We can't
 </div>
 
 <div class="doc">
-<a name="lab366"></a><h4 class="section">Exercise: 2 stars (equiv_classes)</h4>
+<a name="lab369"></a><h4 class="section">Exercise: 2 stars (equiv_classes)</h4>
 
 <div class="paragraph"> </div>
 
@@ -173,18 +171,12 @@ For commands, the situation is a little more subtle.  We can't
 
 <div class="paragraph"> </div>
 
-
-<div class="paragraph"> </div>
-
 <div class="code code-tight">
-&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;[<span class="id" type="var">prog_a</span>;<span class="id" type="var">prog_b</span>;<span class="id" type="var">prog_c</span>;<span class="id" type="var">prog_d</span>;<span class="id" type="var">prog_e</span>;<span class="id" type="var">prog_f</span>;<span class="id" type="var">prog_g</span>;<span class="id" type="var">prog_h</span>]&nbsp;;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<span class="id" type="var">prog_i</span>]&nbsp;]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;[<span class="id" type="var">prog_a</span>;<span class="id" type="var">prog_b</span>;<span class="id" type="var">prog_c</span>;<span class="id" type="var">prog_d</span>;<span class="id" type="var">prog_e</span>;<span class="id" type="var">prog_f</span>;<span class="id" type="var">prog_g</span>;<span class="id" type="var">prog_h</span>]&nbsp;;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<span class="id" type="var">prog_i</span>]&nbsp;]
 <div class="paragraph"> </div>
 
 </div>
-
-<div class="paragraph"> </div>
-
     Write down your answer below in the definition of
     <span class="inlinecode"><span class="id" type="var">equiv_classes</span></span>. 
 </div>
@@ -252,7 +244,7 @@ For commands, the situation is a little more subtle.  We can't
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -260,7 +252,7 @@ For commands, the situation is a little more subtle.  We can't
 </div>
 
 <div class="doc">
-<a name="lab367"></a><h2 class="section">Examples</h2>
+<a name="lab370"></a><h2 class="section">Examples</h2>
 
 <div class="paragraph"> </div>
 
@@ -322,7 +314,7 @@ For examples of command equivalence, let's start by looking at
 </div>
 
 <div class="doc">
-<a name="lab368"></a><h4 class="section">Exercise: 2 stars (skip_right)</h4>
+<a name="lab371"></a><h4 class="section">Exercise: 2 stars (skip_right)</h4>
  Prove that adding a <span class="inlinecode"><span class="id" type="var">SKIP</span></span> after a command results in an
     equivalent program 
 </div>
@@ -338,7 +330,7 @@ For examples of command equivalence, let's start by looking at
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Similarly, here is a simple transformations that optimizes <span class="inlinecode"><span class="id" type="var">IFB</span></span>
@@ -431,7 +423,7 @@ Of course, few programmers would be tempted to write a conditional
        Since <span class="inlinecode"><span class="id" type="var">b</span></span> is equivalent to <span class="inlinecode"><span class="id" type="var">BTrue</span></span>, we know that <span class="inlinecode"><span class="id" type="var">beval</span></span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span class="id" type="var">b</span></span> =
        <span class="inlinecode"><span class="id" type="var">beval</span></span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span class="id" type="var">BTrue</span></span> = <span class="inlinecode"><span class="id" type="var">true</span></span>.  Together with the assumption that
        <span class="inlinecode"><span class="id" type="var">c<sub>1</sub></span></span> <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span style="font-family: arial;">&dArr;</span></span> <span class="inlinecode"><span class="id" type="var">st'</span></span>, we can apply <span class="inlinecode"><span class="id" type="var">E_IfTrue</span></span> to derive <span class="inlinecode"><span class="id" type="var">IFB</span></span> <span class="inlinecode"><span class="id" type="var">b</span></span> <span class="inlinecode"><span class="id" type="var">THEN</span></span>
-       <span class="inlinecode"><span class="id" type="var">c<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">ELSE</span></span> <span class="inlinecode"><span class="id" type="var">c<sub>2</sub></span></span> <span class="inlinecode"><span class="id" type="var">FI</span></span> <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span style="font-family: arial;">&dArr;</span></span> <span class="inlinecode"><span class="id" type="var">st'</span></span>.  <font size=-2>&#9744;</font>
+       <span class="inlinecode"><span class="id" type="var">c<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">ELSE</span></span> <span class="inlinecode"><span class="id" type="var">c<sub>2</sub></span></span> <span class="inlinecode"><span class="id" type="var">FI</span></span> <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span style="font-family: arial;">&dArr;</span></span> <span class="inlinecode"><span class="id" type="var">st'</span></span>.  <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
 
 </li>
 </ul>
@@ -468,7 +460,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab369"></a><h4 class="section">Exercise: 2 stars, recommended (IFB_false)</h4>
+<a name="lab372"></a><h4 class="section">Exercise: 2 stars, recommended (IFB_false)</h4>
 
 </div>
 <div class="code code-space">
@@ -482,10 +474,10 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab370"></a><h4 class="section">Exercise: 3 stars (swap_if_branches)</h4>
+<a name="lab373"></a><h4 class="section">Exercise: 3 stars (swap_if_branches)</h4>
  Show that we can swap the branches of an IF by negating its
     condition 
 </div>
@@ -501,7 +493,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  For <span class="inlinecode"><span class="id" type="var">WHILE</span></span> loops, we can give a similar pair of theorems.  A loop
@@ -539,13 +531,13 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab371"></a><h4 class="section">Exercise: 2 stars, advanced, optional (WHILE_false_informal)</h4>
+<a name="lab374"></a><h4 class="section">Exercise: 2 stars, advanced, optional (WHILE_false_informal)</h4>
  Write an informal proof of <span class="inlinecode"><span class="id" type="var">WHILE_false</span></span>.
 
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
-<font size=-2>&#9744;</font>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
 
 <div class="paragraph"> </div>
 
@@ -587,7 +579,7 @@ Of course, few programmers would be tempted to write a conditional
 </li>
 <li> Since these are the only rules that could have been used to
         prove <span class="inlinecode">(<span class="id" type="var">WHILE</span></span> <span class="inlinecode"><span class="id" type="var">b</span></span> <span class="inlinecode"><span class="id" type="var">DO</span></span> <span class="inlinecode"><span class="id" type="var">c</span></span> <span class="inlinecode"><span class="id" type="var">END</span>)</span> <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" type="var">st</span></span> <span class="inlinecode"><span style="font-family: arial;">&dArr;</span></span> <span class="inlinecode"><span class="id" type="var">st'</span></span>, the other cases of
-        the induction are immediately contradictory. <font size=-2>&#9744;</font> 
+        the induction are immediately contradictory. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
@@ -619,16 +611,16 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab372"></a><h4 class="section">Exercise: 2 stars, optional (WHILE_true_nonterm_informal)</h4>
+<a name="lab375"></a><h4 class="section">Exercise: 2 stars, optional (WHILE_true_nonterm_informal)</h4>
  Explain what the lemma <span class="inlinecode"><span class="id" type="var">WHILE_true_nonterm</span></span> means in English.
 
 <div class="paragraph"> </div>
 
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab373"></a><h4 class="section">Exercise: 2 stars, recommended (WHILE_true)</h4>
+<a name="lab376"></a><h4 class="section">Exercise: 2 stars, recommended (WHILE_true)</h4>
  Prove the following theorem. <i>Hint</i>: You'll want to use
     <span class="inlinecode"><span class="id" type="var">WHILE_true_nonterm</span></span> here. 
 </div>
@@ -645,7 +637,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -681,7 +673,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab374"></a><h4 class="section">Exercise: 2 stars, optional (seq_assoc)</h4>
+<a name="lab377"></a><h4 class="section">Exercise: 2 stars, optional (seq_assoc)</h4>
 
 </div>
 <div class="code code-space">
@@ -692,12 +684,12 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Proving program properties involving assignments is one place
     where the functional-extensionality axiom introduced in the
-    <span class="inlinecode"><span class="id" type="var">Logic</span></span> chapter often comes in handy.  Here are an example and an
+    <a href="Logic.html"><font color="gray">Logic</font></a> chapter often comes in handy.  Here are an example and an
     exercise. 
 </div>
 <div class="code code-tight">
@@ -712,23 +704,21 @@ Of course, few programmers would be tempted to write a conditional
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="comment">(*&nbsp;-&gt;&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">simpl</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">replace</span> (<a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="var">st</span> <span class="id" type="var">X</span> (<span class="id" type="var">st</span> <span class="id" type="var">X</span>)) <span class="id" type="keyword">with</span> <span class="id" type="var">st</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">constructor</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html#functional_extensionality"><span class="id" type="lemma">functional_extensionality</span></a>. <span class="id" type="tactic">intro</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Maps.html#t_update_same"><span class="id" type="axiom">t_update_same</span></a>; <span class="id" type="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" type="var">constructor</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" type="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html#functional_extensionality"><span class="id" type="lemma">functional_extensionality</span></a>. <span class="id" type="tactic">intro</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Maps.html#t_update_same"><span class="id" type="axiom">t_update_same</span></a>; <span class="id" type="tactic">reflexivity</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="comment">(*&nbsp;&lt;-&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">assert</span> (<span class="id" type="var">st'</span> = (<a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="var">st'</span> <span class="id" type="var">X</span> (<span class="id" type="var">st'</span> <span class="id" type="var">X</span>))).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html#functional_extensionality"><span class="id" type="lemma">functional_extensionality</span></a>. <span class="id" type="tactic">intro</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Maps.html#t_update_same"><span class="id" type="axiom">t_update_same</span></a>; <span class="id" type="tactic">reflexivity</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="tactic">at</span> 2.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">constructor</span>. <span class="id" type="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">replace</span> <span class="id" type="var">st'</span> <span class="id" type="keyword">with</span> (<a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="var">st'</span> <span class="id" type="var">X</span> (<a class="idref" href="Imp.html#aeval"><span class="id" type="definition">aeval</span></a> <span class="id" type="var">st'</span> (<a class="idref" href="Imp.html#AId"><span class="id" type="constructor">AId</span></a> <span class="id" type="var">X</span>))).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">apply</span> <a class="idref" href="Imp.html#E_Ass"><span class="id" type="constructor">E_Ass</span></a>. <span class="id" type="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" type="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Logic.FunctionalExtensionality.html#functional_extensionality"><span class="id" type="lemma">functional_extensionality</span></a>. <span class="id" type="tactic">intro</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Maps.html#t_update_same"><span class="id" type="axiom">t_update_same</span></a>. <span class="id" type="tactic">reflexivity</span>.<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-<a name="lab375"></a><h4 class="section">Exercise: 2 stars, recommended (assign_aequiv)</h4>
+<a name="lab378"></a><h4 class="section">Exercise: 2 stars, recommended (assign_aequiv)</h4>
 
 </div>
 <div class="code code-space">
@@ -740,7 +730,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -748,7 +738,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab376"></a><h1 class="section">Properties of Behavioral Equivalence</h1>
+<a name="lab379"></a><h1 class="section">Properties of Behavioral Equivalence</h1>
 
 <div class="paragraph"> </div>
 
@@ -761,7 +751,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab377"></a><h2 class="section">Behavioral Equivalence is an Equivalence</h2>
+<a name="lab380"></a><h2 class="section">Behavioral Equivalence Is an Equivalence</h2>
 
 <div class="paragraph"> </div>
 
@@ -873,7 +863,7 @@ Of course, few programmers would be tempted to write a conditional
 </div>
 
 <div class="doc">
-<a name="lab378"></a><h2 class="section">Behavioral Equivalence is a Congruence</h2>
+<a name="lab381"></a><h2 class="section">Behavioral Equivalence Is a Congruence</h2>
 
 <div class="paragraph"> </div>
 
@@ -1011,7 +1001,7 @@ The congruence property for loops is a little more interesting,
 </ul>
 
 </li>
-<li> (<span class="inlinecode"><span style="font-family: arial;">&larr;</span></span>) Similar. <font size=-2>&#9744;</font> 
+<li> (<span class="inlinecode"><span style="font-family: arial;">&larr;</span></span>) Similar. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </li>
 </ul>
 
@@ -1058,7 +1048,7 @@ The congruence property for loops is a little more interesting,
 </div>
 
 <div class="doc">
-<a name="lab379"></a><h4 class="section">Exercise: 3 stars, optional (CSeq_congruence)</h4>
+<a name="lab382"></a><h4 class="section">Exercise: 3 stars, optional (CSeq_congruence)</h4>
 
 </div>
 <div class="code code-space">
@@ -1070,10 +1060,10 @@ The congruence property for loops is a little more interesting,
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab380"></a><h4 class="section">Exercise: 3 stars (CIf_congruence)</h4>
+<a name="lab383"></a><h4 class="section">Exercise: 3 stars (CIf_congruence)</h4>
 
 </div>
 <div class="code code-space">
@@ -1086,7 +1076,7 @@ The congruence property for loops is a little more interesting,
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  For example, here are two equivalent programs and a proof of their
@@ -1127,7 +1117,7 @@ The congruence property for loops is a little more interesting,
 </div>
 
 <div class="doc">
-<a name="lab381"></a><h1 class="section">Program Transformations</h1>
+<a name="lab384"></a><h1 class="section">Program Transformations</h1>
 
 <div class="paragraph"> </div>
 
@@ -1161,7 +1151,7 @@ The congruence property for loops is a little more interesting,
 </div>
 
 <div class="doc">
-<a name="lab382"></a><h2 class="section">The Constant-Folding Transformation</h2>
+<a name="lab385"></a><h2 class="section">The Constant-Folding Transformation</h2>
 
 <div class="paragraph"> </div>
 
@@ -1239,7 +1229,7 @@ Note that this version of constant folding doesn't eliminate
 <div class="doc">
 Not only can we lift <span class="inlinecode"><span class="id" type="var">fold_constants_aexp</span></span> to <span class="inlinecode"><span class="id" type="var">bexp</span></span>s (in the
     <span class="inlinecode"><span class="id" type="var">BEq</span></span> and <span class="inlinecode"><span class="id" type="var">BLe</span></span> cases), we can also find constant <i>boolean</i>
-    expressions and reduce them in-place. 
+    expressions and evaluate them in-place. 
 </div>
 <div class="code code-tight">
 
@@ -1379,7 +1369,7 @@ To fold constants in a command, we apply the appropriate folding
 </div>
 
 <div class="doc">
-<a name="lab383"></a><h2 class="section">Soundness of Constant Folding</h2>
+<a name="lab386"></a><h2 class="section">Soundness of Constant Folding</h2>
 
 <div class="paragraph"> </div>
 
@@ -1415,7 +1405,7 @@ To fold constants in a command, we apply the appropriate folding
 </div>
 
 <div class="doc">
-<a name="lab384"></a><h4 class="section">Exercise: 3 stars, optional (fold_bexp_Eq_informal)</h4>
+<a name="lab387"></a><h4 class="section">Exercise: 3 stars, optional (fold_bexp_Eq_informal)</h4>
  Here is an informal proof of the <span class="inlinecode"><span class="id" type="var">BEq</span></span> case of the soundness
     argument for boolean expression constant folding.  Read it
     carefully and compare it to the formal proof that follows.  Then
@@ -1576,7 +1566,7 @@ To fold constants in a command, we apply the appropriate folding
 <div class="paragraph"> </div>
 
 </div>
-       completing the case.  <font size=-2>&#9744;</font>
+       completing the case.  <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font>
 
 </li>
 </ul>
@@ -1643,10 +1633,10 @@ The only interesting case is when both a<sub>1</sub> and a<sub>2</sub>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab385"></a><h4 class="section">Exercise: 3 stars (fold_constants_com_sound)</h4>
+<a name="lab388"></a><h4 class="section">Exercise: 3 stars (fold_constants_com_sound)</h4>
  Complete the <span class="inlinecode"><span class="id" type="var">WHILE</span></span> case of the following proof. 
 </div>
 <div class="code code-tight">
@@ -1689,7 +1679,7 @@ The only interesting case is when both a<sub>1</sub> and a<sub>2</sub>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1697,12 +1687,12 @@ The only interesting case is when both a<sub>1</sub> and a<sub>2</sub>
 </div>
 
 <div class="doc">
-<a name="lab386"></a><h3 class="section">Soundness of (0 + n) Elimination, Redux</h3>
+<a name="lab389"></a><h3 class="section">Soundness of (0 + n) Elimination, Redux</h3>
 
 <div class="paragraph"> </div>
 
-<a name="lab387"></a><h4 class="section">Exercise: 4 stars, advanced, optional (optimize_0plus)</h4>
- Recall the definition <span class="inlinecode"><span class="id" type="var">optimize_0plus</span></span> from the <span class="inlinecode"><span class="id" type="var">Imp</span></span> chapter:
+<a name="lab390"></a><h4 class="section">Exercise: 4 stars, advanced, optional (optimize_0plus)</h4>
+ Recall the definition <span class="inlinecode"><span class="id" type="var">optimize_0plus</span></span> from the <a href="Imp.html"><font color="gray">Imp</font></a> chapter:
 
 <div class="paragraph"> </div>
 
@@ -1772,7 +1762,7 @@ The only interesting case is when both a<sub>1</sub> and a<sub>2</sub>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1780,7 +1770,7 @@ The only interesting case is when both a<sub>1</sub> and a<sub>2</sub>
 </div>
 
 <div class="doc">
-<a name="lab388"></a><h1 class="section">Proving That Programs Are <i>Not</i> Equivalent</h1>
+<a name="lab391"></a><h1 class="section">Proving That Programs Are <i>Not</i> Equivalent</h1>
 
 <div class="paragraph"> </div>
 
@@ -1938,7 +1928,7 @@ Sadly, the property does <i>not</i> always hold.
 
 </div>
     where <span class="inlinecode"><span class="id" type="var">st<sub>2</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode">{</span> <span class="inlinecode"><span class="id" type="var">X</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8614;</span></span> <span class="inlinecode">1,</span> <span class="inlinecode"><span class="id" type="var">Y</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8614;</span></span> <span class="inlinecode">2</span> <span class="inlinecode">}</span>.  Note that <span class="inlinecode"><span class="id" type="var">st<sub>1</sub></span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">st<sub>2</sub></span></span>; this
-    is a contradiction, since <span class="inlinecode"><span class="id" type="var">ceval</span></span> is deterministic!  <font size=-2>&#9744;</font> 
+    is a contradiction, since <span class="inlinecode"><span class="id" type="var">ceval</span></span> is deterministic!  <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1991,7 +1981,7 @@ Sadly, the property does <i>not</i> always hold.
 </div>
 
 <div class="doc">
-<a name="lab389"></a><h4 class="section">Exercise: 4 stars, optional (better_subst_equiv)</h4>
+<a name="lab392"></a><h4 class="section">Exercise: 4 stars, optional (better_subst_equiv)</h4>
  The equivalence we had in mind above was not complete nonsense &mdash;
     it was actually almost right.  To make it correct, we just need to
     exclude the case where the variable <span class="inlinecode"><span class="id" type="var">X</span></span> occurs in the
@@ -2037,10 +2027,10 @@ Using <span class="inlinecode"><span class="id" type="var">var_not_used_in_aexp<
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab390"></a><h4 class="section">Exercise: 3 stars, optional (inequiv_exercise)</h4>
+<a name="lab393"></a><h4 class="section">Exercise: 3 stars, optional (inequiv_exercise)</h4>
  Prove that an infinite loop is not equivalent to <span class="inlinecode"><span class="id" type="var">SKIP</span></span> 
 </div>
 <div class="code code-tight">
@@ -2053,10 +2043,15 @@ Using <span class="inlinecode"><span class="id" type="var">var_not_used_in_aexp<
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
-<div class="paragraph"> </div>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
+</div>
+<div class="code code-tight">
 
-<a name="lab391"></a><h1 class="section">Extended Exercise: Nondeterministic Imp</h1>
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab394"></a><h1 class="section">Extended Exercise: Nondeterministic Imp</h1>
 
 <div class="paragraph"> </div>
 
@@ -2158,7 +2153,7 @@ To formalize Himp, we first add a clause to the definition of
 </div>
 
 <div class="doc">
-<a name="lab392"></a><h4 class="section">Exercise: 2 stars (himp_ceval)</h4>
+<a name="lab395"></a><h4 class="section">Exercise: 2 stars (himp_ceval)</h4>
  Now, we must extend the operational semantics. We have provided
    a template for the <span class="inlinecode"><span class="id" type="var">ceval</span></span> relation below, specifying the big-step
    semantics. What rule(s) must be added to the definition of <span class="inlinecode"><span class="id" type="var">ceval</span></span>
@@ -2222,7 +2217,7 @@ As a sanity check, the following claims should be provable for
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Finally, we repeat the definition of command equivalence from above: 
@@ -2241,7 +2236,7 @@ Let's apply this definition to prove some nondeterministic
     programs equivalent / inequivalent. 
 <div class="paragraph"> </div>
 
-<a name="lab393"></a><h4 class="section">Exercise: 3 stars (havoc_swap)</h4>
+<a name="lab396"></a><h4 class="section">Exercise: 3 stars (havoc_swap)</h4>
  Are the following two programs equivalent? 
 </div>
 <div class="code code-tight">
@@ -2270,10 +2265,10 @@ If you think they are equivalent, prove it. If you think they are
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab394"></a><h4 class="section">Exercise: 4 stars, optional (havoc_copy)</h4>
+<a name="lab397"></a><h4 class="section">Exercise: 4 stars, optional (havoc_copy)</h4>
  Are the following two programs equivalent? 
 </div>
 <div class="code code-tight">
@@ -2303,7 +2298,7 @@ If you think they are equivalent, then prove it. If you think they
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  The definition of program equivalence we are using here has some
@@ -2318,7 +2313,7 @@ If you think they are equivalent, then prove it. If you think they
 
 <div class="paragraph"> </div>
 
-<a name="lab395"></a><h4 class="section">Exercise: 5 stars, advanced (p1_p2_equiv)</h4>
+<a name="lab398"></a><h4 class="section">Exercise: 5 stars, advanced (p1_p2_equiv)</h4>
  Prove that <span class="inlinecode"><span class="id" type="var">p<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">p<sub>2</sub></span></span> are equivalent. In this and the following
     exercises, try to understand why the <span class="inlinecode"><span class="id" type="var">cequiv</span></span> definition has the
     behavior it has on these examples. 
@@ -2375,13 +2370,10 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab396"></a><h4 class="section">Exercise: 4 stars, advanced (p3_p4_inquiv)</h4>
-
-<div class="paragraph"> </div>
-
+<a name="lab399"></a><h4 class="section">Exercise: 4 stars, advanced (p3_p4_inquiv)</h4>
  Prove that the following programs are <i>not</i> equivalent. 
 </div>
 <div class="code code-tight">
@@ -2405,10 +2397,10 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab397"></a><h4 class="section">Exercise: 5 stars, advanced, optional (p5_p6_equiv)</h4>
+<a name="lab400"></a><h4 class="section">Exercise: 5 stars, advanced, optional (p5_p6_equiv)</h4>
 
 </div>
 <div class="code code-space">
@@ -2429,7 +2421,7 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2440,13 +2432,13 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<a name="lab398"></a><h1 class="section">Additional Exercises</h1>
+<a name="lab401"></a><h1 class="section">Additional Exercises</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab399"></a><h4 class="section">Exercise: 4 stars, optional (for_while_equiv)</h4>
+<a name="lab402"></a><h4 class="section">Exercise: 4 stars, optional (for_while_equiv)</h4>
  This exercise extends the optional <span class="inlinecode"><span class="id" type="var">add_for_loop</span></span> exercise from
-    the <span class="inlinecode"><span class="id" type="var">Imp</span></span> chapter, where you were asked to extend the language 
+    the <a href="Imp.html"><font color="gray">Imp</font></a> chapter, where you were asked to extend the language 
     of commands with C-style <span class="inlinecode"><span class="id" type="keyword">for</span></span> loops.  Prove that the command:
 
 <div class="paragraph"> </div>
@@ -2478,10 +2470,10 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab400"></a><h4 class="section">Exercise: 3 stars, optional (swap_noninterfering_assignments)</h4>
+<a name="lab403"></a><h4 class="section">Exercise: 3 stars, optional (swap_noninterfering_assignments)</h4>
  (Hint: You'll need <span class="inlinecode"><span class="id" type="var">functional_extensionality</span></span> for this one.) 
 </div>
 <div class="code code-tight">
@@ -2499,10 +2491,10 @@ You should use these lemmas to prove that <span class="inlinecode"><span class="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab401"></a><h4 class="section">Exercise: 4 stars, advanced, optional (capprox)</h4>
+<a name="lab404"></a><h4 class="section">Exercise: 4 stars, advanced, optional (capprox)</h4>
 
 <div class="paragraph"> </div>
 
@@ -2576,12 +2568,13 @@ Finally, find a non-trivial property which is preserved by
 <span class="id" type="keyword">Theorem</span> <a name="zprop_preserving"><span class="id" type="lemma">zprop_preserving</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">c</span> <span class="id" type="var">c'</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Equiv.html#zprop"><span class="id" type="definition">zprop</span></a> <a class="idref" href="Equiv.html#c"><span class="id" type="variable">c</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Equiv.html#capprox"><span class="id" type="definition">capprox</span></a> <a class="idref" href="Equiv.html#c"><span class="id" type="variable">c</span></a> <a class="idref" href="Equiv.html#c'"><span class="id" type="variable">c'</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Equiv.html#zprop"><span class="id" type="definition">zprop</span></a> <a class="idref" href="Equiv.html#c'"><span class="id" type="variable">c'</span></a>.<br/>
 <span class="id" type="keyword">Proof</span>. <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
-
-<br/>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
+<div class="paragraph"> </div>
+
+  
 </div>
 <div class="code code-tight">
 

@@ -25,18 +25,9 @@
 
 <div class="doc">
 
-</div>
-<div class="code code-tight">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Hoare.html#"><span class="id" type="library">Hoare</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-The presentation of Hoare logic in chapter <span class="inlinecode"><span class="id" type="var">Hoare</span></span> could be
+ The presentation of Hoare logic in chapter <a href="Hoare.html"><font color="gray">Hoare</font></a> could be
     described as "model-theoretic": the proof rules for each of the
     constructors were presented as <i>theorems</i> about the evaluation
     behavior of programs, and proofs of program correctness (validity
@@ -55,11 +46,19 @@ The presentation of Hoare logic in chapter <span class="inlinecode"><span class=
 <div class="paragraph"> </div>
 
     This chapter is optional.  Before reading it, you'll want to read
-    the <span class="inlinecode"><span class="id" type="var">ProofObjects</span></span> chapter.
+    the <a href="ProofObjects.html"><font color="gray">ProofObjects</font></a> chapter. 
+</div>
+<div class="code code-tight">
 
-<div class="paragraph"> </div>
+<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Hoare.html#"><span class="id" type="library">Hoare</span></a>.<br/>
 
-<a name="lab476"></a><h1 class="section">Definitions</h1>
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab478"></a><h1 class="section">Definitions</h1>
 
 </div>
 <div class="code code-space">
@@ -89,9 +88,9 @@ The presentation of Hoare logic in chapter <span class="inlinecode"><span class=
 </div>
 
 <div class="doc">
-We don't need to include axioms corresponding to <span class="inlinecode"><span class="id" type="var">hoare_consequence_pre</span></span>
-    or <span class="inlinecode"><span class="id" type="var">hoare_consequence_post</span></span>, because these can be proven easily
-    from <span class="inlinecode"><span class="id" type="var">H_Consequence</span></span>. 
+We don't need to include axioms corresponding to
+    <span class="inlinecode"><span class="id" type="var">hoare_consequence_pre</span></span> or <span class="inlinecode"><span class="id" type="var">hoare_consequence_post</span></span>, because 
+    these can be proven easily from <span class="inlinecode"><span class="id" type="var">H_Consequence</span></span>. 
 </div>
 <div class="code code-tight">
 
@@ -176,11 +175,11 @@ Print&nbsp;sample_proof.<br/>
 </div>
 
 <div class="doc">
-<a name="lab477"></a><h1 class="section">Properties</h1>
+<a name="lab479"></a><h1 class="section">Properties</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab478"></a><h4 class="section">Exercise: 2 stars (hoare_proof_sound)</h4>
+<a name="lab480"></a><h4 class="section">Exercise: 2 stars (hoare_proof_sound)</h4>
  Prove that such proof objects represent true claims. 
 </div>
 <div class="code code-tight">
@@ -193,12 +192,12 @@ Print&nbsp;sample_proof.<br/>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  We can also use Coq's reasoning facilities to prove metatheorems
     about Hoare Logic.  For example, here are the analogs of two
-    theorems we saw in chapter <span class="inlinecode"><span class="id" type="var">Hoare</span></span> &mdash; this time expressed in terms
+    theorems we saw in chapter <a href="Hoare.html"><font color="gray">Hoare</font></a> &mdash; this time expressed in terms
     of the syntax of Hoare Logic derivations (provability) rather than
     directly in terms of the semantics of Hoare triples.
 
@@ -296,19 +295,19 @@ Similarly, we can show that <span class="inlinecode"><span style="letter-spacing
 </div>
 
 <div class="doc">
-As a last step, we can show that the set of <span class="inlinecode"><span class="id" type="var">hoare_proof</span></span> axioms is
-    sufficient to prove any true fact about (partial) correctness.
+As a last step, we can show that the set of <span class="inlinecode"><span class="id" type="var">hoare_proof</span></span> axioms
+    is sufficient to prove any true fact about (partial) correctness.
     More precisely, any semantic Hoare triple that we can prove can
-    also be proved from these axioms.  Such a set of axioms is said
-    to be <i>relatively complete</i>. 
-<div class="paragraph"> </div>
-
- This proof is inspired by the one at
-http://www.ps.uni-saarland.de/courses/sem-ws<sub>11</sub>/script/Hoare.html
+    also be proved from these axioms.  Such a set of axioms is said to
+    be <i>relatively complete</i>.  Our proof is inspired by this one:
 
 <div class="paragraph"> </div>
 
- To prove this fact, we'll need to invent some intermediate
+      <a href="http://www.ps.uni-saarland.de/courses/sem-ws<sub>11</sub>/script/Hoare.html"><font color="gray">http://www.ps.uni-saarland.de/courses/sem-ws<sub>11</sub>/script/Hoare.html</font></a>
+
+<div class="paragraph"> </div>
+
+    To carry out the proof, we need to invent some intermediate
     assertions using a technical device known as <i>weakest
     preconditions</i>.  Given a command <span class="inlinecode"><span class="id" type="var">c</span></span> and a desired postcondition
     assertion <span class="inlinecode"><span class="id" type="var">Q</span></span>, the weakest precondition <span class="inlinecode"><span class="id" type="var">wp</span></span> <span class="inlinecode"><span class="id" type="var">c</span></span> <span class="inlinecode"><span class="id" type="var">Q</span></span> is an assertion
@@ -326,7 +325,7 @@ http://www.ps.uni-saarland.de/courses/sem-ws<sub>11</sub>/script/Hoare.html
 </div>
 
 <div class="doc">
-<a name="lab479"></a><h4 class="section">Exercise: 1 star (wp_is_precondition)</h4>
+<a name="lab481"></a><h4 class="section">Exercise: 1 star (wp_is_precondition)</h4>
 
 </div>
 <div class="code code-space">
@@ -338,10 +337,10 @@ http://www.ps.uni-saarland.de/courses/sem-ws<sub>11</sub>/script/Hoare.html
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab480"></a><h4 class="section">Exercise: 1 star (wp_is_weakest)</h4>
+<a name="lab482"></a><h4 class="section">Exercise: 1 star (wp_is_weakest)</h4>
 
 </div>
 <div class="code code-space">
@@ -369,10 +368,10 @@ The following utility lemma will also be useful.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab481"></a><h4 class="section">Exercise: 5 stars (hoare_proof_complete)</h4>
+<a name="lab483"></a><h4 class="section">Exercise: 5 stars (hoare_proof_complete)</h4>
  Complete the proof of the theorem. 
 </div>
 <div class="code code-tight">
@@ -403,7 +402,7 @@ The following utility lemma will also be useful.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Finally, we might hope that our axiomatic Hoare logic is
@@ -424,18 +423,15 @@ The following utility lemma will also be useful.
     Similarly, the triple <span class="inlinecode"><span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">True</span>}</span> <span class="inlinecode"><span class="id" type="var">SKIP</span></span> <span class="inlinecode"><span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">P</span><span style="letter-spacing:-.4em;">}</span>}</span> is valid if and only if
     <span class="inlinecode"><span style="font-family: arial;">&forall;</span></span> <span class="inlinecode"><span class="id" type="var">s</span>,</span> <span class="inlinecode"><span class="id" type="var">P</span></span> <span class="inlinecode"><span class="id" type="var">s</span></span> is valid, where <span class="inlinecode"><span class="id" type="var">P</span></span> is an arbitrary assertion of
     Coq's logic. But it is known that there can be no decision
-    procedure for this logic.
+    procedure for this logic. 
 
 <div class="paragraph"> </div>
 
-
-<div class="paragraph"> </div>
-
- Overall, this axiomatic style of presentation gives a clearer
+    Overall, this axiomatic style of presentation gives a clearer
     picture of what it means to "give a proof in Hoare logic."
     However, it is not entirely satisfactory from the point of view of
     writing down such proofs in practice: it is quite verbose.  The
-    section of chapter <span class="inlinecode"><span class="id" type="var">Hoare2</span></span> on formalizing decorated programs
+    section of chapter <a href="Hoare2.html"><font color="gray">Hoare2</font></a> on formalizing decorated programs
     shows how we can do even better. 
 <div class="paragraph"> </div>
 

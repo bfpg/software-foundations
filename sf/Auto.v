@@ -1,7 +1,6 @@
 (** * Auto: More Automation *)
 
 Require Import Coq.omega.Omega.
-
 Require Import Maps.
 Require Import Imp.
 
@@ -13,14 +12,16 @@ Require Import Imp.
     together with Ltac's scripting facilities will enable us to make
     our proofs startlingly short!  Used properly, they can also make
     proofs more maintainable and robust in the face of incremental
-    changes to underlying definitions.
+    changes to underlying definitions.  This chapter introduces [auto]
+    and [eauto].  A deeper treatment can be found in the [UseAuto]
+    chapter.
 
     There's a third major category of automation we haven't fully
     studied yet, namely built-in decision procedures for specific
     kinds of problems: [omega] is one example, but there are others.
-    This topic will be deferred for a while longer. *)
+    This topic will be deferred for a while longer. 
 
-(** Our motivating example will be this proof, repeated with just a
+    Our motivating example will be this proof, repeated with just a
     few small changes from [Imp].  We will try to simplify this proof
     in several stages. *)
 
@@ -65,7 +66,7 @@ Proof.
     subst st'0.
     apply IHE1_2. assumption.  Qed.
 
-(** * The [auto] and [eauto] tactics *)
+(** * The [auto] and [eauto] Tactics *)
 
 (** Thus far, we have generally written proof scripts that apply
     relevant hypotheses or lemmas by name.  In particular, when a
@@ -120,7 +121,7 @@ Example auto_example_3 : forall (P Q R S T U: Prop),
                            (P -> Q) -> (Q -> R) -> (R -> S) ->
                            (S -> T) -> (T -> U) -> P -> U.
 Proof.
-  (* When it cannot solve the goal, does nothing *)
+  (* When it cannot solve the goal, [auto] does nothing *)
   auto. 
   (* Optional argument says how deep to search (default depth is 5) *)
   auto 6. 
@@ -168,16 +169,22 @@ Qed.
 (** Of course, in any given development there will probably be
     some specific constructors and lemmas that are used very often in
     proofs.  We can add these to the global hint database by writing
+
       Hint Resolve T.
+
     at the top level, where [T] is a top-level theorem or a
     constructor of an inductively defined proposition (i.e., anything
     whose type is an implication).  As a shorthand, we can write
+
       Hint Constructors c.
+
     to tell Coq to do a [Hint Resolve] for _all_ of the constructors
     from the inductive definition of [c].
 
     It is also sometimes necessary to add
+
       Hint Unfold d.
+
     where [d] is a defined symbol, so that [auto] knows to expand uses
     of [d] and enable further possibilities for applying lemmas that
     it knows about. *)
@@ -307,11 +314,11 @@ Qed.
     amount of repetition. Let's start by tackling the contradiction
     cases. Each of them occurs in a situation where we have both
 
-    [H1: beval st b = false]
+      [H1: beval st b = false]
 
     and
 
-    [H2: beval st b = true]
+      [H2: beval st b = true]
 
     as hypotheses.  The contradiction is evident, but demonstrating it
     is a little complicated: we have to locate the two hypotheses [H1]
@@ -513,8 +520,7 @@ Inductive ceval : state -> com -> state -> Prop :=
       ceval st c1 st' ->
       beval st' b1 = false ->
       ceval st' (CRepeat c1 b1) st'' ->
-      ceval st (CRepeat c1 b1) st''
-.
+      ceval st (CRepeat c1 b1) st''.
 
 Notation "c1 '/' st '\\' st'" := (ceval st c1 st')
                                  (at level 40, st at level 39).
@@ -557,4 +563,4 @@ End Repeat.
     worth adding at least simple uses to your proofs to avoid tedium
     and to "future proof" your scripts. *)
 
-(** $Date: 2016-03-07 12:57:38 -0500 (Mon, 07 Mar 2016) $ *)
+(** $Date: 2016-05-26 12:03:56 -0400 (Thu, 26 May 2016) $ *)

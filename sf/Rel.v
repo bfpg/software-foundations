@@ -1,7 +1,5 @@
 (** * Rel: Properties of Relations *)
 
-Require Export IndProp.
-
 (** This short (and optional) chapter develops some basic definitions
     and a few theorems about binary relations in Coq.  The key
     definitions are repeated where they are actually used (in the
@@ -11,6 +9,8 @@ Require Export IndProp.
     facility with Coq's basic reasoning facilities, so it may be
     useful to look at this material just after the [IndProp]
     chapter. *)
+
+Require Export IndProp.
 
 (** A binary _relation_ on a set [X] is a family of propositions
     parameterized by two elements of [X] -- i.e., a proposition about
@@ -193,7 +193,7 @@ Proof.
 (** **** Exercise: 2 stars, optional (le_Sn_n_inf)  *)
 (** Provide an informal proof of the following theorem:
 
-    Theorem: For every [n], [~(S n <= n)]
+    Theorem: For every [n], [~ (S n <= n)]
 
     A formal proof of this is an optional exercise below, but try
     writing an informal proof without doing the formal proof first.
@@ -327,9 +327,7 @@ Proof.
     under rules of reflexivity and transitivity.  But it turns out
     that this definition is not very convenient for doing proofs,
     since the "nondeterminism" of the [rt_trans] rule can sometimes
-    lead to tricky inductions.
-
-    Here is a more useful definition: *)
+    lead to tricky inductions.  Here is a more useful definition: *)
 
 Inductive clos_refl_trans_1n {A : Type}
                              (R : relation A) (x : A)
@@ -379,4 +377,4 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

@@ -23,4 +23,4 @@ Tactic Notation "solve" "by" "inversion" "3" :=
 Tactic Notation "solve" "by" "inversion" :=
   solve by inversion 1.
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-24 14:00:08 -0400 (Tue, 24 May 2016) $ *)

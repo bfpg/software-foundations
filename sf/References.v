@@ -1,48 +1,49 @@
 (** * References: Typing Mutable References *)
 
+(** Up to this point, we have considered a variety of _pure_
+    language features, including functional abstraction, basic types
+    such as numbers and booleans, and structured types such as records
+    and variants.  These features form the backbone of most
+    programming languages -- including purely functional languages
+    such as Haskell and "mostly functional" languages such as ML, as
+    well as imperative languages such as C and object-oriented
+    languages such as Java, C[#], and Scala.
+
+    However, most practical languages also include various _impure_
+    features that cannot be described in the simple semantic framework
+    we have used so far.  In particular, besides just yielding
+    results, computation in these languages may assign to mutable
+    variables (reference cells, arrays, mutable record fields, etc.);
+    perform input and output to files, displays, or network
+    connections; make non-local transfers of control via exceptions,
+    jumps, or continuations; engage in inter-process synchronization
+    and communication; and so on.  In the literature on programming
+    languages, such "side effects" of computation are collectively
+    referred to as _computational effects_.
+
+    In this chapter, we'll see how one sort of computational effect --
+    mutable references -- can be added to the calculi we have studied.
+    The main extension will be dealing explicitly with a _store_ (or
+    _heap_) and _pointers_ that name store locations.  This extension
+    is fairly straightforward to define; the most interesting part is
+    the refinement we need to make to the statement of the type
+    preservation theorem. *)
+
 Require Import Coq.Arith.Arith.
 Require Import Coq.omega.Omega.
 Require Import Coq.Lists.List.
 Import ListNotations.
-
 Require Import SfLib.
 Require Import Maps.
 Require Import Smallstep.
-
-(** So far, we have considered a variety of _pure_ language features,
-    including functional abstraction, basic types such as numbers and
-    booleans, and structured types such as records and variants.  These
-    features form the backbone of most programming languages -- including
-    purely functional languages such as Haskell, "mostly functional"
-    languages such as ML, imperative languages such as C, and
-    object-oriented languages such as Java.
-
-    Most practical programming languages also include various _impure_
-    features that cannot be described in the simple semantic framework
-    we have used so far.  In particular, besides just yielding
-    results, evaluation of terms in these languages may assign to
-    mutable variables (reference cells, arrays, mutable record fields,
-    etc.), perform input and output to files, displays, or network
-    connections, make non-local transfers of control via exceptions,
-    jumps, or continuations, engage in inter-process synchronization
-    and communication, and so on.  In the literature on programming
-    languages, such "side effects" of computation are more generally
-    referred to as _computational effects_.
-
-    In this chapter, we'll see how one sort of computational
-    effect -- mutable references -- can be added to the calculi we have
-    studied.  The main extension will be dealing explicitly with a
-    _store_ (or _heap_).  This extension is straightforward to define;
-    the most interesting part is the refinement we need to make to the
-    statement of the type preservation theorem. *)
 
 (* ###################################################################### *)
 (** * Definitions *)
 
 (** Pretty much every programming language provides some form of
     assignment operation that changes the contents of a previously
-    allocated piece of storage.  (Coq's internal language is a rare
-    exception!)
+    allocated piece of storage.  (Coq's internal language Gallina is a
+    rare exception!)
 
     In some languages -- notably ML and its relatives -- the
     mechanisms for name-binding and those for assignment are kept
@@ -51,29 +52,29 @@ Require Import Smallstep.
     _reference_ (or _pointer_) to a mutable cell whose current
     contents is [5].  These are different things, and the difference
     is visible to the programmer.  We can add [x] to another number,
-    but not assign to it.  We can use [y] directly to assign a new
-    value to the cell that it points to (by writing [y:=84]), but we
-    cannot use it directly as an argument to an operation like [+].
-    Instead, we must explicitly _dereference_ it, writing [!y] to
-    obtain its current contents.
+    but not assign to it.  We can use [y] to assign a new value to the
+    cell that it points to (by writing [y:=84]), but we cannot use [y]
+    directly as an argument to an operation like [+].  Instead, we
+    must explicitly _dereference_ it, writing [!y] to obtain its
+    current contents.
 
     In most other languages -- in particular, in all members of the C
-    family, including Java -- _every_ variable name refers to a mutable
-    cell, and the operation of dereferencing a variable to obtain its
-    current contents is implicit.
+    family, including Java -- _every_ variable name refers to a
+    mutable cell, and the operation of dereferencing a variable to
+    obtain its current contents is implicit.
 
     For purposes of formal study, it is useful to keep these
     mechanisms separate.  The development in this chapter will closely
     follow ML's model.  Applying the lessons learned here to C-like
     languages is a straightforward matter of collapsing some
     distinctions and rendering some operations such as dereferencing
-    implicit instead of explicit.
-
-    In this chapter, we study adding mutable references to the
-    simply-typed lambda calculus with natural numbers. *)
+    implicit instead of explicit. *)
 
 (* ###################################################################### *)
 (** * Syntax *)
+
+(** In this chapter, we study adding mutable references to the
+    simply-typed lambda calculus with natural numbers. *)
 
 Module STLCRef.
 
@@ -82,33 +83,35 @@ Module STLCRef.
 
        - To allocate a reference, we use the [ref] operator, providing
          an initial value for the new cell.  For example, [ref 5]
-         creates a new cell containing the value [5], and evaluates to
+         creates a new cell containing the value [5], and reduces to
          a reference to that cell.
 
        - To read the current value of this cell, we use the
-         dereferencing operator [!]; for example, [!(ref 5)] evaluates
+         dereferencing operator [!]; for example, [!(ref 5)] reduces
          to [5].
 
        - To change the value stored in a cell, we use the assignment
          operator.  If [r] is a reference, [r := 7] will store the
-         value [7] in the cell referenced by [r].  However, [r := 7]
-         evaluates to the trivial value [unit]; it exists only to have
-         the _side effect_ of modifying the contents of a cell. *)
+         value [7] in the cell referenced by [r]. *)
 
 (* ################################### *)
 (** *** Types *)
 
 (** We start with the simply typed lambda calculus over the
-    natural numbers. To the base natural number type and arrow types
-    we need to add two more types to deal with references. First, we
-    need the _unit type_, which we will use as the result type of an
-    assignment operation.  We then add _reference types_. *)
-(** If [T] is a type, then [Ref T] is the type of references which
-    point to a cell holding values of type [T].
+    natural numbers. Besides the base natural number type and arrow
+    types, we need to add two more types to deal with
+    references. First, we need the _unit type_, which we will use as
+    the result type of an assignment operation.  We then add
+    _reference types_. *)
+
+(** If [T] is a type, then [Ref T] is the type of references to
+    cells holding values of type [T].
+
       T ::= Nat
           | Unit
           | T -> T
           | Ref T
+
 *)
 
 Inductive ty : Type :=
@@ -123,13 +126,13 @@ Inductive ty : Type :=
 (** Besides variables, abstractions, applications,
     natural-number-related terms, and [unit], we need four more sorts
     of terms in order to handle mutable references:
-<<
+
       t ::= ...              Terms
           | ref t              allocation
           | !t                 dereference
           | t := t             assignment
           | l                  location
->>
+
 *)
 
 Inductive tm  : Type :=
@@ -149,12 +152,12 @@ Inductive tm  : Type :=
   | tassign : tm -> tm -> tm
   | tloc    : nat -> tm.
 
-(** Intuitively...
+(** Intuitively:
     - [ref t] (formally, [tref t]) allocates a new reference cell
-      with the value [t] and evaluates to the location of the newly
+      with the value [t] and reduces to the location of the newly
       allocated cell;
 
-    - [!t] (formally, [tderef t]) evaluates to the contents of the
+    - [!t] (formally, [tderef t]) reduces to the contents of the
       cell referenced by [t];
 
     - [t1 := t2] (formally, [tassign t1 t2]) assigns [t2] to the
@@ -165,24 +168,16 @@ Inductive tm  : Type :=
 
 (** In informal examples, we'll also freely use the extensions
     of the STLC developed in the [MoreStlc] chapter; however, to keep
-    the proofs small, we won't bother formalizing them again here.  It
+    the proofs small, we won't bother formalizing them again here.  (It
     would be easy to do so, since there are no very interesting
-    interactions between those features and references. *)
-
-Module ExampleVariables.
-
-Definition x := Id 0.
-Definition y := Id 1.
-Definition r := Id 2.
-Definition s := Id 3.
-
-End ExampleVariables.
+    interactions between those features and references.) *)
 
 (* ################################### *)
 (** *** Typing (Preview) *)
 
 (** Informally, the typing rules for allocation, dereferencing, and
     assignment will look like this:
+
                            Gamma |- t1 : T1
                        ------------------------                         (T_Ref)
                        Gamma |- ref t1 : Ref T1
@@ -195,6 +190,7 @@ End ExampleVariables.
                           Gamma |- t2 : T11
                        ------------------------                      (T_Assign)
                        Gamma |- t1 := t2 : Unit
+
     The rule for locations will require a bit more machinery, and this
     will motivate some changes to the other rules; we'll come back to
     this later. *)
@@ -258,32 +254,31 @@ Notation "'[' x ':=' s ']' t" := (subst x s t) (at level 20).
 (* ################################### *)
 (** ** Side Effects and Sequencing *)
 
-(** The fact that the result of an assignment expression is the
-    trivial value [unit] allows us to use a nice abbreviation for
-    _sequencing_.  For example, we can write
-<<
+(** The fact that we've chosen the result of an assignment
+    expression to be the trivial value [unit] allows a nice
+    abbreviation for _sequencing_.  For example, we can write
+
        r:=succ(!r); !r
->>
+
     as an abbreviation for
-<<
-       (\x:Unit. !r) (r := succ(!r)).
->>
-    This has the effect of evaluating two expressions in order and
-    returning the value of the second.  Restricting the type of the first
-    expression to [Unit] helps the typechecker to catch some silly
-    errors by permitting us to throw away the first value only if it
-    is really guaranteed to be trivial.
+
+       (\x:Unit. !r) (r:=succ(!r)).
+
+    This has the effect of reducing two expressions in order and
+    returning the value of the second.  Restricting the type of the
+    first expression to [Unit] helps the typechecker to catch some
+    silly errors by permitting us to throw away the first value only
+    if it is really guaranteed to be trivial.
 
     Notice that, if the second expression is also an assignment, then
     the type of the whole sequence will be [Unit], so we can validly
     place it to the left of another [;] to build longer sequences of
     assignments:
-<<
-       r:=succ(!r); r:=succ(!r); r:=succ(!r); r:=succ(!r); !r
->>
-*)
 
-(** Formally, we introduce sequencing as a "derived form"
+       r:=succ(!r); r:=succ(!r); r:=succ(!r); r:=succ(!r); !r
+
+*)
+(** Formally, we introduce sequencing as a _derived form_
     [tseq] that expands into an abstraction and an application. *)
 
 Definition tseq t1 t2 :=
@@ -293,35 +288,35 @@ Definition tseq t1 t2 :=
 (** ** References and Aliasing *)
 
 (** It is important to bear in mind the difference between the
-    _reference_ that is bound to [r] and the _cell_ in the store that
-    is pointed to by this reference.
+    _reference_ that is bound to some variable [r] and the _cell_ 
+    in the store that is pointed to by this reference.
 
     If we make a copy of [r], for example by binding its value to
     another variable [s], what gets copied is only the _reference_,
     not the contents of the cell itself.
 
-    For example, after evaluating
-<<
+    For example, after reducing
+
       let r = ref 5 in
       let s = r in
       s := 82;
       (!r)+1
->>
+
     the cell referenced by [r] will contain the value [82], while the
     result of the whole expression will be [83].  The references [r]
     and [s] are said to be _aliases_ for the same cell.
 
     The possibility of aliasing can make programs with references
     quite tricky to reason about.  For example, the expression
-<<
+
       r := 5; r := !s
->>
+
     assigns [5] to [r] and then immediately overwrites it with [s]'s
     current value; this has exactly the same effect as the single
     assignment
-<<
+
       r := !s
->>
+
     _unless_ we happen to do it in a context where [r] and [s] are
     aliases for the same cell! *)
 
@@ -333,26 +328,26 @@ Definition tseq t1 t2 :=
     communication channels" -- shared state -- between different parts
     of a program.  For example, suppose we define a reference cell and
     two functions that manipulate its contents:
-<<
-    let c = ref 0 in
-    let incc = \_:Unit. (c := succ (!c); !c) in
-    let decc = \_:Unit. (c := pred (!c); !c) in
-    ...
->>
+
+      let c = ref 0 in
+      let incc = \_:Unit. (c := succ (!c); !c) in
+      let decc = \_:Unit. (c := pred (!c); !c) in
+      ...
+
 *)
 
 (** Note that, since their argument types are [Unit], the
-    abstractions in the definitions of [incc] and [decc] are not
-    providing any useful information to the bodies of the
-    functions (using the wildcard [_] as the name of the bound
-    variable is a reminder of this).  Instead, their purpose is to
-    "slow down" the execution of the function bodies: since function
-    abstractions are values, the two [let]s are executed simply by
-    binding these functions to the names [incc] and [decc], rather
-    than by actually incrementing or decrementing [c].  Later, each
-    call to one of these functions results in its body being executed
-    once and performing the appropriate mutation on [c].  Such
-    functions are often called _thunks_.
+    arguments to the abstractions in the definitions of [incc] and
+    [decc] are not providing any useful information to the bodies of
+    these functions (using the wildcard [_] as the name of the bound
+    variable is a reminder of this).  Instead, their purpose of these
+    abstractions is to "slow down" the execution of the function
+    bodies.  Since function abstractions are values, the two [let]s are
+    executed simply by binding these functions to the names [incc] and
+    [decc], rather than by actually incrementing or decrementing [c].
+    Later, each caddll to one of these functions results in its body
+    being executed once and performing the appropriate mutation on
+    [c].  Such functions are often called _thunks_.
 
     In the context of these declarations, calling [incc] results in
     changes to [c] that can be observed by calling [decc].  For
@@ -365,29 +360,31 @@ Definition tseq t1 t2 :=
 (** We can go a step further and write a _function_ that creates [c],
     [incc], and [decc], packages [incc] and [decc] together into a
     record, and returns this record:
-<<
-    newcounter =
-        \_:Unit.
-           let c = ref 0 in
-           let incc = \_:Unit. (c := succ (!c); !c) in
-           let decc = \_:Unit. (c := pred (!c); !c) in
-           {i=incc, d=decc}
->>
+
+      newcounter =
+          \_:Unit.
+             let c = ref 0 in
+             let incc = \_:Unit. (c := succ (!c); !c) in
+             let decc = \_:Unit. (c := pred (!c); !c) in
+             {i=incc, d=decc}
+
 *)
+
 (** Now, each time we call [newcounter], we get a new record of
     functions that share access to the same storage cell [c].  The
     caller of [newcounter] can't get at this storage cell directly,
     but can affect it indirectly by calling the two functions.  In
     other words, we've created a simple form of _object_.
-<<
-    let c1 = newcounter unit in
-    let c2 = newcounter unit in
-    // Note that we've allocated two separate storage cells now!
-    let r1 = c1.i unit in
-    let r2 = c2.i unit in
-    r2  // yields 1, not 2!
->>
-*)
+
+      let c1 = newcounter unit in
+      let c2 = newcounter unit in
+      // Note that we've allocated two separate storage cells now!
+      let r1 = c1.i unit in
+      let r2 = c2.i unit in
+      r2  // yields 1, not 2!
+
+ *)
+
 (** **** Exercise: 1 star (store_draw)  *)
 (** Draw (on paper) the contents of the store at the point in
     execution where the first two [let]s have finished and the third
@@ -402,51 +399,51 @@ Definition tseq t1 t2 :=
 (** A reference cell need not contain just a number: the primitives
     we've defined above allow us to create references to values of any
     type, including functions.  For example, we can use references to
-    functions to give a (not very efficient) implementation of arrays
+    functions to give an (inefficient) implementation of arrays
     of numbers, as follows.  Write [NatArray] for the type
     [Ref (Nat->Nat)].
 
     Recall the [equal] function from the [MoreStlc] chapter:
-<<
-    equal =
-      fix
-        (\eq:Nat->Nat->Bool.
-           \m:Nat. \n:Nat.
-             if m=0 then iszero n
-             else if n=0 then false
-             else eq (pred m) (pred n))
->>
-    Now, to build a new array, we allocate a reference cell and fill
+
+      equal =
+        fix
+          (\eq:Nat->Nat->Bool.
+             \m:Nat. \n:Nat.
+               if m=0 then iszero n
+               else if n=0 then false
+               else eq (pred m) (pred n))
+
+    To build a new array, we allocate a reference cell and fill
     it with a function that, when given an index, always returns [0].
-<<
-    newarray = \_:Unit. ref (\n:Nat.0)
->>
+
+      newarray = \_:Unit. ref (\n:Nat.0)
+
     To look up an element of an array, we simply apply
     the function to the desired index.
-<<
-    lookup = \a:NatArray. \n:Nat. (!a) n
->>
+
+      lookup = \a:NatArray. \n:Nat. (!a) n
+
     The interesting part of the encoding is the [update] function.  It
     takes an array, an index, and a new value to be stored at that index, and
     does its job by creating (and storing in the reference) a new function
     that, when it is asked for the value at this very index, returns the new
-    value that was given to [update], and on all other indices passes the
+    value that was given to [update], while on all other indices it passes the
     lookup to the function that was previously stored in the reference.
-<<
-    update = \a:NatArray. \m:Nat. \v:Nat.
-                 let oldf = !a in
-                 a := (\n:Nat. if equal m n then v else oldf n);
->>
+
+      update = \a:NatArray. \m:Nat. \v:Nat.
+                   let oldf = !a in
+                   a := (\n:Nat. if equal m n then v else oldf n);
+
     References to values containing other references can also be very
     useful, allowing us to define data structures such as mutable
     lists and trees. *)
 
-(** **** Exercise: 2 stars (compact_update)  *)
+(** **** Exercise: 2 stars, recommended (compact_update)  *)
 (** If we defined [update] more compactly like this
-<<
-    update = \a:NatArray. \m:Nat. \v:Nat.
-                a := (\n:Nat. if equal m n then v else (!a) n)
->>
+
+      update = \a:NatArray. \m:Nat. \v:Nat.
+                  a := (\n:Nat. if equal m n then v else (!a) n)
+
 would it behave the same? *)
 
 (* FILL IN HERE *)
@@ -455,20 +452,21 @@ would it behave the same? *)
 (* ################################### *)
 (** ** Null References *)
 
-(** There is one more difference between our references and C-style
-    mutable variables: in C-like languages, variables holding pointers
-    into the heap may sometimes have the value [NULL].  Dereferencing
-    such a "null pointer" is an error, and results in an
-    exception (Java) or in termination of the program (C).
+(** There is one final significant difference between our
+    references and C-style mutable variables: in C-like languages,
+    variables holding pointers into the heap may sometimes have the
+    value [NULL].  Dereferencing such a "null pointer" is an error,
+    and results either in a clean exception (Java and C[#]) or in
+    arbitrary and possibly insecure behavior (C and relatives like
+    C++).  Null pointers cause significant trouble in C-like
+    languages: the fact that any pointer might be null means that any
+    dereference operation in the program can potentially fail.
 
-    Null pointers cause significant trouble in C-like languages: the
-    fact that any pointer might be null means that any dereference
-    operation in the program can potentially fail.  However, even in
-    ML-like languages, there are occasionally situations where we may
-    or may not have a valid pointer in our hands.  Fortunately, there
-    is no need to extend the basic mechanisms of references to achieve
-    this: the sum types introduced in the [MoreStlc] chapter already
-    give us what we need.
+    Even in ML-like languages, there are occasionally situations where
+    we may or may not have a valid pointer in our hands.  Fortunately,
+    there is no need to extend the basic mechanisms of references to
+    represent such situations: the sum types introduced in the
+    [MoreStlc] chapter already give us what we need.
 
     First, we can use sums to build an analog of the [option] types
     introduced in the [Lists] chapter.  Define [Option T] to be an
@@ -485,12 +483,12 @@ would it behave the same? *)
     provided any primitives for freeing reference cells when they are
     no longer needed.  Instead, like many modern languages (including
     ML and Java) we rely on the run-time system to perform _garbage
-    collection_, collecting and reusing cells that can no longer be
-    reached by the program.
+    collection_, automatically identifying and reusing cells that can
+    no longer be reached by the program.
 
     This is _not_ just a question of taste in language design: it is
     extremely difficult to achieve type safety in the presence of an
-    explicit deallocation operation.  The reason for this is the
+    explicit deallocation operation.  One reason for this is the
     familiar _dangling reference_ problem: we allocate a cell holding
     a number, save a reference to it in some data structure, use it
     for a while, then deallocate it and allocate a new cell holding a
@@ -514,20 +512,21 @@ would it behave the same? *)
     appears when we consider how to formalize their operational
     behavior.  One way to see why is to ask, "What should be the
     _values_ of type [Ref T]?"  The crucial observation that we need
-    to take into account is that evaluating a [ref] operator should
+    to take into account is that reduci a [ref] operator should
     _do_ something -- namely, allocate some storage -- and the result
     of the operation should be a reference to this storage.
 
     What, then, is a reference?
 
-    The run-time store in most programming language implementations is
-    essentially just a big array of bytes.  The run-time system keeps track
-    of which parts of this array are currently in use; when we need to
-    allocate a new reference cell, we allocate a large enough segment from
-    the free region of the store (4 bytes for integer cells, 8 bytes for
-    cells storing [Float]s, etc.), mark it as being used, and return the
-    index (typically, a 32- or 64-bit integer) of the start of the newly
-    allocated region.  These indices are references.
+    The run-time store in most programming-language implementations is
+    essentially just a big array of bytes.  The run-time system keeps
+    track of which parts of this array are currently in use; when we
+    need to allocate a new reference cell, we allocate a large enough
+    segment from the free region of the store (4 bytes for integer
+    cells, 8 bytes for cells storing [Float]s, etc.), record somewhere
+    that it is being used, and return the index (typically, a 32- or
+    64-bit integer) of the start of the newly allocated region.  These
+    indices are references.
 
     For present purposes, there is no need to be quite so concrete.
     We can think of the store as an array of _values_, rather than an
@@ -535,10 +534,9 @@ would it behave the same? *)
     run-time representations of different values.  A reference, then,
     is simply an index into the store.  (If we like, we can even
     abstract away from the fact that these indices are numbers, but
-    for purposes of formalization in Coq it is a bit more convenient
-    to use numbers.)  We'll use the word _location_ instead of
-    _reference_ or _pointer_ from now on to emphasize this abstract
-    quality.
+    for purposes of formalization in Coq it is convenient to use
+    numbers.)  We use the word _location_ instead of _reference_ or
+    _pointer_ to emphasize this abstract quality.
 
     Treating locations abstractly in this way will prevent us from
     modeling the _pointer arithmetic_ found in low-level languages
@@ -548,7 +546,7 @@ would it behave the same? *)
     cannot be tracked by most type systems: knowing that location [n]
     in the store contains a [float] doesn't tell us anything useful
     about the type of location [n+4].  In C, pointer arithmetic is a
-    notorious source of type safety violations. *)
+    notorious source of type-safety violations. *)
 
 (* ################################### *)
 (** ** Stores *)
@@ -563,13 +561,13 @@ would it behave the same? *)
     We could re-use the same functional representation we used for
     states in IMP, but for carrying out the proofs in this chapter it
     is actually more convenient to represent a store simply as a
-    _list_ of values.  (The reason we couldn't use this representation
+    _list_ of values.  (The reason we didn't use this representation
     before is that, in IMP, a program could modify any location at any
     time, so states had to be ready to map _any_ variable to a value.
     However, in the STLC with references, the only way to create a
     reference cell is with [tref t1], which puts the value of [t1]
-    in a new reference cell and evaluates to the location of the newly
-    created reference cell. When evaluating such an expression, we can
+    in a new reference cell and reduces to the location of the newly
+    created reference cell. When reducing such an expression, we can
     just add a new reference cell to the end of the list representing
     the store.) *)
 
@@ -579,7 +577,7 @@ Definition store := list tm.
     cell at location [n] in the store [st].  Note that we must give a
     default value to [nth] in case we try looking up an index which is
     too large. (In fact, we will never actually do this, but proving
-    it will of course require some work!) *)
+    that we don't will require a bit of work.) *)
 
 Definition store_lookup (n:nat) (st:store) :=
   nth n st tunit.
@@ -597,8 +595,8 @@ Fixpoint replace {A:Type} (n:nat) (x:A) (l:list A) : list A :=
     end
   end.
 
-(** Of course, we also need some boring lemmas about [replace], which
-    are also fairly straightforward to prove. *)
+(** As might be expected, we will also need some technical
+    lemmas about [replace]; they are straightforward to prove. *)
 
 Lemma replace_nil : forall A n (x:A),
   replace n x nil = nil.
@@ -652,117 +650,128 @@ Qed.
 (* ################################### *)
 (** ** Reduction *)
 
-(** Next, we need to extend our operational semantics to take
-    stores into account.  Since the result of evaluating an expression
+(** Next, we need to extend the operational semantics to take
+    stores into account.  Since the result of reducing an expression
     will in general depend on the contents of the store in which it is
-    evaluated, the evaluation rules should take not just a term but
-    also a store as argument.  Furthermore, since the evaluation of a
-    term may cause side effects on the store that may affect the
-    evaluation of other terms in the future, the evaluation rules need
+    reduced, the evaluation rules should take not just a term but
+    also a store as argument.  Furthermore, since the reduction of a
+    term can cause side effects on the store, and these may affect the
+    reduction of other terms in the future, the reduction rules need
     to return a new store.  Thus, the shape of the single-step
-    evaluation relation changes from [t ==> t'] to [t / st ==> t' /
+    reduction relation needs to change from [t ==> t'] to [t / st ==> t' /
     st'], where [st] and [st'] are the starting and ending states of
     the store.
 
     To carry through this change, we first need to augment all of our
-    existing evaluation rules with stores:
+    existing reduction rules with stores:
+
                                value v2
-                -------------------------------------- (ST_AppAbs) (\x:T.t12)
-                v2 / st ==> [x:=v2]t12 / st
+                -------------------------------------- (ST_AppAbs) 
+                (\x:T.t12) v2 / st ==> [x:=v2]t12 / st
 
                         t1 / st ==> t1' / st'
-                     --------------------------- (ST_App1) t1 t2 / st
-                     ==> t1' t2 / st'
+                     --------------------------- (ST_App1) 
+                     t1 t2 / st ==> t1' t2 / st'
 
                   value v1 t2 / st ==> t2' / st'
-                  ---------------------------------- (ST_App2) v1 t2 /
-                     st ==> v1 t2' / st'
-    Note that the first rule here returns the store unchanged:
+                  ---------------------------------- (ST_App2) 
+                     v1 t2 / st ==> v1 t2' / st'
+
+    Note that the first rule here returns the store unchanged, since
     function application, in itself, has no side effects.  The other
     two rules simply propagate side effects from premise to
     conclusion.
 
-    Now, the result of evaluating a [ref] expression will be a fresh
+    Now, the result of reducing a [ref] expression will be a fresh
     location; this is why we included locations in the syntax of terms
-    and in the set of values.
+    and in the set of values.  It is crucial to note that making this 
+    extension to the syntax of terms does not mean that we intend 
+    _programmers_ to write terms involving explicit, concrete locations: 
+    such terms will arise only as intermediate results during reduction.  
+    This may seem odd, but it follows naturally from our design decision
+    to represent the result of every reduction step by a modified _term_. 
+    If we had chosen a more "machine-like" model, e.g., with an explicit 
+    stack to contain values of bound identifiers, then the idea of adding 
+    locations to the set of allowed values might seem more obvious.
 
-    It is crucial to note that making this extension to the syntax of
-    terms does not mean that we intend _programmers_ to write terms
-    involving explicit, concrete locations: such terms will arise only
-    as intermediate results of evaluation.  This may initially seem
-    odd, but really it follows naturally from our design decision to
-    represent the result of every evaluation step by a modified
-    term. If we had chosen a more "machine-like" model for evaluation,
-    e.g., with an explicit stack to contain values of bound
-    identifiers, then the idea of adding locations to the set of
-    allowed values would probably seem more obvious.
-
-    In terms of this expanded syntax, we can state evaluation rules
+    In terms of this expanded syntax, we can state reduction rules
     for the new constructs that manipulate locations and the store.
-    First, to evaluate a dereferencing expression [!t1], we must first
+    First, to reduce a dereferencing expression [!t1], we must first
     reduce [t1] until it becomes a value:
+
                         t1 / st ==> t1' / st'
-                       ----------------------- (ST_Deref) !t1 / st ==>
-                       !t1' / st'
+                       ----------------------- (ST_Deref) 
+                       !t1 / st ==> !t1' / st'
+
     Once [t1] has finished reducing, we should have an expression of
     the form [!l], where [l] is some location.  (A term that attempts
     to dereference any other sort of value, such as a function or
-    [unit], is erroneous, as is a term that tries to derefence a
+    [unit], is erroneous, as is a term that tries to dereference a
     location that is larger than the size [|st|] of the currently
-    allocated store; the evaluation rules simply get stuck in this
-    case.  The type safety properties that we'll establish below
-    assure us that well-typed terms will never misbehave in this way.)
+    allocated store; the reduction rules simply get stuck in this
+    case.  The type-safety properties established below assure us 
+    that well-typed terms will never misbehave in this way.)
+
                                l < |st|
                      ---------------------------------- (ST_DerefLoc)
                      !(loc l) / st ==> lookup l st / st
 
-    Next, to evaluate an assignment expression [t1:=t2], we must first
-    evaluate [t1] until it becomes a value (a location), and then
-    evaluate [t2] until it becomes a value (of any sort):
+
+    Next, to reduce an assignment expression [t1:=t2], we must first
+    reduce [t1] until it becomes a value (a location), and then
+    reduce [t2] until it becomes a value (of any sort):
+
                         t1 / st ==> t1' / st'
-                 ----------------------------------- (ST_Assign1) t1
-                 := t2 / st ==> t1' := t2 / st'
+                 ----------------------------------- (ST_Assign1) 
+                 t1 := t2 / st ==> t1' := t2 / st'
 
                         t2 / st ==> t2' / st'
-                  --------------------------------- (ST_Assign2) v1 :=
-                  t2 / st ==> v1 := t2' / st'
+                  --------------------------------- (ST_Assign2) 
+                  v1 := t2 / st ==> v1 := t2' / st'
+
     Once we have finished with [t1] and [t2], we have an expression of
     the form [l:=v2], which we execute by updating the store to make
     location [l] contain [v2]:
+
                                l < |st|
-                ------------------------------------- (ST_Assign) loc
-                l := v2 / st ==> unit / [l:=v2]st
+                ------------------------------------- (ST_Assign) 
+                loc l := v2 / st ==> unit / [l:=v2]st
+
     The notation [[l:=v2]st] means "the store that maps [l] to [v2]
     and maps all other locations to the same thing as [st.]"  Note
-    that the term resulting from this evaluation step is just [unit];
-    the interesting result is the updated store.)
+    that the term resulting from this reduction step is just [unit];
+    the interesting result is the updated store.
 
-    Finally, to evaluate an expression of the form [ref t1], we first
-    evaluate [t1] until it becomes a value:
+    Finally, to reduct an expression of the form [ref t1], we first
+    reduce [t1] until it becomes a value:
+
                         t1 / st ==> t1' / st'
-                    ----------------------------- (ST_Ref) ref t1 / st
-                    ==> ref t1' / st'
-    Then, to evaluate the [ref] itself, we choose a fresh location at
+                    ----------------------------- (ST_Ref) 
+                    ref t1 / st ==> ref t1' / st'
+
+    Then, to reduce the [ref] itself, we choose a fresh location at
     the end of the current store -- i.e., location [|st|] -- and yield
     a new store that extends [st] with the new value [v1].
-                   -------------------------------- (ST_RefValue) ref
-                   v1 / st ==> loc |st| / st,v1
+
+                   -------------------------------- (ST_RefValue) 
+                   ref v1 / st ==> loc |st| / st,v1
+
     The value resulting from this step is the newly allocated location
     itself.  (Formally, [st,v1] means [st ++ v1::nil] -- i.e., to add
     a new reference cell to the store, we append it to the end.)  
-    
-    Note that these evaluation rules do not perform any kind of
+
+    Note that these reduction rules do not perform any kind of
     garbage collection: we simply allow the store to keep growing
-    without bound as evaluation proceeds.  This does not affect the
-    correctness of the results of evaluation (after all, the
+    without bound as reduction proceeds.  This does not affect the
+    correctness of the results of reduction (after all, the
     definition of "garbage" is precisely parts of the store that are
     no longer reachable and so cannot play any further role in
-    evaluation), but it means that a naive implementation of our
-    evaluator might sometimes run out of memory where a more
-    sophisticated evaluator would be able to continue by reusing
-    locations whose contents have become garbage.
+    reduction), but it means that a naive implementation of our
+    evaluator might run out of memory where a more sophisticated 
+    evaluator would be able to continue by reusing locations whose 
+    contents have become garbage.
 
-    Formally... *)
+    Here are the rules again, formally: *)
 
 Reserved Notation "t1 '/' st1 '==>' t2 '/' st2"
   (at level 40, st1 at level 39, t2 at level 39).
@@ -841,14 +850,15 @@ where "t1 '/' st1 '==>' t2 '/' st2" := (step (t1,st1) (t2,st2)).
 Hint Constructors step.
 
 Definition multistep := (multi step).
-Notation "t1 '/' st '==>*' t2 '/' st'" := (multistep (t1,st) (t2,st'))
-  (at level 40, st at level 39, t2 at level 39).
+Notation "t1 '/' st '==>*' t2 '/' st'" :=
+               (multistep (t1,st) (t2,st'))
+               (at level 40, st at level 39, t2 at level 39).
 
 (* ################################### *)
 (** * Typing *)
 
-(** Our contexts for free variables will be exactly the same as for
-    the STLC, partial maps from identifiers to types. *)
+(** The contexts assigning types to free variables are exactly the
+    same as for the STLC: partial maps from identifiers to types. *)
 
 Definition context := partial_map ty.
 
@@ -856,34 +866,36 @@ Definition context := partial_map ty.
 
 (** ** Store typings *)
 
-(** Having extended our syntax and evaluation rules to accommodate
+(** Having extended our syntax and reduction rules to accommodate
     references, our last job is to write down typing rules for the new
-    constructs -- and, of course, to check that they are sound.
+    constructs (and, of course, to check that these rules are sound!).
     Naturally, the key question is, "What is the type of a location?"
 
-    First of all, notice that we do _not_ need to answer this question
-    for purposes of typechecking the terms that programmers actually
+    First of all, notice that this question doesn't arise when
+    typechecking terms that programmers actually
     write.  Concrete location constants arise only in terms that are
-    the intermediate results of evaluation; they are not in the
+    the intermediate results of reduction; they are not in the
     language that programmers write.  So we only need to determine the
-    type of a location when we're in the middle of an evaluation
+    type of a location when we're in the middle of a reduction
     sequence, e.g., trying to apply the progress or preservation
     lemmas.  Thus, even though we normally think of typing as a
     _static_ program property, it makes sense for the typing of
     locations to depend on the _dynamic_ progress of the program too.
 
-    As a first try, note that when we evaluate a term containing
+    As a first try, note that when we reduce a term containing
     concrete locations, the type of the result depends on the contents
-    of the store that we start with.  For example, if we evaluate the
+    of the store that we start with.  For example, if we reduce the
     term [!(loc 1)] in the store [[unit, unit]], the result is [unit];
-    if we evaluate the same term in the store [[unit, \x:Unit.x]], the
+    if we reduce the same term in the store [[unit, \x:Unit.x]], the
     result is [\x:Unit.x].  With respect to the former store, the
     location [1] has type [Unit], and with respect to the latter it
     has type [Unit->Unit]. This observation leads us immediately to a
     first attempt at a typing rule for locations:
+
                              Gamma |- lookup  l st : T1
                             ----------------------------
                              Gamma |- loc l : Ref T1
+
     That is, to find the type of a location [l], we look up the
     current contents of [l] in the store and calculate the type [T1]
     of the contents.  The type of the location is then [Ref T1].
@@ -897,37 +909,38 @@ Definition context := partial_map ty.
     term, let's write this four-place relation with the store to the left
     of the turnstile: [Gamma; st |- t : T].  Our rule for typing
     references now has the form
+
                      Gamma; st |- lookup l st : T1
                    --------------------------------
                      Gamma; st |- loc l : Ref T1
-    and all the rest of the typing rules in the system are extended
-    similarly with stores.  The other rules do not need to do anything
-    interesting with their stores -- just pass them from premise to
-    conclusion.
 
-    However, there are two problems with this rule.  First, typechecking
+    and all the rest of the typing rules in the system are extended
+    similarly with stores.  (The other rules do not need to do anything
+    interesting with their stores -- just pass them from premise to
+    conclusion.)
+
+    However, this rule will not quite do.  For one thing, typechecking
     is rather inefficient, since calculating the type of a location [l]
     involves calculating the type of the current contents [v] of [l].  If
     [l] appears many times in a term [t], we will re-calculate the type of
     [v] many times in the course of constructing a typing derivation for
     [t].  Worse, if [v] itself contains locations, then we will have to
-    recalculate _their_ types each time they appear.
-
-    Second, the proposed typing rule for locations may not allow us to
-    derive anything at all, if the store contains a _cycle_.  For example,
+    recalculate _their_ types each time they appear.  Worse yet, the 
+    proposed typing rule for locations may not allow us to derive 
+    anything at all, if the store contains a _cycle_.  For example,
     there is no finite typing derivation for the location [0] with respect
     to this store:
-<<
-   [\x:Nat. (!(loc 1)) x, \x:Nat. (!(loc 0)) x]
->>
-*)
-(** **** Exercise: 2 stars (cyclic_store)  *)
-(** Can you find a term whose evaluation will create this particular
-    cyclic store? *)
 
+   [\x:Nat. (!(loc 1)) x, \x:Nat. (!(loc 0)) x]
+
+*)
+
+(** **** Exercise: 2 stars (cyclic_store)  *)
+(** Can you find a term whose reduction will create this particular
+    cyclic store? *)
 (** [] *)
 
-(** Both of these problems arise from the fact that our proposed
+(** These problems arise from the fact that our proposed
     typing rule for locations requires us to recalculate the type of a
     location every time we mention it in a term.  But this,
     intuitively, should not be necessary.  After all, when a location
@@ -939,17 +952,17 @@ Definition context := partial_map ty.
     type as the initial one.  In other words, we always have in mind a
     single, definite type for every location in the store, which is
     fixed when the location is allocated.  Then these intended types
-    can be collected together as a _store typing_ ---a finite function
+    can be collected together as a _store typing_ -- a finite function
     mapping locations to types.
 
-    As usual, this _conservative_ typing restriction on allowed
-    updates means that we will rule out as ill-typed some programs
-    that could evaluate perfectly well without getting stuck.
-*)
+    As with the other type systems we've seen, this conservative typing 
+    restriction on allowed updates means that we will rule out as 
+    ill-typed some programs that could reduce perfectly well without
+    getting stuck. 
 
-(** Just like we did for stores, we will represent a store type simply
+    Just as we did for stores, we will represent a store type simply
     as a list of types: the type at index [i] records the type of the
-    value stored in cell [i]. *)
+    values that we expect to be stored in cell [i]. *)
 
 Definition store_ty := list ty.
 
@@ -959,32 +972,34 @@ Definition store_ty := list ty.
 Definition store_Tlookup (n:nat) (ST:store_ty) :=
   nth n ST TUnit.
 
-(** Suppose we are _given_ a store typing [ST] describing the store
-    [st] in which some term [t] will be evaluated.  Then we can use
+(** Suppose we are given a store typing [ST] describing the store
+    [st] in which some term [t] will be reduced.  Then we can use
     [ST] to calculate the type of the result of [t] without ever
     looking directly at [st].  For example, if [ST] is [[Unit,
-    Unit->Unit]], then we may immediately infer that [!(loc 1)] has
+    Unit->Unit]], then we can immediately infer that [!(loc 1)] has
     type [Unit->Unit].  More generally, the typing rule for locations
     can be reformulated in terms of store typings like this:
+
                                  l < |ST|
                    -------------------------------------
                    Gamma; ST |- loc l : Ref (lookup l ST)
 
-    That is, as long as [l] is a valid location (it is less than the
-    length of [ST]), we can compute the type of [l] just by looking it
-    up in [ST].  Typing is again a four-place relation, but it is
-    parameterized on a store _typing_ rather than a concrete store.
-    The rest of the typing rules are analogously augmented with store
-    typings.  *)
+
+    That is, as long as [l] is a valid location, we can compute the 
+    type of [l] just by looking it up in [ST].  Typing is again a 
+    four-place relation, but it is parameterized on a store _typing_ 
+    rather than a concrete store.  The rest of the typing rules are 
+    analogously augmented with store typings. *)
 
 (* ################################### *)
 (** ** The Typing Relation *)
 
-(** We can now give the typing relation for the STLC with
+(** We can now formalize the typing relation for the STLC with
     references.  Here, again, are the rules we're adding to the base
     STLC (with numbers and [Unit]): *)
 
 (**
+
                                l < |ST|
                   --------------------------------------              (T_Loc)
                   Gamma; ST |- loc l : Ref (lookup l ST)
@@ -1001,6 +1016,7 @@ Definition store_Tlookup (n:nat) (ST:store_ty) :=
                         Gamma; ST |- t2 : T11
                     -----------------------------                    (T_Assign)
                     Gamma; ST |- t1 := t2 : Unit
+
 *)
 
 Reserved Notation "Gamma ';' ST '|-' t '\in' T" (at level 40).
@@ -1054,49 +1070,49 @@ where "Gamma ';' ST '|-' t '\in' T" := (has_type Gamma ST t T).
 Hint Constructors has_type.
 
 (** Of course, these typing rules will accurately predict the results
-    of evaluation only if the concrete store used during evaluation
+    of reduction only if the concrete store used during reduction
     actually conforms to the store typing that we assume for purposes
     of typechecking.  This proviso exactly parallels the situation
-    with free variables in the STLC: the substitution lemma promises
-    us that, if [Gamma |- t : T], then we can replace the free
+    with free variables in the basic STLC: the substitution lemma
+    promises that, if [Gamma |- t : T], then we can replace the free
     variables in [t] with values of the types listed in [Gamma] to
     obtain a closed term of type [T], which, by the type preservation
-    theorem will evaluate to a final result of type [T] if it yields
-    any result at all.  (We will see later how to formalize an
-    analogous intuition for stores and store typings.)
+    theorem will reduce to a final result of type [T] if it yields
+    any result at all.  We will see below how to formalize an
+    analogous intuition for stores and store typings.
 
     However, for purposes of typechecking the terms that programmers
     actually write, we do not need to do anything tricky to guess what
-    store typing we should use.  Recall that concrete location
-    constants arise only in terms that are the intermediate results of
-    evaluation; they are not in the language that programmers write.
-    Thus, we can simply typecheck the programmer's terms with respect
-    to the _empty_ store typing.  As evaluation proceeds and new
-    locations are created, we will always be able to see how to extend
-    the store typing by looking at the type of the initial values
-    being placed in newly allocated cells; this intuition is
-    formalized in the statement of the type preservation theorem
-    below.  *)
+    store typing we should use.  Concrete locations arise only in
+    terms that are the intermediate results of reduction; they are
+    not in the language that programmers write.  Thus, we can simply
+    typecheck the programmer's terms with respect to the _empty_ store
+    typing.  As reduction proceeds and new locations are created, we
+    will always be able to see how to extend the store typing by
+    looking at the type of the initial values being placed in newly
+    allocated cells; this intuition is formalized in the statement of
+    the type preservation theorem below.  *)
 
 (* ################################### *)
 (** * Properties *)
 
-(** Our final task is to check that standard type safety properties
-    continue to hold for the STLC with references.  The progress
-    theorem ("well-typed terms are not stuck") can be stated and
-    proved almost as for the STLC; we just need to add a few
-    straightforward cases to the proof, dealing with the new
+(** Our final task is to check that standard type safety
+    properties continue to hold for the STLC with references.  The
+    progress theorem ("well-typed terms are not stuck") can be stated
+    and proved almost as for the STLC; we just need to add a few
+    straightforward cases to the proof to deal with the new
     constructs.  The preservation theorem is a bit more interesting,
     so let's look at it first.  *)
 
 (* ################################### *)
 (** ** Well-Typed Stores *)
 
-(** Since we have extended both the evaluation relation (with initial
-    and final stores) and the typing relation (with a store typing),
-    we need to change the statement of preservation to include these
-    parameters.  Clearly, though, we cannot just add stores and store
-    typings without saying anything about how they are related: *)
+(** Since we have extended both the reduction relation (with
+    initial and final stores) and the typing relation (with a store
+    typing), we need to change the statement of preservation to
+    include these parameters.  But clearly we cannot just add stores
+    and store typings without saying anything about how they are
+    related -- i.e., this is wrong: *)
 
 Theorem preservation_wrong1 : forall ST T t st t' st',
   empty; ST |- t \in T ->
@@ -1105,7 +1121,7 @@ Theorem preservation_wrong1 : forall ST T t st t' st',
 Abort.
 
 (** If we typecheck with respect to some set of assumptions about the
-    types of the values in the store and then evaluate with respect to
+    types of the values in the store and then reduce with respect to
     a store that violates these assumptions, the result will be
     disaster.  We say that a store [st] is _well typed_ with respect a
     store typing [ST] if the term at each location [l] in [st] has the
@@ -1123,10 +1139,10 @@ Definition store_well_typed (ST:store_ty) (st:store) :=
 
 (** Intuitively, a store [st] is consistent with a store typing
     [ST] if every value in the store has the type predicted by the
-    store typing.  (The only subtle point is the fact that, when
+    store typing.  The only subtle point is the fact that, when
     typing the values in the store, we supply the very same store
-    typing to the typing relation!  This allows us to type circular
-    stores.) *)
+    typing to the typing relation.  This allows us to type circular
+    stores like the one we saw above. *)
 
 (** **** Exercise: 2 stars (store_not_unique)  *)
 (** Can you find a store [st], and two
@@ -1146,18 +1162,18 @@ Theorem preservation_wrong2 : forall ST T t st t' st',
   empty; ST |- t' \in T.
 Abort.
 
-(** This statement is fine for all of the evaluation rules except the
-    allocation rule [ST_RefValue].  The problem is that this rule
+(** This statement is fine for all of the reduction rules except
+    the allocation rule [ST_RefValue].  The problem is that this rule
     yields a store with a larger domain than the initial store, which
-    falsifies the conclusion of the above statement: if [st']
-    includes a binding for a fresh location [l], then [l] cannot be in
-    the domain of [ST], and it will not be the case that [t']
-    (which definitely mentions [l]) is typable under [ST]. *)
+    falsifies the conclusion of the above statement: if [st'] includes
+    a binding for a fresh location [l], then [l] cannot be in the
+    domain of [ST], and it will not be the case that [t'] (which
+    definitely mentions [l]) is typable under [ST]. *)
 
 (* ############################################ *)
 (** ** Extending Store Typings *)
 
-(** Evidently, since the store can increase in size during evaluation,
+(** Evidently, since the store can increase in size during reduction,
     we need to allow the store typing to grow as well.  This motivates
     the following definition.  We say that the store type [ST']
     _extends_ [ST] if [ST'] is just [ST] with some new types added to
@@ -1247,13 +1263,13 @@ Definition preservation_theorem := forall ST t t' T st st',
     on the values of all the old locations) such that the new term
     [t'] is well typed with respect to [ST']; it does not tell us
     exactly what [ST'] is.  It is intuitively clear, of course, that
-    [ST'] is either [ST] or else it is exactly [ST ++ T1::nil], where
+    [ST'] is either [ST] or else exactly [ST ++ T1::nil], where
     [T1] is the type of the value [v1] in the extended store [st ++
     v1::nil], but stating this explicitly would complicate the statement of
     the theorem without actually making it any more useful: the weaker
     version above is already in the right form (because its conclusion
     implies its hypothesis) to "turn the crank" repeatedly and
-    conclude that every _sequence_ of evaluation steps preserves
+    conclude that every _sequence_ of reduction steps preserves
     well-typedness.  Combining this with the progress property, we
     obtain the usual guarantee that "well-typed programs never go
     wrong."
@@ -1261,7 +1277,7 @@ Definition preservation_theorem := forall ST t t' T st st',
     In order to prove this, we'll need a few lemmas, as usual. *)
 
 (* ################################### *)
-(** ** Substitution lemma *)
+(** ** Substitution Lemma *)
 
 (** First, we need an easy extension of the standard substitution
     lemma, along with the same machinery about context invariance that
@@ -1375,7 +1391,8 @@ Proof with eauto.
       inversion H3; subst.
       eapply context_invariance...
       intros x Hcontra.
-      destruct (free_in_context _ _ _ _ _ Hcontra Hs) as [T' HT'].
+      destruct (free_in_context _ _ _ _ _ Hcontra Hs)
+        as [T' HT'].
       inversion HT'.
     + (* x <> y *)
       apply T_Var.
@@ -1493,12 +1510,15 @@ Qed.
 (** Now that we've got everything set up right, the proof of
     preservation is actually quite straightforward.  *)
 
-(** Begin with one technical lemma *)
+(** Begin with one technical lemma: *)
+
 Lemma nth_eq_last : forall A (l:list A) x d,
   nth (length l) (l ++ x::nil) d = x.
 Proof.
   induction l; intros; [ auto | simpl; rewrite IHl; auto ].
 Qed.
+
+(** And here, at last, is the preservation theorem and proof: *)
 
 Theorem preservation : forall ST t t' T st st',
   empty; ST |- t \in T ->
@@ -1509,7 +1529,7 @@ Theorem preservation : forall ST t t' T st st',
      empty; ST' |- t' \in T /\
      store_well_typed ST' st').
 Proof with eauto using store_weakening, extends_refl.
-    remember (@empty ty) as Gamma.
+  remember (@empty ty) as Gamma.
   intros ST t t' T st st' Ht.
   generalize dependent t'.
   induction Ht; intros t' HST Hstep;
@@ -1603,20 +1623,19 @@ Qed.
 (* FILL IN HERE *)
 [] *)
 
-
 (* ################################### *)
 (** ** Progress *)
 
-(** Fortunately, progress for this system is pretty easy to prove; the
-    proof is very similar to the proof of progress for the STLC, with
-    a few new cases for the new syntactic constructs. *)
+(** As we've said, progress for this system is pretty easy to prove;
+    the proof is very similar to the proof of progress for the STLC,
+    with a few new cases for the new syntactic constructs. *)
 
 Theorem progress : forall ST t T st,
   empty; ST |- t \in T ->
   store_well_typed ST st ->
   (value t \/ exists t', exists st', t / st ==> t' / st').
 Proof with eauto.
-    intros ST t T st Ht HST. remember (@empty ty) as Gamma.
+  intros ST t T st Ht HST. remember (@empty ty) as Gamma.
   induction Ht; subst; try solve by inversion...
   - (* T_App *)
     right. destruct IHHt1 as [Ht1p | Ht1p]...
@@ -1706,46 +1725,56 @@ Qed.
 (* ################################### *)
 (** * References and Nontermination *)
 
-Section RefsAndNontermination.
-Import ExampleVariables.
+(** An important fact about the STLC (proved in chapter [Norm]) is
+    that it is is _normalizing_ -- that is, every well-typed term can
+    be reduced to a value in a finite number of steps.
 
-(** We know that the simply typed lambda calculus is _normalizing_,
-    that is, every well-typed term can be reduced to a value in a
-    finite number of steps.  What about STLC + references?
-    Surprisingly, adding references causes us to lose the
-    normalization property: there exist well-typed terms in the STLC +
-    references which can continue to reduce forever, without ever
-    reaching a normal form!
+    What about STLC + references?  Surprisingly, adding references
+    causes us to lose the normalization property: there exist
+    well-typed terms in the STLC + references which can continue to
+    reduce forever, without ever reaching a normal form!
 
     How can we construct such a term?  The main idea is to make a
     function which calls itself.  We first make a function which calls
     another function stored in a reference cell; the trick is that we
     then smuggle in a reference to itself!
-<<
-   (\r:Ref (Unit -> Unit).
-        r := (\x:Unit.(!r) unit); (!r) unit)
+
+   (\r:Ref (Unit -> Unit).  
+        r := (\x:Unit.(!r) unit); (!r) unit) 
    (ref (\x:Unit.unit))
->>
 
    First, [ref (\x:Unit.unit)] creates a reference to a cell of type
    [Unit -> Unit].  We then pass this reference as the argument to a
    function which binds it to the name [r], and assigns to it the
-   function (\x:Unit.(!r) unit) -- that is, the function which
-   ignores its argument and calls the function stored in [r] on the
-   argument [unit]; but of course, that function is itself!  To get
-   the ball rolling we finally execute this function with [(!r)
-   unit].
-*)
+   function [\x:Unit.(!r) unit] -- that is, the function which ignores
+   its argument and calls the function stored in [r] on the argument
+   [unit]; but of course, that function is itself!  To start the 
+   divergent loop, we execute the function stored in the cell by 
+   evaluating [(!r) unit]. 
+
+   Here is the divergent term in Coq: *)
+
+Module ExampleVariables.
+
+Definition x := Id 0.
+Definition y := Id 1.
+Definition r := Id 2.
+Definition s := Id 3.
+
+End ExampleVariables.
+
+Module RefsAndNontermination.
+Import ExampleVariables.
 
 Definition loop_fun :=
   tabs x TUnit (tapp (tderef (tvar r)) tunit).
 
 Definition loop :=
   tapp
-  (tabs r (TRef (TArrow TUnit TUnit))
-    (tseq (tassign (tvar r) loop_fun)
-            (tapp (tderef (tvar r)) tunit)))
-  (tref (tabs x TUnit tunit)).
+    (tabs r (TRef (TArrow TUnit TUnit))
+      (tseq (tassign (tvar r) loop_fun)
+              (tapp (tderef (tvar r)) tunit)))
+    (tref (tabs x TUnit tunit)).
 
 (** This term is well typed: *)
 
@@ -1780,12 +1809,13 @@ Inductive step_closure {X:Type} (R: relation X) : X -> X -> Prop :=
                 step_closure R x z.
 
 Definition multistep1 := (step_closure step).
-Notation "t1 '/' st '==>+' t2 '/' st'" := (multistep1 (t1,st) (t2,st'))
-  (at level 40, st at level 39, t2 at level 39).
+Notation "t1 '/' st '==>+' t2 '/' st'" :=
+        (multistep1 (t1,st) (t2,st'))
+        (at level 40, st at level 39, t2 at level 39).
 
 (** Now, we can show that the expression [loop] reduces to the
-    expression [!(loc 0) unit] and the size-one store [ [r:=(loc 0)]
-    loop_fun]. *)
+    expression [!(loc 0) unit] and the size-one store 
+    [[r:=(loc 0)]loop_fun]. *)
 
 (** As a convenience, we introduce a slight variant of the [normalize]
     tactic, called [reduce], which tries solving the goal with
@@ -1800,15 +1830,19 @@ Ltac reduce :=
             [ (eauto 10; fail) | (instantiate; compute)];
             try solve [apply multi_refl]).
 
+(** Next, we use [reduce] to show that [loop] steps to 
+    [!(loc 0) unit], starting from the empty store. *)
+
 Lemma loop_steps_to_loop_fun :
   loop / nil ==>*
   tapp (tderef (tloc 0)) tunit / cons ([r:=tloc 0]loop_fun) nil.
-Proof with eauto.
+Proof.
   unfold loop.
   reduce.
 Qed.
 
-(** Finally, the latter expression reduces in two steps to itself! *)
+(** Finally, we show that the latter expression reduces in
+    two steps to itself! *)
 
 Lemma loop_fun_step_self :
   tapp (tderef (tloc 0)) tunit / cons ([r:=tloc 0]loop_fun) nil ==>+
@@ -1822,7 +1856,7 @@ Qed.
 (** **** Exercise: 4 stars (factorial_ref)  *)
 (** Use the above ideas to implement a factorial function in STLC with
     references.  (There is no need to prove formally that it really
-    behaves like the factorial.  Just use the example below to make
+    behaves like the factorial.  Just uncomment the example below to make
     sure it gives the correct result when applied to the argument
     [4].) *)
 
@@ -1859,4 +1893,4 @@ Qed.
 End RefsAndNontermination.
 End STLCRef.
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

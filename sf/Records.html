@@ -43,13 +43,14 @@
 
 <div class="paragraph"> </div>
 
- We saw in chapter <span class="inlinecode"><span class="id" type="var">MoreStlc</span></span> how records can be treated as syntactic
-    sugar for nested uses of products.  This is fine for simple
-    examples, but the encoding is informal (in reality, if we really
-    treated records this way, it would be carried out in the parser,
-    which we are eliding here), and anyway it is not very efficient.
-    So it is also interesting to see how records can be treated as
-    first-class citizens of the language.
+ We saw in chapter <a href="MoreStlc.html"><font color="gray">MoreStlc</font></a> how records can be treated as just
+    syntactic sugar for nested uses of products.  This is OK for
+    simple examples, but the encoding is informal (in reality, if we
+    actually treated records this way, it would be carried out in the
+    parser, which we are eliding here), and anyway it is not very
+    efficient.  So it is also interesting to see how records can be
+    treated as first-class citizens of the language.  This chapter
+    shows how.
 
 <div class="paragraph"> </div>
 
@@ -62,17 +63,17 @@
     Syntax:
 <pre>
        t ::=                          Terms:
-           | ...
            | {i<sub>1</sub>=t<sub>1</sub>, ..., in=tn}         record
            | t.i                         projection
+           | ...
 
        v ::=                          Values:
-           | ...
            | {i<sub>1</sub>=v<sub>1</sub>, ..., in=vn}         record value
+           | ...
 
        T ::=                          Types:
-           | ...
            | {i<sub>1</sub>:T<sub>1</sub>, ..., in:Tn}         record type
+           | ...
 </pre>
    Reduction:
 <center><table class="infrule">
@@ -187,8 +188,8 @@
 
 <div class="doc">
 Unfortunately, we encounter here a limitation in Coq: this type
-    does not automatically give us the induction principle we expect
- the induction hypothesis in the <span class="inlinecode"><span class="id" type="var">TRcd</span></span> case doesn't give us
+    does not automatically give us the induction principle we expect:
+    the induction hypothesis in the <span class="inlinecode"><span class="id" type="var">TRcd</span></span> case doesn't give us
     any information about the <span class="inlinecode"><span class="id" type="var">ty</span></span> elements of the list, making it
     useless for the proofs we want to do.  
 </div>
@@ -200,7 +201,8 @@ Unfortunately, we encounter here a limitation in Coq: this type
 &nbsp;&nbsp;&nbsp;&nbsp;ty_ind&nbsp;:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forall&nbsp;P&nbsp;:&nbsp;ty&nbsp;-&gt;&nbsp;Prop,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(forall&nbsp;i&nbsp;:&nbsp;id,&nbsp;P&nbsp;(TBase&nbsp;i))&nbsp;-&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(forall&nbsp;t&nbsp;:&nbsp;ty,&nbsp;P&nbsp;t&nbsp;-&gt;&nbsp;forall&nbsp;t<sub>0</sub>&nbsp;:&nbsp;ty,&nbsp;P&nbsp;t<sub>0</sub>&nbsp;-&gt;&nbsp;P&nbsp;(TArrow&nbsp;t&nbsp;t<sub>0</sub>))&nbsp;-&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(forall&nbsp;t&nbsp;:&nbsp;ty,&nbsp;P&nbsp;t&nbsp;-&gt;&nbsp;forall&nbsp;t<sub>0</sub>&nbsp;:&nbsp;ty,&nbsp;P&nbsp;t<sub>0</sub>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;&nbsp;P&nbsp;(TArrow&nbsp;t&nbsp;t<sub>0</sub>))&nbsp;-&gt;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(forall&nbsp;a&nbsp;:&nbsp;alist&nbsp;ty,&nbsp;P&nbsp;(TRcd&nbsp;a))&nbsp;-&gt;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;???&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forall&nbsp;t&nbsp;:&nbsp;ty,&nbsp;P&nbsp;t<br/>
 *)</span><br/>
@@ -213,16 +215,16 @@ Unfortunately, we encounter here a limitation in Coq: this type
 
 <div class="doc">
 It is possible to get a better induction principle out of Coq, but
-    the details of how this is done are not very pretty, and it is not
-    as intuitive to use as the ones Coq generates automatically for
-    simple <span class="inlinecode"><span class="id" type="keyword">Inductive</span></span> definitions.
+    the details of how this is done are not very pretty, and the
+    principle we obtain is not as intuitive to use as the ones Coq
+    generates automatically for simple <span class="inlinecode"><span class="id" type="keyword">Inductive</span></span> definitions.
 
 <div class="paragraph"> </div>
 
     Fortunately, there is a different way of formalizing records that
     is, in some ways, even simpler and more natural: instead of using
-    the existing <span class="inlinecode"><span class="id" type="var">list</span></span> type, we can essentially include its
-    constructors ("nil" and "cons") in the syntax of types. 
+    the standard Coq <span class="inlinecode"><span class="id" type="var">list</span></span> type, we can essentially incorporate its
+    constructors ("nil" and "cons") in the syntax of our types. 
 </div>
 <div class="code code-tight">
 
@@ -237,8 +239,8 @@ It is possible to get a better induction principle out of Coq, but
 </div>
 
 <div class="doc">
-Similarly, at the level of terms, we have constructors <span class="inlinecode"><span class="id" type="var">trnil</span></span>
- the empty record &mdash; and <span class="inlinecode"><span class="id" type="var">trcons</span></span>, which adds a single field to
+Similarly, at the level of terms, we have constructors <span class="inlinecode"><span class="id" type="var">trnil</span></span>,
+    for the empty record, and <span class="inlinecode"><span class="id" type="var">trcons</span></span>, which adds a single field to
     the front of a list of fields. 
 </div>
 <div class="code code-tight">
@@ -257,7 +259,7 @@ Similarly, at the level of terms, we have constructors <span class="inlinecode">
 </div>
 
 <div class="doc">
-Some variables, for examples... 
+Some examples... 
 </div>
 <div class="code code-tight">
 
@@ -303,9 +305,9 @@ Some variables, for examples...
 
 <div class="paragraph"> </div>
 
- Generalizing our abstract syntax for records (from lists to the
-    nil/cons presentation) introduces the possibility of writing
-    strange types like this 
+ One issue with generalizing the abstract syntax for records from
+    lists to the nil/cons presentation is that it introduces the
+    possibility of writing strange types like this... 
 </div>
 <div class="code code-tight">
 
@@ -320,10 +322,10 @@ where the "tail" of a record type is not actually a record type!
 <div class="paragraph"> </div>
 
  We'll structure our typing judgement so that no ill-formed types
-    like <span class="inlinecode"><span class="id" type="var">weird_type</span></span> are assigned to terms.  To support this, we
-    define <span class="inlinecode"><span class="id" type="var">record_ty</span></span> and <span class="inlinecode"><span class="id" type="var">record_tm</span></span>, which identify record types
-    and terms, and <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> which rules out the ill-formed
-    types. 
+    like <span class="inlinecode"><span class="id" type="var">weird_type</span></span> are ever assigned to terms.  To support this, we
+    define predicates <span class="inlinecode"><span class="id" type="var">record_ty</span></span> and <span class="inlinecode"><span class="id" type="var">record_tm</span></span>, which identify
+    record types and terms, and <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> which rules out the
+    ill-formed types. 
 <div class="paragraph"> </div>
 
  First, a type is a record type if it is built with just <span class="inlinecode"><span class="id" type="var">TRNil</span></span>
@@ -342,35 +344,7 @@ where the "tail" of a record type is not actually a record type!
 </div>
 
 <div class="doc">
-Similarly, a term is a record term if it is built with <span class="inlinecode"><span class="id" type="var">trnil</span></span>
-    and <span class="inlinecode"><span class="id" type="var">trcons</span></span> 
-</div>
-<div class="code code-tight">
-
-<br/>
-<span class="id" type="keyword">Inductive</span> <a name="STLCExtendedRecords.record_tm"><span class="id" type="inductive">record_tm</span></a> : <a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;| <a name="STLCExtendedRecords.rtnil"><span class="id" type="constructor">rtnil</span></a> :<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.trnil"><span class="id" type="constructor">trnil</span></a><br/>
-&nbsp;&nbsp;| <a name="STLCExtendedRecords.rtcons"><span class="id" type="constructor">rtcons</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">i</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a> (<a class="idref" href="Records.html#STLCExtendedRecords.trcons"><span class="id" type="constructor">trcons</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Records.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a>).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Note that <span class="inlinecode"><span class="id" type="var">record_ty</span></span> and <span class="inlinecode"><span class="id" type="var">record_tm</span></span> are not recursive &mdash; they
-    just check the outermost constructor.  The <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>
-    property, on the other hand, verifies that the whole type is well
-    formed in the sense that the tail of every record (the second
-    argument to <span class="inlinecode"><span class="id" type="var">TRCons</span></span>) is a record.
-
-<div class="paragraph"> </div>
-
-    Of course, we should also be concerned about ill-formed terms, not
-    just types; but typechecking can rules those out without the help
-    of an extra <span class="inlinecode"><span class="id" type="var">well_formed_tm</span></span> definition because it already
-    examines the structure of terms.   LATER : should they fill in part of this as an exercise?  We
-    didn't give rules for it above 
+With this, we can define well-formed types. 
 </div>
 <div class="code code-tight">
 
@@ -391,7 +365,38 @@ Note that <span class="inlinecode"><span class="id" type="var">record_ty</span><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a> (<a class="idref" href="Records.html#STLCExtendedRecords.TRCons"><span class="id" type="constructor">TRCons</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#T<sub>1</sub>"><span class="id" type="variable">T<sub>1</sub></span></a> <a class="idref" href="Records.html#T<sub>2</sub>"><span class="id" type="variable">T<sub>2</sub></span></a>).<br/>
 
 <br/>
-<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Records.html#record_ty"><span class="id" type="inductive">record_ty</span></a> <a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a> <a class="idref" href="Records.html#well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a>.<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Records.html#record_ty"><span class="id" type="inductive">record_ty</span></a> <a class="idref" href="Records.html#well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Note that <span class="inlinecode"><span class="id" type="var">record_ty</span></span> and <span class="inlinecode"><span class="id" type="var">record_tm</span></span> are not recursive &mdash; they
+    just check the outermost constructor.  The <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>
+    property, on the other hand, verifies that the whole type is well
+    formed in the sense that the tail of every record (the second
+    argument to <span class="inlinecode"><span class="id" type="var">TRCons</span></span>) is a record.
+
+<div class="paragraph"> </div>
+
+    Of course, we should also be concerned about ill-formed terms, not
+    just types; but typechecking can rules those out without the help
+    of an extra <span class="inlinecode"><span class="id" type="var">well_formed_tm</span></span> definition because it already
+    examines the structure of terms.  All we need is an analog of
+    <span class="inlinecode"><span class="id" type="var">record_ty</span></span> saying that a term is a record term if it is built
+    with <span class="inlinecode"><span class="id" type="var">trnil</span></span> and <span class="inlinecode"><span class="id" type="var">trcons</span></span>. 
+</div>
+<div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Inductive</span> <a name="STLCExtendedRecords.record_tm"><span class="id" type="inductive">record_tm</span></a> : <a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a> <span style="font-family: arial;">&rarr;</span> <span class="id" type="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;| <a name="STLCExtendedRecords.rtnil"><span class="id" type="constructor">rtnil</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.trnil"><span class="id" type="constructor">trnil</span></a><br/>
+&nbsp;&nbsp;| <a name="STLCExtendedRecords.rtcons"><span class="id" type="constructor">rtcons</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">i</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a> (<a class="idref" href="Records.html#STLCExtendedRecords.trcons"><span class="id" type="constructor">trcons</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#t<sub>1</sub>"><span class="id" type="variable">t<sub>1</sub></span></a> <a class="idref" href="Records.html#t<sub>2</sub>"><span class="id" type="variable">t<sub>2</sub></span></a>).<br/>
+
+<br/>
+<span class="id" type="keyword">Hint</span> <span class="id" type="var">Constructors</span> <a class="idref" href="Records.html#record_tm"><span class="id" type="inductive">record_tm</span></a>.<br/>
 
 <br/>
 </div>
@@ -399,14 +404,18 @@ Note that <span class="inlinecode"><span class="id" type="var">record_ty</span><
 <div class="doc">
 <a name="lab694"></a><h3 class="section">Substitution</h3>
 
+<div class="paragraph"> </div>
+
+ Substitution extends easily. 
 </div>
-<div class="code code-space">
+<div class="code code-tight">
 
 <br/>
 <span class="id" type="keyword">Fixpoint</span> <a name="STLCExtendedRecords.subst"><span class="id" type="definition">subst</span></a> (<span class="id" type="var">x</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) (<span class="id" type="var">s</span>:<a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a>) (<span class="id" type="var">t</span>:<a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a>) : <a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.tvar"><span class="id" type="constructor">tvar</span></a> <span class="id" type="var">y</span> ⇒ <span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <span class="id" type="var">y</span> <span class="id" type="keyword">then</span> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="keyword">else</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a><br/>
-&nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">y</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>1</sub></span> ⇒  <a class="idref" href="Records.html#STLCExtendedRecords.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">y</span> <span class="id" type="var">T</span> (<span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <span class="id" type="var">y</span> <span class="id" type="keyword">then</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="keyword">else</span> (<a class="idref" href="Records.html#subst"><span class="id" type="definition">subst</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="var">t<sub>1</sub></span>))<br/>
+&nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">y</span> <span class="id" type="var">T</span> <span class="id" type="var">t<sub>1</sub></span> ⇒ <a class="idref" href="Records.html#STLCExtendedRecords.tabs"><span class="id" type="constructor">tabs</span></a> <span class="id" type="var">y</span> <span class="id" type="var">T</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <span class="id" type="var">y</span> <span class="id" type="keyword">then</span> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="keyword">else</span> (<a class="idref" href="Records.html#subst"><span class="id" type="definition">subst</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="var">t<sub>1</sub></span>))<br/>
 &nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.tapp"><span class="id" type="constructor">tapp</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub></span> ⇒ <a class="idref" href="Records.html#STLCExtendedRecords.tapp"><span class="id" type="constructor">tapp</span></a> (<a class="idref" href="Records.html#subst"><span class="id" type="definition">subst</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="var">t<sub>1</sub></span>) (<a class="idref" href="Records.html#subst"><span class="id" type="definition">subst</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="var">t<sub>2</sub></span>)<br/>
 &nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.tproj"><span class="id" type="constructor">tproj</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">i</span> ⇒ <a class="idref" href="Records.html#STLCExtendedRecords.tproj"><span class="id" type="constructor">tproj</span></a> (<a class="idref" href="Records.html#subst"><span class="id" type="definition">subst</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#s"><span class="id" type="variable">s</span></a> <span class="id" type="var">t<sub>1</sub></span>) <span class="id" type="var">i</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.trnil"><span class="id" type="constructor">trnil</span></a> ⇒ <a class="idref" href="Records.html#STLCExtendedRecords.trnil"><span class="id" type="constructor">trnil</span></a><br/>
@@ -424,8 +433,7 @@ Note that <span class="inlinecode"><span class="id" type="var">record_ty</span><
 
 <div class="paragraph"> </div>
 
- Next we define the values of our language.  A record is a value if
-    all of its fields are. 
+ A record is a value if all of its fields are. 
 </div>
 <div class="code code-tight">
 
@@ -446,17 +454,10 @@ Note that <span class="inlinecode"><span class="id" type="var">record_ty</span><
 </div>
 
 <div class="doc">
-Utility functions for extracting one field from record type or
-    term: 
+To define reduction, we'll need a utility function for extracting
+    one field from record term: 
 </div>
 <div class="code code-tight">
-
-<br/>
-<span class="id" type="keyword">Fixpoint</span> <a name="STLCExtendedRecords.Tlookup"><span class="id" type="definition">Tlookup</span></a> (<span class="id" type="var">i</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) (<span class="id" type="var">Tr</span>:<a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a>) : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#option"><span class="id" type="inductive">option</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a> :=<br/>
-&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Records.html#Tr"><span class="id" type="variable">Tr</span></a> <span class="id" type="keyword">with</span><br/>
-&nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.TRCons"><span class="id" type="constructor">TRCons</span></a> <span class="id" type="var">i'</span> <span class="id" type="var">T</span> <span class="id" type="var">Tr'</span> ⇒ <span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <span class="id" type="var">i'</span> <span class="id" type="keyword">then</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <span class="id" type="var">T</span> <span class="id" type="keyword">else</span> <a class="idref" href="Records.html#Tlookup"><span class="id" type="definition">Tlookup</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <span class="id" type="var">Tr'</span><br/>
-&nbsp;&nbsp;| <span class="id" type="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#None"><span class="id" type="constructor">None</span></a><br/>
-&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
 <span class="id" type="keyword">Fixpoint</span> <a name="STLCExtendedRecords.tlookup"><span class="id" type="definition">tlookup</span></a> (<span class="id" type="var">i</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) (<span class="id" type="var">tr</span>:<a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a>) : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#option"><span class="id" type="inductive">option</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.tm"><span class="id" type="inductive">tm</span></a> :=<br/>
@@ -469,9 +470,8 @@ Utility functions for extracting one field from record type or
 </div>
 
 <div class="doc">
-The <span class="inlinecode"><span class="id" type="var">step</span></span> function uses the term-level lookup function (for the
-    projection rule), while the type-level lookup is needed for
-    <span class="inlinecode"><span class="id" type="var">has_type</span></span>. 
+The <span class="inlinecode"><span class="id" type="var">step</span></span> function uses this term-level lookup function in the
+    projection rule. 
 </div>
 <div class="code code-tight">
 
@@ -520,51 +520,43 @@ The <span class="inlinecode"><span class="id" type="var">step</span></span> func
 <div class="doc">
 <a name="lab696"></a><h3 class="section">Typing</h3>
 
+<div class="paragraph"> </div>
+
+ Next we define the typing rules.  These are nearly direct
+    transcriptions of the inference rules shown above: the only
+    significant difference is the use of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>.  In the
+    informal presentation we used a grammar that only allowed
+    well-formed record types, so we didn't have to add a separate
+    check.
+
+<div class="paragraph"> </div>
+
+    One sanity condition that we'd like to maintain is that, whenever
+    <span class="inlinecode"><span class="id" type="var">has_type</span></span> <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span> holds, will also be the case that
+    <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span>, so that <span class="inlinecode"><span class="id" type="var">has_type</span></span> never assigns ill-formed
+    types to terms.  In fact, we prove this theorem below.  However,
+    we don't want to clutter the definition of <span class="inlinecode"><span class="id" type="var">has_type</span></span> with
+    unnecessary uses of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>.  Instead, we place
+    <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> checks only where needed: where an inductive call
+    to <span class="inlinecode"><span class="id" type="var">has_type</span></span> won't already be checking the well-formedness of a
+    type.  For example, we check <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span> in the <span class="inlinecode"><span class="id" type="var">T_Var</span></span>
+    case, because there is no inductive <span class="inlinecode"><span class="id" type="var">has_type</span></span> call that would
+    enforce this.  Similarly, in the <span class="inlinecode"><span class="id" type="var">T_Abs</span></span> case, we require a proof
+    of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> because the inductive call to <span class="inlinecode"><span class="id" type="var">has_type</span></span>
+    only guarantees that <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span> is well-formed. 
 </div>
-<div class="code code-space">
+<div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Fixpoint</span> <a name="STLCExtendedRecords.Tlookup"><span class="id" type="definition">Tlookup</span></a> (<span class="id" type="var">i</span>:<a class="idref" href="Maps.html#id"><span class="id" type="inductive">id</span></a>) (<span class="id" type="var">Tr</span>:<a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a>) : <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#option"><span class="id" type="inductive">option</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Records.html#Tr"><span class="id" type="variable">Tr</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Records.html#STLCExtendedRecords.TRCons"><span class="id" type="constructor">TRCons</span></a> <span class="id" type="var">i'</span> <span class="id" type="var">T</span> <span class="id" type="var">Tr'</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">if</span> <a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <span class="id" type="var">i'</span> <span class="id" type="keyword">then</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <span class="id" type="var">T</span> <span class="id" type="keyword">else</span> <a class="idref" href="Records.html#Tlookup"><span class="id" type="definition">Tlookup</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <span class="id" type="var">Tr'</span><br/>
+&nbsp;&nbsp;| <span class="id" type="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#None"><span class="id" type="constructor">None</span></a><br/>
+&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="STLCExtendedRecords.context"><span class="id" type="definition">context</span></a> := <a class="idref" href="Maps.html#partial_map"><span class="id" type="definition">partial_map</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Next we define the typing rules.  These are nearly direct
-    transcriptions of the inference rules shown above.  The only major
-    difference is the use of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>.  In the informal
-    presentation we used a grammar that only allowed well formed
-    record types, so we didn't have to add a separate check.
-
-<div class="paragraph"> </div>
-
-    We'd like to set things up so that that whenever <span class="inlinecode"><span class="id" type="var">has_type</span></span> <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span>
-    <span class="inlinecode"><span class="id" type="var">T</span></span> holds, we also have <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span>.  That is, <span class="inlinecode"><span class="id" type="var">has_type</span></span>
-    never assigns ill-formed types to terms.  In fact, we prove this
-    theorem below.
-
-<div class="paragraph"> </div>
-
-    However, we don't want to clutter the definition of <span class="inlinecode"><span class="id" type="var">has_type</span></span>
-    with unnecessary uses of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>.  Instead, we place
-    <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> checks only where needed - where an inductive
-    call to <span class="inlinecode"><span class="id" type="var">has_type</span></span> won't already be checking the well-formedness
-    of a type.
-
-<div class="paragraph"> </div>
-
-    For example, we check <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span> in the <span class="inlinecode"><span class="id" type="var">T_Var</span></span> case,
-    because there is no inductive <span class="inlinecode"><span class="id" type="var">has_type</span></span> call that would
-    enforce this.  Similarly, in the <span class="inlinecode"><span class="id" type="var">T_Abs</span></span> case, we require a
-    proof of <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> because the inductive call to
-    <span class="inlinecode"><span class="id" type="var">has_type</span></span> only guarantees that <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span> is well-formed.
-
-<div class="paragraph"> </div>
-
-    In the rules you must write, the only necessary <span class="inlinecode"><span class="id" type="var">well_formed_ty</span></span>
-    check comes in the <span class="inlinecode"><span class="id" type="var">tnil</span></span> case.  
-</div>
-<div class="code code-tight">
 
 <br/>
 <span class="id" type="keyword">Reserved Notation</span> "Gamma '<span style="font-family: arial;">&#8866;</span>' t '&#x2208;' T" (<span class="id" type="tactic">at</span> <span class="id" type="var">level</span> 40).<br/>
@@ -611,14 +603,13 @@ Next we define the typing rules.  These are nearly direct
 <div class="paragraph"> </div>
 
 <a name="lab698"></a><h4 class="section">Exercise: 2 stars (examples)</h4>
- Finish the proofs. 
-<div class="paragraph"> </div>
-
- Feel free to use Coq's automation features in this proof.
-    However, if you are not confident about how the type system works,
-    you may want to carry out the proof first using the basic
-    features (<span class="inlinecode"><span class="id" type="tactic">apply</span></span> instead of <span class="inlinecode"><span class="id" type="tactic">eapply</span></span>, in particular) and then
-    perhaps compress it using automation. 
+ Finish the proofs below.  Feel free to use Coq's automation
+    features in this proof.  However, if you are not confident about
+    how the type system works, you may want to carry out the proofs
+    first using the basic features (<span class="inlinecode"><span class="id" type="tactic">apply</span></span> instead of <span class="inlinecode"><span class="id" type="tactic">eapply</span></span>, in
+    particular) and then perhaps compress it using automation.  Before
+    starting to prove anything, make sure you understand what it is
+    saying.
 </div>
 <div class="code code-tight">
 
@@ -635,15 +626,6 @@ Next we define the typing rules.  These are nearly direct
 &nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Records.html#STLCExtendedRecords.TArrow"><span class="id" type="constructor">TArrow</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.B"><span class="id" type="abbreviation">B</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.B"><span class="id" type="abbreviation">B</span></a>).<br/>
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" type="var">Admitted</span>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Before starting to prove this fact (or the one above!), make sure
-    you understand what it is saying. 
-</div>
-<div class="code code-tight">
 
 <br/>
 <span class="id" type="keyword">Example</span> <a name="STLCExtendedRecords.typing_nonexample"><span class="id" type="definition">typing_nonexample</span></a> :<br/>
@@ -694,6 +676,8 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a> <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.Tlookup"><span class="id" type="definition">Tlookup</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Records.html#Ti"><span class="id" type="variable">Ti</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a> <a class="idref" href="Records.html#Ti"><span class="id" type="variable">Ti</span></a>.<br/>
+<div class="togglescript" id="proofcontrol1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')"><span class="show"></span></div>
+<div class="proofscript" id="proof1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">i</span> <span class="id" type="var">T</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">T</span>; <span class="id" type="tactic">intros</span>; <span class="id" type="tactic">try</span> <span class="id" type="var">solve</span> <span class="id" type="tactic">by</span> <span class="id" type="tactic">inversion</span>.<br/>
@@ -701,20 +685,26 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">unfold</span> <a class="idref" href="Records.html#STLCExtendedRecords.Tlookup"><span class="id" type="definition">Tlookup</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>0</sub></span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <span class="id" type="var">i</span> <span class="id" type="var">i<sub>0</sub></span>)...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>0</sub></span>. <span class="id" type="tactic">subst</span>... <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">Lemma</span> <a name="STLCExtendedRecords.step_preserves_record_tm"><span class="id" type="lemma">step_preserves_record_tm</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">tr</span> <span class="id" type="var">tr'</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.record_tm"><span class="id" type="inductive">record_tm</span></a> <a class="idref" href="Records.html#tr"><span class="id" type="variable">tr</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#tr"><span class="id" type="variable">tr</span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Records.html#tr'"><span class="id" type="variable">tr'</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.record_tm"><span class="id" type="inductive">record_tm</span></a> <a class="idref" href="Records.html#tr'"><span class="id" type="variable">tr'</span></a>.<br/>
+<div class="togglescript" id="proofcontrol2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')"><span class="show"></span></div>
+<div class="proofscript" id="proof2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')">
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">tr</span> <span class="id" type="var">tr'</span> <span class="id" type="var">Hrt</span> <span class="id" type="var">Hstp</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">Hrt</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">Hstp</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">auto</span>.<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">Lemma</span> <a name="STLCExtendedRecords.has_type__wf"><span class="id" type="lemma">has_type__wf</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span>,<br/>
 &nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> &#x2208; <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Records.html#STLCExtendedRecords.well_formed_ty"><span class="id" type="inductive">well_formed_ty</span></a> <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a>.<br/>
+<div class="togglescript" id="proofcontrol3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')"><span class="show"></span></div>
+<div class="proofscript" id="proof3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span> <span class="id" type="var">Htyp</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">Htyp</span>...<br/>
@@ -723,6 +713,7 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_Proj&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Records.html#STLCExtendedRecords.wf_rcd_lookup"><span class="id" type="lemma">wf_rcd_lookup</span></a>...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 </div>
@@ -783,9 +774,14 @@ Before starting to prove this fact (or the one above!), make sure
 <div class="paragraph"> </div>
 
 </div>
-        so the result follows from the induction hypothesis. <font size=-2>&#9744;</font> 
+        so the result follows from the induction hypothesis. <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
+
 </li>
 </ul>
+
+<div class="paragraph"> </div>
+
+    Here is the formal statement:
 
 </div>
 <div class="code code-tight">
@@ -796,6 +792,8 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#v"><span class="id" type="variable">v</span></a> &#x2208; <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.Tlookup"><span class="id" type="definition">Tlookup</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Records.html#Ti"><span class="id" type="variable">Ti</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">ti</span>, <a class="idref" href="Records.html#STLCExtendedRecords.tlookup"><span class="id" type="definition">tlookup</span></a> <a class="idref" href="Records.html#i"><span class="id" type="variable">i</span></a> <a class="idref" href="Records.html#v"><span class="id" type="variable">v</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Records.html#ti"><span class="id" type="variable">ti</span></a> <span style="font-family: arial;">&and;</span> <a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#ti"><span class="id" type="variable">ti</span></a> &#x2208; <a class="idref" href="Records.html#Ti"><span class="id" type="variable">Ti</span></a>.<br/>
+<div class="togglescript" id="proofcontrol4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')"><span class="show"></span></div>
+<div class="proofscript" id="proof4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">v</span> <span class="id" type="var">T</span> <span class="id" type="var">i</span> <span class="id" type="var">Ti</span> <span class="id" type="var">Hval</span> <span class="id" type="var">Htyp</span> <span class="id" type="var">Hget</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="var">remember</span> (@<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a>) <span class="id" type="keyword">as</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>.<br/>
@@ -808,6 +806,7 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;get&nbsp;tail&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">IHHtyp2</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">vi</span> [<span class="id" type="var">Hgeti</span> <span class="id" type="var">Htypi</span>]]...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">Hval</span>... <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 </div>
@@ -822,6 +821,8 @@ Before starting to prove this fact (or the one above!), make sure
 <span class="id" type="keyword">Theorem</span> <a name="STLCExtendedRecords.progress"><span class="id" type="lemma">progress</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">t</span> <span class="id" type="var">T</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> &#x2208; <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.value"><span class="id" type="inductive">value</span></a> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> <span style="font-family: arial;">&or;</span> <span style="font-family: arial;">&exist;</span><span class="id" type="var">t'</span>, <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> <span style="font-family: arial;">&rArr;</span> <a class="idref" href="Records.html#t'"><span class="id" type="variable">t'</span></a>.<br/>
+<div class="togglescript" id="proofcontrol5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')"><span class="show"></span></div>
+<div class="proofscript" id="proof5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;Theorem:&nbsp;Suppose&nbsp;empty&nbsp;|-&nbsp;t&nbsp;:&nbsp;T.&nbsp;&nbsp;Then&nbsp;either<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;t&nbsp;is&nbsp;a&nbsp;value,&nbsp;or<br/>
@@ -832,17 +833,17 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;<span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span class="id" type="var">HeqGamma</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">Ht</span>; <span class="id" type="tactic">intros</span> <span class="id" type="var">HeqGamma</span>; <span class="id" type="tactic">subst</span>.<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_Var&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;The&nbsp;final&nbsp;rule&nbsp;in&nbsp;the&nbsp;given&nbsp;typing&nbsp;derivation&nbsp;cannot&nbsp;be&nbsp;<span class="inlinecode"><span class="id" type="var">T_Var</span></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;since&nbsp;it&nbsp;can&nbsp;never&nbsp;be&nbsp;the&nbsp;case&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>&nbsp;(since&nbsp;the<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context&nbsp;is&nbsp;empty).&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;The&nbsp;final&nbsp;rule&nbsp;in&nbsp;the&nbsp;given&nbsp;typing&nbsp;derivation&nbsp;cannot&nbsp;be&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">T_Var</span></span>,&nbsp;since&nbsp;it&nbsp;can&nbsp;never&nbsp;be&nbsp;the&nbsp;case&nbsp;that&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>&nbsp;(since&nbsp;the&nbsp;context&nbsp;is&nbsp;empty).&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>.<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_Abs&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;<span class="inlinecode"><span class="id" type="var">T_Abs</span></span>&nbsp;rule&nbsp;was&nbsp;the&nbsp;last&nbsp;used,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span></span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which&nbsp;is&nbsp;a&nbsp;value.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;<span class="inlinecode"><span class="id" type="var">T_Abs</span></span>&nbsp;rule&nbsp;was&nbsp;the&nbsp;last&nbsp;used,&nbsp;then&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span></span>,&nbsp;which&nbsp;is&nbsp;a&nbsp;value.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">left</span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_App&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;applied&nbsp;was&nbsp;T_App,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>,&nbsp;and&nbsp;we&nbsp;know<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;the&nbsp;form&nbsp;of&nbsp;the&nbsp;rule&nbsp;that<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;applied&nbsp;was&nbsp;T_App,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;we&nbsp;know&nbsp;from&nbsp;the&nbsp;form&nbsp;of&nbsp;the&nbsp;rule&nbsp;that<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>1</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>2</sub></span></span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>1</sub></span></span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By&nbsp;the&nbsp;induction&nbsp;hypothesis,&nbsp;each&nbsp;of&nbsp;t<sub>1</sub>&nbsp;and&nbsp;t<sub>2</sub>&nbsp;either&nbsp;is&nbsp;a&nbsp;value<br/>
@@ -853,17 +854,18 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">IHHt2</span>; <span class="id" type="tactic">subst</span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* <span class="comment">(*&nbsp;t<sub>2</sub>&nbsp;is&nbsp;a&nbsp;value&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;both&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>&nbsp;are&nbsp;values,&nbsp;then&nbsp;we&nbsp;know&nbsp;that<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span></span>,&nbsp;since&nbsp;abstractions&nbsp;are&nbsp;the&nbsp;only&nbsp;values<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;can&nbsp;have&nbsp;an&nbsp;arrow&nbsp;type.&nbsp;&nbsp;But<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span></span>,&nbsp;since&nbsp;abstractions&nbsp;are&nbsp;the&nbsp;only&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values&nbsp;that&nbsp;can&nbsp;have&nbsp;an&nbsp;arrow&nbsp;type.&nbsp;&nbsp;But<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode">(<span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>12</sub></span>)</span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">t<sub>2</sub></span>]<span class="id" type="var">t<sub>12</sub></span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_AppAbs</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">try</span> (<span class="id" type="var">solve</span> <span class="id" type="tactic">by</span> <span class="id" type="tactic">inversion</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span>([<span class="id" type="var">x</span>:=<span class="id" type="var">t<sub>2</sub></span>]<span class="id" type="var">t<sub>12</sub></span>)...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* <span class="comment">(*&nbsp;t<sub>2</sub>&nbsp;steps&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span>&nbsp;is&nbsp;a&nbsp;value&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub>'</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub>'</span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App2</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span>&nbsp;is&nbsp;a&nbsp;value&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub>'</span></span>,&nbsp;then&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub>'</span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App2</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>2</sub>'</span> <span class="id" type="var">Hstp</span>]. <span style="font-family: arial;">&exist;</span>(<a class="idref" href="Records.html#STLCExtendedRecords.tapp"><span class="id" type="constructor">tapp</span></a> <span class="id" type="var">t<sub>1</sub></span> <span class="id" type="var">t<sub>2</sub>'</span>)...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;t<sub>1</sub>&nbsp;steps&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Finally,&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub>'</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub>'</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App1</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Finally,&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub>'</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub>'</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App1</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">H</span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">Hstp</span>]. <span style="font-family: arial;">&exist;</span>(<a class="idref" href="Records.html#STLCExtendedRecords.tapp"><span class="id" type="constructor">tapp</span></a> <span class="id" type="var">t<sub>1</sub>'</span> <span class="id" type="var">t<sub>2</sub></span>)...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_Proj&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;in&nbsp;the&nbsp;given&nbsp;derivation&nbsp;is&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj</span></span>,&nbsp;then<br/>
@@ -873,25 +875,26 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">right</span>. <span class="id" type="tactic">destruct</span> <span class="id" type="var">IHHt</span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;rcd&nbsp;is&nbsp;value&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;is&nbsp;a&nbsp;value,&nbsp;then&nbsp;we&nbsp;may&nbsp;use&nbsp;lemma<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">lookup_field_in_value</span></span>&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">tlookup</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;for<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;which&nbsp;gives&nbsp;us&nbsp;<span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_ProjRcd</span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Records.html#STLCExtendedRecords.lookup_field_in_value"><span class="id" type="lemma">lookup_field_in_value</span></a> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="var">Ht</span> <span class="id" type="var">H</span>) <span class="id" type="keyword">as</span> [<span class="id" type="var">ti</span> [<span class="id" type="var">Hlkup</span> <span class="id" type="var">_</span>]].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">lookup_field_in_value</span></span>&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">tlookup</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;which&nbsp;gives&nbsp;us&nbsp;<span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">ti</span></span>&nbsp;by&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">ST_ProjRcd</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Records.html#STLCExtendedRecords.lookup_field_in_value"><span class="id" type="lemma">lookup_field_in_value</span></a> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="var">Ht</span> <span class="id" type="var">H</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">as</span> [<span class="id" type="var">ti</span> [<span class="id" type="var">Hlkup</span> <span class="id" type="var">_</span>]].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">ti</span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;rcd_steps&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;On&nbsp;the&nbsp;other&nbsp;hand,&nbsp;if&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Proj1</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;On&nbsp;the&nbsp;other&nbsp;hand,&nbsp;if&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>,&nbsp;then&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Proj1</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t'</span> <span class="id" type="var">Hstp</span>]. <span style="font-family: arial;">&exist;</span>(<a class="idref" href="Records.html#STLCExtendedRecords.tproj"><span class="id" type="constructor">tproj</span></a> <span class="id" type="var">t'</span> <span class="id" type="var">i</span>)...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_RNil&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;in&nbsp;the&nbsp;given&nbsp;derivation&nbsp;is&nbsp;<span class="inlinecode"><span class="id" type="var">T_RNil</span></span>,&nbsp;then<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">trnil</span></span>,&nbsp;which&nbsp;is&nbsp;a&nbsp;value.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;in&nbsp;the&nbsp;given&nbsp;derivation&nbsp;is&nbsp;<span class="inlinecode"><span class="id" type="var">T_RNil</span></span>,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">trnil</span></span>,&nbsp;which&nbsp;is&nbsp;a&nbsp;value.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">left</span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_RCons&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;is&nbsp;<span class="inlinecode"><span class="id" type="var">T_RCons</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">trcons</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;and<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">Tr</span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By&nbsp;the&nbsp;IH,&nbsp;each&nbsp;of&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;either&nbsp;is&nbsp;a&nbsp;value&nbsp;or&nbsp;can&nbsp;take<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;step.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By&nbsp;the&nbsp;IH,&nbsp;each&nbsp;of&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;either&nbsp;is&nbsp;a&nbsp;value&nbsp;or&nbsp;can&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;take&nbsp;a&nbsp;step.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">IHHt1</span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;head&nbsp;is&nbsp;a&nbsp;value&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">IHHt2</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">reflexivity</span>.<br/>
@@ -911,6 +914,7 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Rcd_Head</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">right</span>. <span class="id" type="tactic">destruct</span> <span class="id" type="var">H<sub>1</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">t'</span> <span class="id" type="var">Hstp</span>].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span>(<a class="idref" href="Records.html#STLCExtendedRecords.trcons"><span class="id" type="constructor">trcons</span></a> <span class="id" type="var">i</span> <span class="id" type="var">t'</span> <span class="id" type="var">tr</span>)... <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 </div>
@@ -951,6 +955,8 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> &#x2208; <a class="idref" href="Records.html#S"><span class="id" type="variable">S</span></a>  <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span>, <a class="idref" href="Records.html#STLCExtendedRecords.appears_free_in"><span class="id" type="inductive">appears_free_in</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> <span style="font-family: arial;">&rarr;</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> = <span style="font-family: serif; font-size:85%;">&Gamma;'</span> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a>)  <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;'</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> &#x2208; <a class="idref" href="Records.html#S"><span class="id" type="variable">S</span></a>.<br/>
+<div class="togglescript" id="proofcontrol6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')"><span class="show"></span></div>
+<div class="proofscript" id="proof6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span>. <span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span style="font-family: serif; font-size:85%;">&Gamma;'</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">H</span>;<br/>
@@ -964,12 +970,15 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.T_App"><span class="id" type="constructor">T_App</span></a> <span class="id" type="keyword">with</span> <span class="id" type="var">T<sub>1</sub></span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_RCons&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.T_RCons"><span class="id" type="constructor">T_RCons</span></a>... <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">Lemma</span> <a name="STLCExtendedRecords.free_in_context"><span class="id" type="lemma">free_in_context</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">x</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>,<br/>
 &nbsp;&nbsp;&nbsp;<a class="idref" href="Records.html#STLCExtendedRecords.appears_free_in"><span class="id" type="inductive">appears_free_in</span></a> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;&nbsp;<span style="font-family: serif; font-size:85%;">&Gamma;</span> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t"><span class="id" type="variable">t</span></a> &#x2208; <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span><br/>
 &nbsp;&nbsp;&nbsp;<span style="font-family: arial;">&exist;</span><span class="id" type="var">T'</span>, <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Records.html#x"><span class="id" type="variable">x</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Records.html#T'"><span class="id" type="variable">T'</span></a>.<br/>
+<div class="togglescript" id="proofcontrol7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')"><span class="show"></span></div>
+<div class="proofscript" id="proof7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">x</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">Hafi</span> <span class="id" type="var">Htyp</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">Htyp</span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">Hafi</span>; <span class="id" type="tactic">subst</span>...<br/>
@@ -978,6 +987,7 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">unfold</span> <a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a>, <a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">Hctx</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="Maps.html#false_beq_id"><span class="id" type="lemma">false_beq_id</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">Hctx</span>...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 </div>
@@ -998,12 +1008,13 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gamma&nbsp;|-&nbsp;(<span class="inlinecode"><span class="id" type="var">x</span>:=<span class="id" type="var">v</span></span>t)&nbsp;S.&nbsp;*)</span><br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">x</span> <span class="id" type="var">U</span> <span class="id" type="var">v</span> <span class="id" type="var">t</span> <span class="id" type="var">S</span> <span class="id" type="var">Htypt</span> <span class="id" type="var">Htypv</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>. <span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span class="id" type="var">S</span>.<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Proof:&nbsp;By&nbsp;induction&nbsp;on&nbsp;the&nbsp;term&nbsp;t.&nbsp;&nbsp;Most&nbsp;cases&nbsp;follow&nbsp;directly<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;the&nbsp;IH,&nbsp;with&nbsp;the&nbsp;exception&nbsp;of&nbsp;tvar,&nbsp;tabs,&nbsp;trcons.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;former&nbsp;aren't&nbsp;automatic&nbsp;because&nbsp;we&nbsp;must&nbsp;reason&nbsp;about&nbsp;how&nbsp;the<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variables&nbsp;interact.&nbsp;In&nbsp;the&nbsp;case&nbsp;of&nbsp;trcons,&nbsp;we&nbsp;must&nbsp;do&nbsp;a&nbsp;little<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra&nbsp;work&nbsp;to&nbsp;show&nbsp;that&nbsp;substituting&nbsp;into&nbsp;a&nbsp;term&nbsp;doesn't&nbsp;change<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whether&nbsp;it&nbsp;is&nbsp;a&nbsp;record&nbsp;term.&nbsp;*)</span><br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;Proof:&nbsp;By&nbsp;induction&nbsp;on&nbsp;the&nbsp;term&nbsp;t.&nbsp;&nbsp;Most&nbsp;cases&nbsp;follow&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directly&nbsp;from&nbsp;the&nbsp;IH,&nbsp;with&nbsp;the&nbsp;exception&nbsp;of&nbsp;tvar,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tabs,&nbsp;trcons.&nbsp;The&nbsp;former&nbsp;aren't&nbsp;automatic&nbsp;because&nbsp;we&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;reason&nbsp;about&nbsp;how&nbsp;the&nbsp;variables&nbsp;interact.&nbsp;In&nbsp;the&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;of&nbsp;trcons,&nbsp;we&nbsp;must&nbsp;do&nbsp;a&nbsp;little&nbsp;extra&nbsp;work&nbsp;to&nbsp;show&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;substituting&nbsp;into&nbsp;a&nbsp;term&nbsp;doesn't&nbsp;change&nbsp;whether&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;is&nbsp;a&nbsp;record&nbsp;term.&nbsp;*)</span><br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">t</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">S</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">Htypt</span>; <span class="id" type="tactic">simpl</span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">Htypt</span>; <span class="id" type="tactic">subst</span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;tvar&nbsp;*)</span><br/>
@@ -1011,25 +1022,29 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;t&nbsp;=&nbsp;y,&nbsp;we&nbsp;know&nbsp;that<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">v</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">U</span></span>&nbsp;and<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and,&nbsp;by&nbsp;inversion,&nbsp;<span class="inlinecode"><span class="id" type="var">update</span></span> <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">U</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">S</span></span>.&nbsp;&nbsp;We&nbsp;want&nbsp;to<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and,&nbsp;by&nbsp;inversion,&nbsp;<span class="inlinecode"><span class="id" type="var">update</span></span> <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">U</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">S</span></span>.&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;want&nbsp;to&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span>.<br/>
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There&nbsp;are&nbsp;two&nbsp;cases&nbsp;to&nbsp;consider:&nbsp;either&nbsp;<span class="inlinecode"><span class="id" type="var">x</span>=<span class="id" type="var">y</span></span>&nbsp;or&nbsp;<span class="inlinecode"><span class="id" type="var">x</span>≠<span class="id" type="var">y</span></span>.&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">unfold</span> <a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a>, <a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>0</sub></span>. <span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_idP"><span class="id" type="axiom">beq_idP</span></a> <span class="id" type="var">x</span> <span class="id" type="var">y</span>) <span class="id" type="keyword">as</span> [<span class="id" type="var">Hxy</span>|<span class="id" type="var">Hxy</span>].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">unfold</span> <a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a>, <a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>0</sub></span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_idP"><span class="id" type="axiom">beq_idP</span></a> <span class="id" type="var">x</span> <span class="id" type="var">y</span>) <span class="id" type="keyword">as</span> [<span class="id" type="var">Hxy</span>|<span class="id" type="var">Hxy</span>].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;x=y&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;we&nbsp;know&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">U</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">S</span></span>,&nbsp;and&nbsp;that&nbsp;<span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">v</span></span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So&nbsp;what&nbsp;we&nbsp;really&nbsp;must&nbsp;show&nbsp;is&nbsp;that&nbsp;if&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">v</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">U</span></span>&nbsp;then<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">v</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">U</span></span>.&nbsp;&nbsp;We&nbsp;have&nbsp;already&nbsp;proven&nbsp;a&nbsp;more&nbsp;general&nbsp;version<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;this&nbsp;theorem,&nbsp;called&nbsp;context&nbsp;invariance.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;we&nbsp;know&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">U</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">S</span></span>,&nbsp;and&nbsp;that&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">v</span></span>.&nbsp;So&nbsp;what&nbsp;we&nbsp;really&nbsp;must&nbsp;show&nbsp;is&nbsp;that&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">v</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">U</span></span>&nbsp;then&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">v</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">U</span></span>.&nbsp;&nbsp;We&nbsp;have<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;already&nbsp;proven&nbsp;a&nbsp;more&nbsp;general&nbsp;version&nbsp;of&nbsp;this&nbsp;theorem,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;called&nbsp;context&nbsp;invariance!&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">subst</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>0</sub></span>; <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">clear</span> <span class="id" type="var">H<sub>0</sub></span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Records.html#STLCExtendedRecords.context_invariance"><span class="id" type="lemma">context_invariance</span></a>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">x</span> <span class="id" type="var">Hcontra</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Records.html#STLCExtendedRecords.free_in_context"><span class="id" type="lemma">free_in_context</span></a> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">S</span> <a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span class="id" type="var">Hcontra</span>) <span class="id" type="keyword">as</span> [<span class="id" type="var">T'</span> <span class="id" type="var">HT'</span>]...<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Records.html#STLCExtendedRecords.free_in_context"><span class="id" type="lemma">free_in_context</span></a> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">S</span> <a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span class="id" type="var">Hcontra</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">as</span> [<span class="id" type="var">T'</span> <span class="id" type="var">HT'</span>]...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">HT'</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;x&lt;&gt;y&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">S</span></span>&nbsp;and&nbsp;the&nbsp;substitution&nbsp;has&nbsp;no<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effect.&nbsp;&nbsp;We&nbsp;can&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span>&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">T_Var</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">S</span></span>&nbsp;and&nbsp;the&nbsp;substitution<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has&nbsp;no&nbsp;effect.&nbsp;&nbsp;We&nbsp;can&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span>&nbsp;by&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">T_Var</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.T_Var"><span class="id" type="constructor">T_Var</span></a>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;tabs&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rename</span> <span class="id" type="var">i</span> <span class="id" type="var">into</span> <span class="id" type="var">y</span>. <span class="id" type="tactic">rename</span> <span class="id" type="var">t</span> <span class="id" type="var">into</span> <span class="id" type="var">T<sub>11</sub></span>.<br/>
@@ -1041,28 +1056,28 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">S</span></span> <span class="inlinecode"><span style="font-family: arial;">&rarr;</span></span> <span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode"><span class="id" type="var">S</span></span>.<br/>
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;can&nbsp;calculate&nbsp;that<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">x</span>:=<span class="id" type="var">v</span></span>t&nbsp;=&nbsp;tabs&nbsp;y&nbsp;T<sub>11</sub>&nbsp;(if&nbsp;beq_id&nbsp;x&nbsp;y&nbsp;then&nbsp;t<sub>0</sub>&nbsp;else&nbsp;<span class="inlinecode"><span class="id" type="var">x</span>:=<span class="id" type="var">v</span></span>t<sub>0</sub>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And&nbsp;we&nbsp;must&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">T<sub>12</sub></span></span>.&nbsp;&nbsp;We&nbsp;know<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tabs</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode">(<span class="id" type="keyword">if</span></span> <span class="inlinecode"><span class="id" type="var">beq_id</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode"><span class="id" type="keyword">then</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode"><span class="id" type="keyword">else</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t<sub>0</sub></span>)</span> <span class="inlinecode"></span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;we&nbsp;must&nbsp;show&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span><span style="font-family: arial;">&rarr;</span><span class="id" type="var">T<sub>12</sub></span></span>.&nbsp;&nbsp;We&nbsp;know<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;we&nbsp;will&nbsp;do&nbsp;so&nbsp;using&nbsp;<span class="inlinecode"><span class="id" type="var">T_Abs</span></span>,&nbsp;so&nbsp;it&nbsp;remains&nbsp;to&nbsp;be&nbsp;shown&nbsp;that:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="keyword">if</span></span> <span class="inlinecode"><span class="id" type="var">beq_id</span></span> <span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode"><span class="id" type="var">y</span></span> <span class="inlinecode"><span class="id" type="keyword">then</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode"><span class="id" type="keyword">else</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;consider&nbsp;two&nbsp;cases:&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;consider&nbsp;two&nbsp;cases:&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.T_Abs"><span class="id" type="constructor">T_Abs</span></a>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_idP"><span class="id" type="axiom">beq_idP</span></a> <span class="id" type="var">x</span> <span class="id" type="var">y</span>) <span class="id" type="keyword">as</span> [<span class="id" type="var">Hxy</span>|<span class="id" type="var">Hxy</span>].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;x=y&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;the&nbsp;substitution&nbsp;has&nbsp;no&nbsp;effect.&nbsp;&nbsp;Context<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invariance&nbsp;shows&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">U</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span>&nbsp;and&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span>&nbsp;are<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;equivalent.&nbsp;&nbsp;Since&nbsp;the&nbsp;former&nbsp;context&nbsp;shows&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>,&nbsp;so<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;does&nbsp;the&nbsp;latter.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;the&nbsp;substitution&nbsp;has&nbsp;no&nbsp;effect.&nbsp;&nbsp;Context<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invariance&nbsp;shows&nbsp;that&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">U</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span>&nbsp;and&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span>&nbsp;are<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;equivalent.&nbsp;&nbsp;Since&nbsp;<span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;under&nbsp;the&nbsp;former&nbsp;context,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;is&nbsp;also&nbsp;the&nbsp;case&nbsp;under&nbsp;the&nbsp;latter.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">eapply</span> <a class="idref" href="Records.html#STLCExtendedRecords.context_invariance"><span class="id" type="lemma">context_invariance</span></a>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">subst</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">x</span> <span class="id" type="var">Hafi</span>. <span class="id" type="tactic">unfold</span> <a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a>, <a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_id"><span class="id" type="definition">beq_id</span></a> <span class="id" type="var">y</span> <span class="id" type="var">x</span>)...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;x&lt;&gt;y&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;the&nbsp;IH&nbsp;and&nbsp;context&nbsp;invariance&nbsp;allow&nbsp;us&nbsp;to&nbsp;show&nbsp;that<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">x</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" type="var">y</span></span>,&nbsp;then&nbsp;the&nbsp;IH&nbsp;and&nbsp;context&nbsp;invariance&nbsp;allow&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;us&nbsp;to&nbsp;show&nbsp;that<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span>,<span class="id" type="var">x</span>:<span class="id" type="var">U</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span style="font-family: serif; font-size:85%;">&Gamma;</span>,<span class="id" type="var">y</span>:<span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode">[<span class="id" type="var">x</span>:=<span class="id" type="var">v</span>]<span class="id" type="var">t<sub>0</sub></span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">IHt</span>. <span class="id" type="tactic">eapply</span> <a class="idref" href="Records.html#STLCExtendedRecords.context_invariance"><span class="id" type="lemma">context_invariance</span></a>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">z</span> <span class="id" type="var">Hafi</span>. <span class="id" type="tactic">unfold</span> <a class="idref" href="Maps.html#update"><span class="id" type="definition">update</span></a>, <a class="idref" href="Maps.html#t_update"><span class="id" type="definition">t_update</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Maps.html#beq_idP"><span class="id" type="axiom">beq_idP</span></a> <span class="id" type="var">y</span> <span class="id" type="var">z</span>)...<br/>
@@ -1078,19 +1093,21 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <span style="font-family: arial;">&#8866;</span> <a class="idref" href="Records.html#t'"><span class="id" type="variable">t'</span></a> &#x2208; <a class="idref" href="Records.html#T"><span class="id" type="variable">T</span></a>.<br/>
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">t</span> <span class="id" type="var">t'</span> <span class="id" type="var">T</span> <span class="id" type="var">HT</span>.<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Theorem:&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;Theorem:&nbsp;If&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>,&nbsp;then&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" type="var">T</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;<span class="id" type="var">remember</span> (@<a class="idref" href="Maps.html#empty"><span class="id" type="definition">empty</span></a> <a class="idref" href="Records.html#STLCExtendedRecords.ty"><span class="id" type="inductive">ty</span></a>) <span class="id" type="keyword">as</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>. <span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span class="id" type="var">HeqGamma</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span class="id" type="var">t'</span>.<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Proof:&nbsp;By&nbsp;induction&nbsp;on&nbsp;the&nbsp;given&nbsp;typing&nbsp;derivation.&nbsp;&nbsp;Many&nbsp;cases&nbsp;are<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contradictory&nbsp;(<span class="inlinecode"><span class="id" type="var">T_Var</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">T_Abs</span></span>)&nbsp;or&nbsp;follow&nbsp;directly&nbsp;from&nbsp;the&nbsp;IH<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="inlinecode"><span class="id" type="var">T_RCons</span></span>).&nbsp;&nbsp;We&nbsp;show&nbsp;just&nbsp;the&nbsp;interesting&nbsp;ones.&nbsp;*)</span><br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;Proof:&nbsp;By&nbsp;induction&nbsp;on&nbsp;the&nbsp;given&nbsp;typing&nbsp;derivation.&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Many&nbsp;cases&nbsp;are&nbsp;contradictory&nbsp;(<span class="inlinecode"><span class="id" type="var">T_Var</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">T_Abs</span></span>)&nbsp;or&nbsp;follow&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directly&nbsp;from&nbsp;the&nbsp;IH&nbsp;(<span class="inlinecode"><span class="id" type="var">T_RCons</span></span>).&nbsp;&nbsp;We&nbsp;show&nbsp;just&nbsp;the&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interesting&nbsp;ones.&nbsp;*)</span><br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">HT</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">t'</span> <span class="id" type="var">HeqGamma</span> <span class="id" type="var">HE</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">HE</span>; <span class="id" type="tactic">subst</span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_App&nbsp;*)</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;used&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_App</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>,&nbsp;and&nbsp;three&nbsp;rules<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;could&nbsp;have&nbsp;been&nbsp;used&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>:&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App1</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App2</span></span>,&nbsp;and<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">ST_AppAbs</span></span>.&nbsp;In&nbsp;the&nbsp;first&nbsp;two&nbsp;cases,&nbsp;the&nbsp;result&nbsp;follows&nbsp;directly&nbsp;from<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;IH.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;used&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_App</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">t<sub>2</sub></span></span>,&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;three&nbsp;rules&nbsp;could&nbsp;have&nbsp;been&nbsp;used&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>:&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App1</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">ST_App2</span></span>,&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">ST_AppAbs</span></span>.&nbsp;In&nbsp;the&nbsp;first&nbsp;two&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cases,&nbsp;the&nbsp;result&nbsp;follows&nbsp;directly&nbsp;from&nbsp;the&nbsp;IH.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">HE</span>; <span class="id" type="tactic">subst</span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="comment">(*&nbsp;ST_AppAbs&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;For&nbsp;the&nbsp;third&nbsp;case,&nbsp;suppose<br/>
@@ -1107,31 +1124,32 @@ Before starting to prove this fact (or the one above!), make sure
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.substitution_preserves_typing"><span class="id" type="lemma">substitution_preserves_typing</span></a> <span class="id" type="keyword">with</span> <span class="id" type="var">T<sub>1</sub></span>...<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">HT<sub>1</sub></span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_Proj&nbsp;*)</span><br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">i</span></span>.&nbsp;&nbsp;Two&nbsp;rules<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;could&nbsp;have&nbsp;caused&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>:&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj1</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">T_ProjRcd</span></span>.&nbsp;&nbsp;The&nbsp;typing<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;<span class="inlinecode"><span class="id" type="var">t'</span></span>&nbsp;follows&nbsp;from&nbsp;the&nbsp;IH&nbsp;in&nbsp;the&nbsp;former&nbsp;case,&nbsp;so&nbsp;we&nbsp;only<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;consider&nbsp;<span class="inlinecode"><span class="id" type="var">T_ProjRcd</span></span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">tproj</span></span> <span class="inlinecode"><span class="id" type="var">t<sub>1</sub></span></span> <span class="inlinecode"><span class="id" type="var">i</span></span>.&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two&nbsp;rules&nbsp;could&nbsp;have&nbsp;caused&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">t'</span></span>:&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj1</span></span>&nbsp;and&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">T_ProjRcd</span></span>.&nbsp;&nbsp;The&nbsp;typing&nbsp;of&nbsp;<span class="inlinecode"><span class="id" type="var">t'</span></span>&nbsp;follows&nbsp;from&nbsp;the&nbsp;IH&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;former&nbsp;case,&nbsp;so&nbsp;we&nbsp;only&nbsp;consider&nbsp;<span class="inlinecode"><span class="id" type="var">T_ProjRcd</span></span>.<br/>
 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here&nbsp;we&nbsp;have&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;is&nbsp;a&nbsp;record&nbsp;value.&nbsp;&nbsp;Since&nbsp;rule&nbsp;T_Proj&nbsp;was<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;used,&nbsp;we&nbsp;know&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">&#x2208;</span> <span class="inlinecode"><span class="id" type="var">Tr</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">Tlookup</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">Tr</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span>
-     <span class="inlinecode"><span class="id" type="var">Ti</span></span>&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">i</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">Tr</span></span>.&nbsp;&nbsp;We&nbsp;may&nbsp;therefore&nbsp;apply&nbsp;lemma<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">lookup_field_in_value</span></span>&nbsp;to&nbsp;find&nbsp;the&nbsp;record&nbsp;element&nbsp;this<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;projection&nbsp;steps&nbsp;to.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here&nbsp;we&nbsp;have&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;is&nbsp;a&nbsp;record&nbsp;value.&nbsp;&nbsp;Since&nbsp;rule&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">T_Proj</span></span>&nbsp;was&nbsp;used,&nbsp;we&nbsp;know&nbsp;<span class="inlinecode"><span class="id" type="var">empty</span></span> <span class="inlinecode"><span style="font-family: arial;">&#8866;</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">&#x2208;</span> <span class="inlinecode"><span class="id" type="var">Tr</span></span>&nbsp;and&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" type="var">Tlookup</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">Tr</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">Ti</span></span>&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">i</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">Tr</span></span>.&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;may&nbsp;therefore&nbsp;apply&nbsp;lemma&nbsp;<span class="inlinecode"><span class="id" type="var">lookup_field_in_value</span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;find&nbsp;the&nbsp;record&nbsp;element&nbsp;this&nbsp;projection&nbsp;steps&nbsp;to.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> (<a class="idref" href="Records.html#STLCExtendedRecords.lookup_field_in_value"><span class="id" type="lemma">lookup_field_in_value</span></a> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">_</span> <span class="id" type="var">H<sub>2</sub></span> <span class="id" type="var">HT</span> <span class="id" type="var">H</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">as</span> [<span class="id" type="var">vi</span> [<span class="id" type="var">Hget</span> <span class="id" type="var">Htyp</span>]].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H<sub>4</sub></span> <span class="id" type="keyword">in</span> <span class="id" type="var">Hget</span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">Hget</span>. <span class="id" type="tactic">subst</span>...<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_RCons&nbsp;*)</span><br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_RCons</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">trcons</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;for<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">i</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;such&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">record_tm</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span>.&nbsp;&nbsp;If&nbsp;the&nbsp;step&nbsp;is<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Rcd_Head</span></span>,&nbsp;the&nbsp;result&nbsp;is&nbsp;immediate&nbsp;by&nbsp;the&nbsp;IH.&nbsp;&nbsp;If&nbsp;the&nbsp;step<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Rcd_Tail</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>&nbsp;and&nbsp;we&nbsp;must&nbsp;also<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;lemma&nbsp;<span class="inlinecode"><span class="id" type="var">step_preserves_record_tm</span></span>&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">record_tm</span></span> <span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;If&nbsp;the&nbsp;last&nbsp;rule&nbsp;was&nbsp;<span class="inlinecode"><span class="id" type="var">T_RCons</span></span>,&nbsp;then&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" type="var">trcons</span></span> <span class="inlinecode"><span class="id" type="var">i</span></span> <span class="inlinecode"><span class="id" type="var">t</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">i</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">t</span></span>&nbsp;and&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span>&nbsp;such&nbsp;that&nbsp;<span class="inlinecode"><span class="id" type="var">record_tm</span></span> <span class="inlinecode"><span class="id" type="var">tr</span></span>.&nbsp;&nbsp;If&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;step&nbsp;is&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Rcd_Head</span></span>,&nbsp;the&nbsp;result&nbsp;is&nbsp;immediate&nbsp;by&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;IH.&nbsp;&nbsp;If&nbsp;the&nbsp;step&nbsp;is&nbsp;by&nbsp;<span class="inlinecode"><span class="id" type="var">ST_Rcd_Tail</span></span>,&nbsp;<span class="inlinecode"><span class="id" type="var">tr</span></span> <span class="inlinecode"><span style="font-family: arial;">&rArr;</span></span> <span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;some&nbsp;<span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>&nbsp;and&nbsp;we&nbsp;must&nbsp;also&nbsp;use&nbsp;lemma&nbsp;<span class="inlinecode"><span class="id" type="var">step_preserves_record_tm</span></span>&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;show&nbsp;<span class="inlinecode"><span class="id" type="var">record_tm</span></span> <span class="inlinecode"><span class="id" type="var">tr<sub>2</sub>'</span></span>.&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Records.html#STLCExtendedRecords.T_RCons"><span class="id" type="constructor">T_RCons</span></a>... <span class="id" type="tactic">eapply</span> <a class="idref" href="Records.html#STLCExtendedRecords.step_preserves_record_tm"><span class="id" type="lemma">step_preserves_record_tm</span></a>...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 

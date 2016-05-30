@@ -1,6 +1,6 @@
 (** * PE: Partial Evaluation *)
 
-(* Chapter author/maintainer: Chung-chieh Shan *)
+(* Chapter written and maintained by Chung-chieh Shan *)
 
 (** The [Equiv] chapter introduced constant folding as an example of a
     program transformation and proved that it preserves the meaning of
@@ -9,9 +9,13 @@
     APlus (ANum 3) (ANum 1)] to the command [Y ::= ANum 4].  However,
     it does not propagate known constants along data flow.  For
     example, it does not simplify the sequence
-        X ::= ANum 3;; Y ::= APlus (AId X) (ANum 1)
+
+      X ::= ANum 3;; Y ::= APlus (AId X) (ANum 1)
+
     to
-        X ::= ANum 3;; Y ::= ANum 4
+
+      X ::= ANum 3;; Y ::= ANum 4
+
     because it forgets that [X] is [3] by the time it gets to [Y].
 
     We might naturally want to enhance constant folding so that it
@@ -21,9 +25,13 @@
     running a program, except only part of the program can be
     evaluated because only part of the input to the program is known.
     For example, we can only simplify the program
-        X ::= ANum 3;; Y ::= AMinus (APlus (AId X) (ANum 1)) (AId Y)
+
+      X ::= ANum 3;; Y ::= AMinus (APlus (AId X) (ANum 1)) (AId Y)
+
     to
-        X ::= ANum 3;; Y ::= AMinus (ANum 4) (AId Y)
+
+      X ::= ANum 3;; Y ::= AMinus (ANum 4) (AId Y)
+
     without knowing the initial value of [Y]. *)
 
 Require Import Coq.Bool.Bool.
@@ -83,7 +91,9 @@ Definition empty_pe_state : pe_state := [].
     contain some [id], then that [pe_state] must map that [id] to
     [None].  Before we prove this fact, we first define a useful
     tactic for reasoning with [id] equality.  The tactic
-        compare V V'
+
+      compare V V'
+
     means to reason by cases over [beq_id V V'].
     In the case where [V = V'], the tactic
     substitutes [V] for [V'] throughout. *)
@@ -218,18 +228,28 @@ Qed.
 
 (** However, we will soon want our partial evaluator to remove
     assignments.  For example, it will simplify
-        X ::= ANum 3;; Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
+    X ::= ANum 3;; Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
     to just
-        Y ::= AMinus (ANum 3) (AId Y);; X ::= ANum 4
+
+    Y ::= AMinus (ANum 3) (AId Y);; X ::= ANum 4
+
     by delaying the assignment to [X] until the end.  To accomplish
     this simplification, we need the result of partial evaluating
-        pe_aexp [(X,3)] (AMinus (AId X) (AId Y))
+
+    pe_aexp [(X,3)] (AMinus (AId X) (AId Y))
+
     to be equal to [AMinus (ANum 3) (AId Y)] and _not_ the original
     expression [AMinus (AId X) (AId Y)].  After all, it would be
     incorrect, not just inefficient, to transform
-        X ::= ANum 3;; Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
+    X ::= ANum 3;; Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
     to
-        Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
+    Y ::= AMinus (AId X) (AId Y);; X ::= ANum 4
+
     even though the output expressions [AMinus (ANum 3) (AId Y)] and
     [AMinus (AId X) (AId Y)] both satisfy the correctness criterion
     that we just proved.  Indeed, if we were to just define [pe_aexp
@@ -375,8 +395,8 @@ Proof.
          assert (Ha0: aeval (pe_update st pe_st) a0 = aeval st a0');
            try (subst; apply pe_aexp_correct);
          destruct a'; destruct a0'; rewrite Ha; rewrite Ha0;
-         simpl; try destruct (beq_nat n n0); try destruct (leb n n0);
-         reflexivity);
+         simpl; try destruct (beq_nat n n0);
+         try destruct (leb n n0); reflexivity);
     try (destruct (pe_bexp pe_st b); rewrite IHb; reflexivity);
     try (destruct (pe_bexp pe_st b1);
          destruct (pe_bexp pe_st b2);
@@ -415,12 +435,16 @@ Qed.
     partial state.  To model this non-termination, just as with the
     full evaluation of commands, we use an inductively defined
     relation.  We write
-        c1 / st \\ c1' / st'
+
+      c1 / st \\ c1' / st'
+
     to mean that partially evaluating the source command [c1] in the
     initial partial state [st] yields the residual command [c1'] and
     the final partial state [st'].  For example, we want something like
-        (X ::= ANum 3 ;; Y ::= AMult (AId Z) (APlus (AId X) (AId X)))
-        / [] \\ (Y ::= AMult (AId Z) (ANum 6)) / [(X,3)]
+
+      (X ::= ANum 3 ;; Y ::= AMult (AId Z) (APlus (AId X) (AId X)))
+      / [] \\ (Y ::= AMult (AId Z) (ANum 6)) / [(X,3)]
+
     to hold.  The assignment to [X] appears in the final partial state,
     not the residual command. *)
 
@@ -456,7 +480,8 @@ Proof. intros pe_st V V0. induction pe_st as [| [V' n'] pe_st].
   - (* [] *) destruct (beq_id V V0); reflexivity.
   - (* :: *) simpl. compare V V'.
     + (* equal *) rewrite IHpe_st.
-      destruct (beq_idP V V0).  reflexivity.  rewrite false_beq_id; auto.
+      destruct (beq_idP V V0).  reflexivity.  
+      rewrite false_beq_id; auto.
     + (* not equal *) simpl. compare V0 V'.
       * (* equal *) rewrite false_beq_id; auto.
       * (* not equal *) rewrite IHpe_st. reflexivity.
@@ -471,7 +496,8 @@ Theorem pe_add_correct: forall pe_st V n V0,
 Proof. intros pe_st V n V0. unfold pe_add. simpl.
   compare V V0.
   - (* equal *) rewrite <- beq_id_refl; auto.
-  - (* not equal *) rewrite pe_remove_correct. repeat rewrite false_beq_id; auto.
+  - (* not equal *) rewrite pe_remove_correct. 
+    repeat rewrite false_beq_id; auto.
 Qed.
 
 (** We will use the two theorems below to show that our partial
@@ -481,9 +507,10 @@ Qed.
 Theorem pe_update_update_remove: forall st pe_st V n,
   t_update (pe_update st pe_st) V n =
   pe_update (t_update st V n) (pe_remove pe_st V).
-Proof. intros st pe_st V n. apply functional_extensionality. intros V0.
-  unfold t_update. rewrite !pe_update_correct. rewrite pe_remove_correct.
-  destruct (beq_id V V0); reflexivity. Qed.
+Proof. intros st pe_st V n. apply functional_extensionality. 
+  intros V0. unfold t_update. rewrite !pe_update_correct.
+  rewrite pe_remove_correct. destruct (beq_id V V0); reflexivity.
+  Qed.
 
 Theorem pe_update_update_add: forall st pe_st V n,
   t_update (pe_update st pe_st) V n =
@@ -502,11 +529,13 @@ Proof. intros st pe_st V n. apply functional_extensionality. intros V0.
     partial state may differ between the two branches!
 
     The following program illustrates the difficulty:
-        X ::= ANum 3;;
-        IFB BLe (AId Y) (ANum 4) THEN
-            Y ::= ANum 4;;
-            IFB BEq (AId X) (AId Y) THEN Y ::= ANum 999 ELSE SKIP FI
-        ELSE SKIP FI
+
+      X ::= ANum 3;;
+      IFB BLe (AId Y) (ANum 4) THEN
+          Y ::= ANum 4;;
+          IFB BEq (AId X) (AId Y) THEN Y ::= ANum 999 ELSE SKIP FI
+      ELSE SKIP FI
+
     Suppose the initial partial state is empty.  We don't know
     statically how [Y] compares to [4], so we must partially evaluate
     both branches of the (outer) conditional.  On the [THEN] branch,
@@ -522,12 +551,13 @@ Proof. intros st pe_st V n. apply functional_extensionality. intros V0.
     compensate for forgetting that [Y] is [4], we need to add an
     assignment [Y ::= ANum 4] to the end of the [THEN] branch.  So,
     the residual program will be something like
-        SKIP;;
-        IFB BLe (AId Y) (ANum 4) THEN
-            SKIP;;
-            SKIP;;
-            Y ::= ANum 4
-        ELSE SKIP FI
+
+      SKIP;;
+      IFB BLe (AId Y) (ANum 4) THEN
+          SKIP;;
+          SKIP;;
+          Y ::= ANum 4
+      ELSE SKIP FI
 
     Programming this case in Coq calls for several auxiliary
     functions: we need to compute the intersection of two [pe_state]s
@@ -544,7 +574,6 @@ Definition pe_disagree_at (pe_st1 pe_st2 : pe_state) (V:id) : bool :=
   | None, None => false
   | _, _ => true
   end.
-
 
 Theorem pe_disagree_domain: forall (pe_st1 pe_st2 : pe_state) (V:id),
   true = pe_disagree_at pe_st1 pe_st2 V ->
@@ -567,7 +596,8 @@ Proof. unfold pe_disagree_at. intros pe_st1 pe_st2 V H.
 Fixpoint pe_unique (l : list id) : list id :=
   match l with
   | [] => []
-  | x::l => x :: filter (fun y => if beq_id x y then false else true) (pe_unique l)
+  | x::l =>
+      x :: filter (fun y => if beq_id x y then false else true) (pe_unique l)
   end.
 
 Theorem pe_unique_correct: forall l x,
@@ -910,17 +940,21 @@ Qed.
     evaluation relation [pe_com] above to loops.  Indeed, many loops
     are easy to deal with.  Considered this repeated-squaring loop,
     for example:
-        WHILE BLe (ANum 1) (AId X) DO
-            Y ::= AMult (AId Y) (AId Y);;
-            X ::= AMinus (AId X) (ANum 1)
-        END
+
+      WHILE BLe (ANum 1) (AId X) DO
+          Y ::= AMult (AId Y) (AId Y);;
+          X ::= AMinus (AId X) (ANum 1)
+      END
+
     If we know neither [X] nor [Y] statically, then the entire loop is
     dynamic and the residual command should be the same.  If we know
     [X] but not [Y], then the loop can be unrolled all the way and the
     residual command should be, for example,
-        Y ::= AMult (AId Y) (AId Y);;
-        Y ::= AMult (AId Y) (AId Y);;
-        Y ::= AMult (AId Y) (AId Y)
+
+      Y ::= AMult (AId Y) (AId Y);;
+      Y ::= AMult (AId Y) (AId Y);;
+      Y ::= AMult (AId Y) (AId Y)
+
     if [X] is initially [3] (and finally [0]).  In general, a loop is
     easy to partially evaluate if the final partial state of the loop
     body is equal to the initial state, or if its guard condition is
@@ -929,23 +963,27 @@ Qed.
     But there are other loops for which it is hard to express the
     residual program we want in Imp.  For example, take this program
     for checking whether [Y] is even or odd:
-        X ::= ANum 0;;
-        WHILE BLe (ANum 1) (AId Y) DO
-            Y ::= AMinus (AId Y) (ANum 1);;
-            X ::= AMinus (ANum 1) (AId X)
-        END
+
+      X ::= ANum 0;;
+      WHILE BLe (ANum 1) (AId Y) DO
+          Y ::= AMinus (AId Y) (ANum 1);;
+          X ::= AMinus (ANum 1) (AId X)
+      END
+
     The value of [X] alternates between [0] and [1] during the loop.
     Ideally, we would like to unroll this loop, not all the way but
     _two-fold_, into something like
-        WHILE BLe (ANum 1) (AId Y) DO
-            Y ::= AMinus (AId Y) (ANum 1);;
-            IF BLe (ANum 1) (AId Y) THEN
-                Y ::= AMinus (AId Y) (ANum 1)
-            ELSE
-                X ::= ANum 1;; EXIT
-            FI
-        END;;
-        X ::= ANum 0
+
+      WHILE BLe (ANum 1) (AId Y) DO
+          Y ::= AMinus (AId Y) (ANum 1);;
+          IF BLe (ANum 1) (AId Y) THEN
+              Y ::= AMinus (AId Y) (ANum 1)
+          ELSE
+              X ::= ANum 1;; EXIT
+          FI
+      END;;
+      X ::= ANum 0
+
     Unfortunately, there is no [EXIT] command in Imp.  Without
     extending the range of control structures available in our
     language, the best we can do is to repeat loop-guard tests or add
@@ -1495,7 +1533,7 @@ Proof. erewrite f_equal with (f := fun st => peval _ _ _ st _).
   apply functional_extensionality. intros i. rewrite t_update_same; auto.
 Qed.
 
-(** ** Partial evaluation of basic blocks and flowchart programs *)
+(** ** Partial Evaluation of Basic Blocks and Flowchart Programs *)
 
 (** Partial evaluation changes the label type in a systematic way: if
     the label type used to be [L], it becomes [pe_state * L].  So the
@@ -1601,4 +1639,4 @@ Proof. intros.
       eapply E_Some; eauto. apply pe_block_correct. apply Hkeval.
 Qed.
 
-(** $Date: 2016-03-07 14:18:04 -0500 (Mon, 07 Mar 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

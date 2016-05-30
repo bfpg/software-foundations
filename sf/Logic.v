@@ -96,10 +96,6 @@ Check @eq.
     to [eq] is declared as implicit, so we need to turn off implicit
     arguments to see the full type of [eq].) *)
 
-
-
-
-
 (* #################################################################### *)
 (** * Logical Connectives *)
 
@@ -495,10 +491,6 @@ Proof.
   - (* b = true *) reflexivity.
 Qed.
 
-
-
-
-
 (** ** Truth *)
 
 (** Besides [False], Coq's standard library also defines [True], a
@@ -828,7 +820,6 @@ Theorem combine_odd_even_elim_even :
     Peven n.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 (** [] *)
 
 (* #################################################################### *)
@@ -973,7 +964,9 @@ Proof. reflexivity. Qed.
 
 (** In common mathematical practice, two functions [f] and [g] are
     considered equal if they produce the same outputs:
+
     (forall x, f x = g x) -> f = g
+
     This is known as the principle of _functional extensionality_.
 
     Informally speaking, an "extensional property" is one that
@@ -1373,13 +1366,14 @@ Proof.
 (** **** Exercise: 3 stars, optional (not_exists_dist)  *)
 (** It is a theorem of classical logic that the following two
     assertions are equivalent:
+
     ~ (exists x, ~ P x)
     forall x, P x
+
     The [dist_not_exists] theorem above proves one side of this
     equivalence. Interestingly, the other direction cannot be proved
     in constructive logic. Your job is to show that it is implied by
-    the excluded middle.
-*)
+    the excluded middle. *)
 
 Theorem not_exists_dist :
   excluded_middle ->
@@ -1402,10 +1396,13 @@ Proof.
 
 Definition peirce := forall P Q: Prop,
   ((P->Q)->P)->P.
+
 Definition double_negation_elimination := forall P:Prop,
   ~~P -> P.
+
 Definition de_morgan_not_and_not := forall P Q:Prop,
   ~(~P /\ ~Q) -> P\/Q.
+  
 Definition implies_to_or := forall P Q:Prop,
   (P->Q) -> (~P\/Q).
 

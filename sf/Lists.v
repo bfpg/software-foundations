@@ -1,8 +1,5 @@
 (** * Lists: Working with Structured Data *)
 
-(* REMINDER: Please do not put solutions to the exercises in
-   publicly accessible places! *)
-
 Require Export Induction.
 Module NatList.
 
@@ -155,18 +152,19 @@ Definition mylist3 := [1;2;3].
     expressions that involve both [::] and some other infix operator.
     For example, since we defined [+] as infix notation for the [plus]
     function at level 50,
+
   Notation "x + y" := (plus x y)
                       (at level 50, left associativity).
+
    the [+] operator will bind tighter than [::], so [1 + 2 :: [3]]
    will be parsed, as we'd expect, as [(1 + 2) :: [3]] rather than [1
    + (2 :: [3])].
 
-   (By the way, it's worth noting in passing that expressions like "[1
-   + 2 :: [3]]" can be a little confusing when you read them in a .v
-   file.  The inner brackets, around 3, indicate a list, but the outer
-   brackets, which are invisible in the HTML rendering, are there to
-   instruct the "coqdoc" tool that the bracketed part should be
-   displayed as Coq code rather than running text.)
+   (Expressions like "[1 + 2 :: [3]]" can be a little confusing when 
+   you read them in a .v file.  The inner brackets, around 3, indicate 
+   a list, but the outer brackets, which are invisible in the HTML 
+   rendering, are there to instruct the "coqdoc" tool that the bracketed 
+   part should be displayed as Coq code rather than running text.)
 
    The second and third [Notation] declarations above introduce the
    standard square-bracket notation for lists; the right-hand side of
@@ -175,6 +173,7 @@ Definition mylist3 := [1;2;3].
    constructors. *)
 
 (** *** Repeat *)
+
 (** A number of functions are useful for manipulating lists.
     For example, the [repeat] function takes a number [n] and a
     [count] and returns a list of length [count] where every element
@@ -187,6 +186,7 @@ Fixpoint repeat (n count : nat) : natlist :=
   end.
 
 (** *** Length *)
+
 (** The [length] function calculates the length of a list. *)
 
 Fixpoint length (l:natlist) : nat :=
@@ -196,6 +196,7 @@ Fixpoint length (l:natlist) : nat :=
   end.
 
 (** *** Append *)
+
 (** The [app] function concatenates (appends) two lists. *)
 
 Fixpoint app (l1 l2 : natlist) : natlist :=
@@ -218,6 +219,7 @@ Example test_app3:             [1;2;3] ++ nil = [1;2;3].
 Proof. reflexivity.  Qed.
 
 (** *** Head (with default) and Tail *)
+
 (** Here are two smaller examples of programming with lists.
     The [hd] function returns the first element (the "head") of the
     list, while [tl] returns everything but the first
@@ -245,6 +247,7 @@ Example test_tl:              tl [1;2;3] = [2;3].
 Proof. reflexivity.  Qed.
 
 (** *** Exercises *)
+
 (** **** Exercise: 2 stars, recommended (list_funs)  *)
 (** Complete the definitions of [nonzeros], [oddmembers] and
     [countoddmembers] below. Have a look at the tests to understand
@@ -257,14 +260,12 @@ Example test_nonzeros:
   nonzeros [0;1;0;2;3;0;0] = [1;2;3].
   (* FILL IN HERE *) Admitted.
 
-
 Fixpoint oddmembers (l:natlist) : natlist :=
   (* FILL IN HERE *) admit.
 
 Example test_oddmembers:
   oddmembers [0;1;0;2;3;0;0] = [1;3].
   (* FILL IN HERE *) Admitted.
-
 
 Fixpoint countoddmembers (l:natlist) : nat :=
   (* FILL IN HERE *) admit.
@@ -276,7 +277,6 @@ Example test_countoddmembers1:
 Example test_countoddmembers2:
   countoddmembers [0;2;4] = 0.
   (* FILL IN HERE *) Admitted.
-
 
 Example test_countoddmembers3:
   countoddmembers nil = 0.
@@ -296,20 +296,16 @@ Example test_countoddmembers3:
     both lists at the same time.  (One possible solution requires
     defining a new kind of pairs, but this is not the only way.)  *)
 
-
 Fixpoint alternate (l1 l2 : natlist) : natlist :=
   (* FILL IN HERE *) admit.
-
 
 Example test_alternate1:
   alternate [1;2;3] [4;5;6] = [1;4;2;5;3;6].
   (* FILL IN HERE *) Admitted.
 
-
 Example test_alternate2:
   alternate [1] [4;5;6] = [1;4;5;6].
   (* FILL IN HERE *) Admitted.
-
 
 Example test_alternate3:
   alternate [1;2;3] [4] = [1;4;2;3].
@@ -318,8 +314,6 @@ Example test_alternate3:
 Example test_alternate4:
   alternate [] [20;30] = [20;30].
   (* FILL IN HERE *) Admitted.
-
-
 (** [] *)
 
 (* ###################################################### *)
@@ -345,7 +339,6 @@ Example test_count1:              count 1 [1;2;3;1;4;1] = 3.
 Example test_count2:              count 6 [1;2;3;1;4;1] = 0.
  (* FILL IN HERE *) Admitted.
 
-
 (** Multiset [sum] is similar to set [union]: [sum a b] contains
     all the elements of [a] and of [b].  (Mathematicians usually
     define [union] on multisets a little bit differently, which
@@ -364,7 +357,6 @@ Definition sum : bag -> bag -> bag :=
 Example test_sum1:              count 1 (sum [1;2;3] [1;4;1]) = 3.
  (* FILL IN HERE *) Admitted.
 
-
 Definition add (v:nat) (s:bag) : bag :=
   (* FILL IN HERE *) admit.
 
@@ -373,13 +365,11 @@ Example test_add1:                count 1 (add 1 [1;4;1]) = 3.
 Example test_add2:                count 5 (add 1 [1;4;1]) = 0.
  (* FILL IN HERE *) Admitted.
 
-
 Definition member (v:nat) (s:bag) : bool :=
   (* FILL IN HERE *) admit.
 
 Example test_member1:             member 1 [1;4;1] = true.
  (* FILL IN HERE *) Admitted.
-
 
 Example test_member2:             member 2 [1;4;1] = false.
  (* FILL IN HERE *) Admitted.
@@ -412,13 +402,13 @@ Example test_remove_one4:
 Fixpoint remove_all (v:nat) (s:bag) : bag :=
   (* FILL IN HERE *) admit.
 
-Example test_remove_all1:          count 5 (remove_all 5 [2;1;5;4;1]) = 0.
+Example test_remove_all1:  count 5 (remove_all 5 [2;1;5;4;1]) = 0.
  (* FILL IN HERE *) Admitted.
-Example test_remove_all2:          count 5 (remove_all 5 [2;1;4;1]) = 0.
+Example test_remove_all2:  count 5 (remove_all 5 [2;1;4;1]) = 0.
  (* FILL IN HERE *) Admitted.
-Example test_remove_all3:          count 4 (remove_all 5 [2;1;4;5;1;4]) = 2.
+Example test_remove_all3:  count 4 (remove_all 5 [2;1;4;5;1;4]) = 2.
  (* FILL IN HERE *) Admitted.
-Example test_remove_all4:          count 5 (remove_all 5 [2;1;5;4;5;1;4;5;1;4]) = 0.
+Example test_remove_all4:  count 5 (remove_all 5 [2;1;5;4;5;1;4;5;1;4]) = 0.
  (* FILL IN HERE *) Admitted.
 
 Fixpoint subset (s1:bag) (s2:bag) : bool :=
@@ -441,10 +431,9 @@ Example test_subset2:              subset [1;2;2] [2;1;4;1] = false.
 
 Theorem bag_theorem :
   (* FILL IN HERE *) admit.
-(* FILL IN HERE *) Admitted.
+Proof.
+  (* FILL IN HERE *) Admitted.
 (** [] *)
-
-
 
 (* ###################################################### *)
 (** * Reasoning About Lists *)
@@ -555,19 +544,27 @@ Proof.
    _Proof_: By induction on [l1].
 
    - First, suppose [l1 = []].  We must show
+
        ([] ++ l2) ++ l3 = [] ++ (l2 ++ l3),
+
      which follows directly from the definition of [++].
 
    - Next, suppose [l1 = n::l1'], with
+
        (l1' ++ l2) ++ l3 = l1' ++ (l2 ++ l3)
+
      (the induction hypothesis). We must show
+
        ((n :: l1') ++ l2) ++ l3 = (n :: l1') ++ (l2 ++ l3).
+
      By the definition of [++], this follows from
+
        n :: ((l1' ++ l2) ++ l3) = n :: (l1' ++ (l2 ++ l3)),
-     which is immediate from the induction hypothesis.  []
-*)
+
+     which is immediate from the induction hypothesis.  [] *)
 
 (** *** Reversing a list *)
+
 (** For a slightly more involved example of inductive proof over
     lists, suppose we use [app] to define a list-reversing function
     [rev]: *)
@@ -611,8 +608,7 @@ Abort.
 
 (** So let's take the equation relating [++] and [length] that
     would have enabled us to make progress and prove it as a separate
-    lemma.
-*)
+    lemma. *)
 
 Theorem app_length : forall l1 l2 : natlist,
   length (l1 ++ l2) = (length l1) + (length l2).
@@ -651,14 +647,20 @@ Proof.
     _Proof_: By induction on [l1].
 
     - First, suppose [l1 = []].  We must show
+
         length ([] ++ l2) = length [] + length l2,
+
       which follows directly from the definitions of
       [length] and [++].
 
     - Next, suppose [l1 = n::l1'], with
+
         length (l1' ++ l2) = length l1' + length l2.
+
       We must show
+
         length ((n::l1') ++ l2) = length (n::l1') + length l2).
+
       This follows directly from the definitions of [length] and [++]
       together with the induction hypothesis. [] *)
 
@@ -667,18 +669,28 @@ Proof.
     _Proof_: By induction on [l].
 
       - First, suppose [l = []].  We must show
+
           length (rev []) = length [],
+
         which follows directly from the definitions of [length]
         and [rev].
 
       - Next, suppose [l = n::l'], with
+
           length (rev l') = length l'.
+
         We must show
+
           length (rev (n :: l')) = length (n :: l').
+
         By the definition of [rev], this follows from
+
           length ((rev l') ++ [n]) = S (length l')
+
         which, by the previous lemma, is the same as
+
           length (rev l') + length [n] = S (length l').
+
         This follows directly from the induction hypothesis and the
         definition of [length]. [] *)
 
@@ -715,8 +727,8 @@ Proof.
 
     Coq's [SearchAbout] command is quite helpful with this.  Typing
     [SearchAbout foo] will cause Coq to display a list of all theorems
-    involving [foo].  For example, try uncommenting the following to
-    see a list of theorems that we have proved about [rev]: *)
+    involving [foo].  For example, try uncommenting the following line 
+    to see a list of theorems that we have proved about [rev]: *)
 
 (*  SearchAbout rev. *)
 
@@ -739,12 +751,10 @@ Proof.
   (* FILL IN HERE *) Admitted.
 
 
-
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 
 (** There is a short solution to the next one.  If you find yourself
     getting tangled up, step back and try to look for a simpler
@@ -755,7 +765,6 @@ Theorem app_assoc4 : forall l1 l2 l3 l4 : natlist,
 Proof.
   (* FILL IN HERE *) Admitted.
 
-
 (** An exercise about your implementation of [nonzeros]: *)
 
 Lemma nonzeros_app : forall l1 l2 : natlist,
@@ -763,7 +772,6 @@ Lemma nonzeros_app : forall l1 l2 : natlist,
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 (** **** Exercise: 2 stars (beq_natlist)  *)
 (** Fill in the definition of [beq_natlist], which compares
@@ -790,7 +798,6 @@ Theorem beq_natlist_refl : forall l:natlist,
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 (* ###################################################### *)
 (** ** List Exercises, Part 2 *)
@@ -830,24 +837,22 @@ Proof.
 
 (** **** Exercise: 4 stars, advanced (rev_injective)  *)
 (** Prove that the [rev] function is injective -- that is,
+
     forall (l1 l2 : natlist), rev l1 = rev l2 -> l1 = l2.
-(There is a hard way and an easy way to do this.)
-*)
+
+(There is a hard way and an easy way to do this.) *)
 
 (* FILL IN HERE *)
 (** [] *)
 
 
-
 (* ###################################################### *)
 (** * Options *)
-
 
 (** Suppose we want to write a function that returns the [n]th
     element of some list.  If we give it type [nat -> natlist -> nat],
     then we'll have to choose some number to return when the list is
-    too short...
-    *)
+    too short... *)
 
 Fixpoint nth_bad (l:natlist) (n:nat) : nat :=
   match l with
@@ -896,7 +901,6 @@ Proof. reflexivity. Qed.
     This example is also an opportunity to introduce one more small
     feature of Coq's programming language: conditional
     expressions... *)
-
 
 Fixpoint nth_error' (l:natlist) (n:nat) : natoption :=
   match l with
@@ -948,8 +952,6 @@ Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
-
 End NatList.
 
 (* ###################################################### *)
@@ -983,7 +985,6 @@ Theorem beq_id_refl : forall x, true = beq_id x x.
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 (** Now we define the type of partial maps: *)
 
@@ -1023,7 +1024,6 @@ Fixpoint find (key : id) (d : partial_map) : natoption :=
                      else find key d'
   end.
 
-
 (** **** Exercise: 1 star (update_eq)  *)
 Theorem update_eq :
   forall (d : partial_map) (k : id) (v: nat),
@@ -1032,7 +1032,6 @@ Proof.
  (* FILL IN HERE *) Admitted.
 (** [] *)
 
-
 (** **** Exercise: 1 star (update_neq)  *)
 Theorem update_neq :
   forall (d : partial_map) (m n : id) (o: nat),
@@ -1040,7 +1039,6 @@ Theorem update_neq :
 Proof.
  (* FILL IN HERE *) Admitted.
 (** [] *)
-
 
 End PartialMap.
 
@@ -1057,5 +1055,5 @@ Inductive baz : Type :=
 *)
 (** [] *)
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-24 14:00:08 -0400 (Tue, 24 May 2016) $ *)
 

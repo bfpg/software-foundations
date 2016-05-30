@@ -1,9 +1,9 @@
 (** * IndPrinciples: Induction Principles *)
 
-Require Export ProofObjects.
-
 (** With the Curry-Howard correspondence and its realization in Coq in
     mind, we can now take a deeper look at induction principles. *)
+
+Require Export ProofObjects.
 
 (* ##################################################### *)
 (** * Basics *)
@@ -74,11 +74,13 @@ Proof.
     These generated principles follow a similar pattern. If we define
     a type [t] with constructors [c1] ... [cn], Coq generates a
     theorem with this shape:
+
     t_ind : forall P : t -> Prop,
               ... case for c1 ... ->
               ... case for c2 ... -> ...
               ... case for cn ... ->
               forall n : t, P n
+
     The specific shape of each case depends on the arguments to the
     corresponding constructor.  Before trying to write down a general
     rule, let's look at some more examples. First, an example where
@@ -145,7 +147,6 @@ Inductive natlist1 : Type :=
         - "For all values [x1]...[xn] of types [a1]...[an], if [P]
           holds for each of the inductive arguments (each [xi] of type
           [t]), then [P] holds for [c x1 ... xn]".
-
 *)
 
 (** **** Exercise: 1 star, optional (byntree_ind)  *)
@@ -160,15 +161,16 @@ Inductive byntree : Type :=
  | nbranch : yesno -> byntree -> byntree -> byntree.
 (** [] *)
 
-
 (** **** Exercise: 1 star, optional (ex_set)  *)
 (** Here is an induction principle for an inductively defined
     set.
+
       ExSet_ind :
          forall P : ExSet -> Prop,
              (forall b : bool, P (con1 b)) ->
              (forall (n : nat) (e : ExSet), P e -> P (con2 n e)) ->
              forall e : ExSet, P e
+
     Give an [Inductive] definition of [ExSet]: *)
 
 Inductive ExSet : Type :=
@@ -181,20 +183,24 @@ Inductive ExSet : Type :=
 (** Next, what about polymorphic datatypes?
 
     The inductive definition of polymorphic lists
+
       Inductive list (X:Type) : Type :=
         | nil : list X
         | cons : X -> list X -> list X.
+
     is very similar to that of [natlist].  The main difference is
     that, here, the whole definition is _parameterized_ on a set [X]:
     that is, we are defining a _family_ of inductive types [list X],
     one for each [X].  (Note that, wherever [list] appears in the body
     of the declaration, it is always applied to the parameter [X].)
     The induction principle is likewise parameterized on [X]:
-     list_ind :
-       forall (X : Type) (P : list X -> Prop),
-          P [] ->
-          (forall (x : X) (l : list X), P l -> P (x :: l)) ->
-          forall l : list X, P l
+
+      list_ind :
+        forall (X : Type) (P : list X -> Prop),
+           P [] ->
+           (forall (x : X) (l : list X), P l -> P (x :: l)) ->
+           forall l : list X, P l
+
     Note that the _whole_ induction principle is parameterized on
     [X].  That is, [list_ind] can be thought of as a polymorphic
     function that, when applied to a type [X], gives us back an
@@ -214,6 +220,7 @@ Check tree_ind.
 (** **** Exercise: 1 star, optional (mytype)  *)
 (** Find an inductive definition that gives rise to the
     following induction principle:
+
       mytype_ind :
         forall (X : Type) (P : mytype X -> Prop),
             (forall x : X, P (constr1 X x)) ->
@@ -221,12 +228,14 @@ Check tree_ind.
             (forall m : mytype X, P m ->
                forall n : nat, P (constr3 X m n)) ->
             forall m : mytype X, P m
+
 *) 
 (** [] *)
 
 (** **** Exercise: 1 star, optional (foo)  *)
 (** Find an inductive definition that gives rise to the
     following induction principle:
+
       foo_ind :
         forall (X Y : Type) (P : foo X Y -> Prop),
              (forall x : X, P (bar X Y x)) ->
@@ -234,6 +243,7 @@ Check tree_ind.
              (forall f1 : nat -> foo X Y,
                (forall n : nat, P (f1 n)) -> P (quux X Y f1)) ->
              forall f2 : foo X Y, P f2
+
 *) 
 (** [] *)
 
@@ -246,6 +256,7 @@ Inductive foo' (X:Type) : Type :=
 
 (** What induction principle will Coq generate for [foo']?  Fill
    in the blanks, then check your answer with Coq.)
+
      foo'_ind :
         forall (X : Type) (P : foo' X -> Prop),
               (forall (l : list X) (f : foo' X),
@@ -253,6 +264,7 @@ Inductive foo' (X:Type) : Type :=
                     _______________________   ) ->
              ___________________________________________ ->
              forall f : foo' X, ________________________
+
 *)
 
 (** [] *)
@@ -263,10 +275,12 @@ Inductive foo' (X:Type) : Type :=
 (** Where does the phrase "induction hypothesis" fit into this story?
 
     The induction principle for numbers
+
        forall P : nat -> Prop,
             P 0  ->
             (forall n : nat, P n -> P (S n))  ->
             forall n : nat, P n
+
    is a generic statement that holds for all propositions
    [P] (or rather, strictly speaking, for all families of
    propositions [P] indexed by a number [n]).  Each time we
@@ -333,8 +347,7 @@ Proof.
 
     What Coq actually does in this situation, internally, is to
     "re-generalize" the variable we perform induction on.  For
-    example, in our original proof that [plus] is associative...
-*)
+    example, in our original proof that [plus] is associative... *)
 
 Theorem plus_assoc' : forall n m p : nat,
   n + (m + p) = (n + m) + p.
@@ -357,9 +370,8 @@ Proof.
        for us, leaving just [P (S n')] as the goal. *)
     simpl. rewrite -> IHn'. reflexivity.  Qed.
 
-
 (** It also works to apply [induction] to a variable that is
-   quantified in the goal. *)
+    quantified in the goal. *)
 
 Theorem plus_comm' : forall n m : nat,
   n + m = m + n.
@@ -397,7 +409,6 @@ Proof.
 (* FILL IN HERE *)
 (** [] *)
 
-
 (* ##################################################### *)
 (** * Induction Principles in [Prop] *)
 
@@ -414,10 +425,13 @@ Proof.
 
     For example, from what we've said so far, you might expect the
     inductive definition of [ev]...
+
       Inductive ev : nat -> Prop :=
       | ev_0 : ev 0
       | ev_SS : forall n : nat, ev n -> ev (S (S n)).
+
     ...to give rise to an induction principle that looks like this...
+
     ev_ind_max : forall P : (forall n : nat, ev n -> Prop),
          P O ev_0 ->
          (forall (m : nat) (E : ev m),
@@ -425,6 +439,7 @@ Proof.
             P (S (S m)) (ev_SS m E)) ->
          forall (n : nat) (E : gorgeous n),
          P n E
+
      ... because:
 
      - Since [ev] is indexed by a number [n] (every [ev] object [E] is
@@ -457,14 +472,14 @@ Proof.
     induction principle for proving propositions [P] that are
     parameterized just by [n] and whose conclusion establishes [P] for
     all even numbers [n]:
+
        forall P : nat -> Prop,
        ... ->
        forall n : nat,
        even n -> P n
+
     For this reason, Coq actually generates the following simplified
     induction principle for [ev]: *)
-
-
 
 Check ev_ind.
 (* ===> ev_ind
@@ -488,7 +503,8 @@ Check ev_ind.
       - for any [n], if [n] is even and [P] holds for [n], then [P]
         holds for [S (S n)]. *)
 
-(** As expected, we can apply [ev_ind] directly instead of using [induction]. *)
+(** As expected, we can apply [ev_ind] directly instead of using
+    [induction]. *)
 
 Theorem ev_ev' : forall n, ev n -> ev' n.
 Proof.
@@ -501,8 +517,6 @@ Proof.
     + apply ev'_2.
     + apply IH.
 Qed.
-
-
 
 (** The precise form of an [Inductive] definition can affect the
     induction principle Coq generates.
@@ -623,9 +637,13 @@ Check le_ind.
           None].
 
           Let [n] be a number with [length l = n].  Since
+
             length l = length (x::l') = S (length l'),
+
           it suffices to show that
+
             index (S (length l')) l' = None.
+
           But this follows directly from the induction hypothesis,
           picking [n'] to be [length l'].  [] *)
 
@@ -678,4 +696,4 @@ Check le_ind.
 
              But then, by [le_S], [n <= S o'].  [] *)
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)

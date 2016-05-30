@@ -77,7 +77,9 @@
     find that the themes illuminate and amplify each other and that
     bringing them together creates a foundation from which it will be
     easy to dig into any of them more deeply.  Some suggestions for
-    further reading can be found in the [Postscript] chapter. *)
+    further reading can be found in the [Postscript] chapter.
+    Bibliographic information for all cited works can be found in the
+    [Bib] chapter. *)
 
 (** ** Logic *)
 
@@ -320,6 +322,13 @@
 *)
 
 (* ###################################################################### *)
+(** ** Further Reading *)
+
+(** This text is intended to be self contained, but readers looking
+    for a deeper treatment of a particular topic will find suggestions
+    for further reading in the [Postscript] chapter. *)
+
+(* ###################################################################### *)
 (** * Practicalities *)
 
 (** ** Chapter Dependencies *)
@@ -389,9 +398,9 @@
 (** A tar file containing the full sources for the "release version"
     of these notes (as a collection of Coq scripts and HTML files) is
     available here:
-<<
+
         http://www.cis.upenn.edu/~bcpierce/sf
->>
+
     If you are using the notes as part of a class, you may be given
     access to a locally extended version of the files, which you
     should use instead of the release version.
@@ -404,12 +413,38 @@
     undoubtedly find things you'd like to change, improve, or add.
     Your contributions are welcome!
 
-    Please send an email to Benjamin Pierce describing yourself and
-    how you would like to use the materials, and including the result
-    of doing "htpasswd -s -n NAME", where NAME is your preferred user
-    name.  We'll set you up with read/write access to our subversion
-    repository and developers' mailing list; in the repository you'll
-    find a [README] with further instructions. *)
+    To keep the legalities of the situation clean and to have a single
+    point of responsibility in case the need should ever arise to
+    adjust the license terms, sublicense, etc., we ask all
+    contributors (i.e., everyone with access to the developers'
+    repository) to assign copyright in their contributions to the
+    appropriate "author of record," as follows:
+
+        I hereby assign copyright in my past and future contributions
+        to the Software Foundations project to the Author of Record of
+        each volume or component, to be licensed under the same terms
+        as the rest of Software Foundations.  I understand that, at
+        present, the Authors of Record are as follows: For Volumes 1
+        and 2, known until 2016 as "Software Foundations" and from
+        2016 as (respectively) "Logical Foundations" and "Programming
+        Foundations," the Author of Record is Benjamin Pierce.  For
+        Volume 3, "Verified Functional Algorithms", the Author of
+        Record is Andrew W. Appel. For components outside of
+        designated Volumes (e.g., typesetting and grading tools and
+        other software infrastructure), the Author of Record is
+        Benjamin Pierce.
+
+    To get started, please send an email to Benjamin Pierce, describing
+    yourself and how you plan to use the materials and including 
+       (1) the above copyright transfer text and 
+       (2) the result of doing "htpasswd -s -n NAME"
+    where NAME is your preferred user name.
+
+    We'll set you up with access to the subversion repository and 
+    developers' mailing lists.  In the repository you'll find a 
+    file [INSTRUCTORS] with further instructions.
+
+*)
 
 (* ###################################################################### *)
 (** * Translations *)
@@ -419,4 +454,4 @@
     [http://proofcafe.org/sf].  A Chinese translation is underway.
 *)
 
-(** $Date: 2016-03-04 09:33:20 -0500 (Fri, 04 Mar 2016) $ *)
+(** $Date: 2016-05-26 17:51:14 -0400 (Thu, 26 May 2016) $ *)

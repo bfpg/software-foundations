@@ -33,11 +33,10 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Arith.Arith.html#"><span class="id" type="library">Coq.Arith.Arith</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Arith.EqNat.html#"><span class="id" type="library">Coq.Arith.EqNat</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.omega.Omega.html#"><span class="id" type="library">Coq.omega.Omega</span></a>.<br/>
-
-<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="SfLib.html#"><span class="id" type="library">SfLib</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Imp.html#"><span class="id" type="library">Imp</span></a>.<br/>
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
+<span class="comment">(*&nbsp;/TERSE:&nbsp;HIDEFROMHTML&nbsp;*)</span><br/>
 
 <br/>
 </div>
@@ -100,16 +99,14 @@ In the past couple of chapters, we've begun applying the
 
 
 </li>
-<li> behavioral equivalence of programs (in the <span class="inlinecode"><span class="id" type="var">Equiv</span></span> chapter). 
-</li>
-</ul>
+<li> behavioral equivalence of programs (in the <a href="Equiv.html"><font color="gray">Equiv</font></a> chapter). 
 
 </li>
 </ul>
 
-<div class="paragraph"> </div>
-
- If we stopped here, we would already have something useful: a set
+</li>
+</ul>
+    If we stopped here, we would already have something useful: a set
     of tools for defining and discussing programming languages and
     language features that are mathematically precise, flexible, and
     easy to work with, applied to a set of key properties.  All of
@@ -146,9 +143,10 @@ In the past couple of chapters, we've begun applying the
     lies at the core of a multitude of tools that are being used in
     academia and industry to specify and verify real software
     systems. 
+
 <div class="paragraph"> </div>
 
- Hoare Logic combines two beautiful ideas: a natural way of
+    Hoare Logic combines two beautiful ideas: a natural way of
     writing down <i>specifications</i> of programs, and a <i>compositional
     proof technique</i> for proving that programs are correct with
     respect to such specifications &mdash; where by "compositional" we mean
@@ -161,7 +159,7 @@ In the past couple of chapters, we've begun applying the
 </div>
 
 <div class="doc">
-<a name="lab402"></a><h1 class="section">Assertions</h1>
+<a name="lab405"></a><h1 class="section">Assertions</h1>
 
 <div class="paragraph"> </div>
 
@@ -181,19 +179,14 @@ In the past couple of chapters, we've begun applying the
 </div>
 
 <div class="doc">
-<a name="lab403"></a><h4 class="section">Exercise: 1 star, optional (assertions)</h4>
-
-</div>
-<div class="code code-space">
-</div>
-
-<div class="doc">
-Paraphrase the following assertions in English (or your favorite
+<a name="lab406"></a><h4 class="section">Exercise: 1 star, optional (assertions)</h4>
+ Paraphrase the following assertions in English (or your favorite
     natural language). 
 </div>
 <div class="code code-tight">
 
 <br/>
+<span class="id" type="keyword">Module</span> <a name="ExAssertions"><span class="id" type="module">ExAssertions</span></a>.<br/>
 <span class="id" type="keyword">Definition</span> <a name="ExAssertions.as1"><span class="id" type="definition">as<sub>1</sub></span></a> : <a class="idref" href="Hoare.html#ExAssertions.Assertion"><span class="id" type="definition">Assertion</span></a> := <span class="id" type="keyword">fun</span> <span class="id" type="var">st</span> ⇒ <a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#X"><span class="id" type="definition">X</span></a> = 3.<br/>
 <span class="id" type="keyword">Definition</span> <a name="ExAssertions.as2"><span class="id" type="definition">as<sub>2</sub></span></a> : <a class="idref" href="Hoare.html#ExAssertions.Assertion"><span class="id" type="definition">Assertion</span></a> := <span class="id" type="keyword">fun</span> <span class="id" type="var">st</span> ⇒ <a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#X"><span class="id" type="definition">X</span></a> ≤ <a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#Y"><span class="id" type="definition">Y</span></a>.<br/>
 <span class="id" type="keyword">Definition</span> <a name="ExAssertions.as3"><span class="id" type="definition">as<sub>3</sub></span></a> : <a class="idref" href="Hoare.html#ExAssertions.Assertion"><span class="id" type="definition">Assertion</span></a> :=<br/>
@@ -203,13 +196,12 @@ Paraphrase the following assertions in English (or your favorite
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¬ (((<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#S"><span class="id" type="constructor">S</span></a> (<a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#Z"><span class="id" type="definition">Z</span></a>)) * (<a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#S"><span class="id" type="constructor">S</span></a> (<a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#Z"><span class="id" type="definition">Z</span></a>))) ≤ <a class="idref" href="Hoare.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="Imp.html#X"><span class="id" type="definition">X</span></a>).<br/>
 <span class="id" type="keyword">Definition</span> <a name="ExAssertions.as5"><span class="id" type="definition">as<sub>5</sub></span></a> : <a class="idref" href="Hoare.html#ExAssertions.Assertion"><span class="id" type="definition">Assertion</span></a> := <span class="id" type="keyword">fun</span> <span class="id" type="var">st</span> ⇒ <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Logic.html#True"><span class="id" type="inductive">True</span></a>.<br/>
 <span class="id" type="keyword">Definition</span> <a name="ExAssertions.as6"><span class="id" type="definition">as<sub>6</sub></span></a> : <a class="idref" href="Hoare.html#ExAssertions.Assertion"><span class="id" type="definition">Assertion</span></a> := <span class="id" type="keyword">fun</span> <span class="id" type="var">st</span> ⇒ <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Logic.html#False"><span class="id" type="inductive">False</span></a>.<br/>
-
-<br/>
 <span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span><br/>
+<span class="id" type="keyword">End</span> <a class="idref" href="Hoare.html#ExAssertions"><span class="id" type="module">ExAssertions</span></a>.<br/>
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  This way of writing assertions can be a little bit heavy,
@@ -281,7 +273,7 @@ Paraphrase the following assertions in English (or your favorite
 </div>
 
 <div class="doc">
-<a name="lab404"></a><h1 class="section">Hoare Triples</h1>
+<a name="lab407"></a><h1 class="section">Hoare Triples</h1>
 
 <div class="paragraph"> </div>
 
@@ -348,7 +340,7 @@ Since we'll be working a lot with Hoare triples, it's useful to
 </div>
 
 <div class="doc">
-<a name="lab405"></a><h4 class="section">Exercise: 1 star, optional (triples)</h4>
+<a name="lab408"></a><h4 class="section">Exercise: 1 star, optional (triples)</h4>
  Paraphrase the following Hoare triples in English.
 
 <div class="paragraph"> </div>
@@ -364,7 +356,7 @@ Since we'll be working a lot with Hoare triples, it's useful to
 <br/>
 &nbsp;&nbsp;&nbsp;5)&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">X</span>&nbsp;=&nbsp;<span class="id" type="var">m</span><span style="letter-spacing:-.4em;">}</span>}<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">c</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">Y</span>&nbsp;=&nbsp;<span class="id" type="var">real_fact</span>&nbsp;<span class="id" type="var">m</span><span style="letter-spacing:-.4em;">}</span>}.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">Y</span>&nbsp;=&nbsp;<span class="id" type="var">real_fact</span>&nbsp;<span class="id" type="var">m</span><span style="letter-spacing:-.4em;">}</span>}&nbsp;&nbsp;&nbsp;&nbsp;<br/>
 <br/>
 &nbsp;&nbsp;&nbsp;6)&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">True</span><span style="letter-spacing:-.4em;">}</span>}<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="var">c</span><br/>
@@ -375,10 +367,10 @@ Since we'll be working a lot with Hoare triples, it's useful to
 
 <div class="paragraph"> </div>
 
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab406"></a><h4 class="section">Exercise: 1 star, optional (valid_triples)</h4>
+<a name="lab409"></a><h4 class="section">Exercise: 1 star, optional (valid_triples)</h4>
  Which of the following Hoare triples are <i>valid</i> &mdash; i.e., the
     claimed relation between <span class="inlinecode"><span class="id" type="var">P</span></span>, <span class="inlinecode"><span class="id" type="var">c</span></span>, and <span class="inlinecode"><span class="id" type="var">Q</span></span> is true?
 
@@ -409,20 +401,18 @@ Since we'll be working a lot with Hoare triples, it's useful to
 <div class="paragraph"> </div>
 
 </div>
-
-<div class="paragraph"> </div>
-
- <font size=-2>&#9744;</font> 
+ <font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  (Note that we're using informal mathematical notations for
    expressions inside of commands, for readability, rather than their
    formal <span class="inlinecode"><span class="id" type="var">aexp</span></span> and <span class="inlinecode"><span class="id" type="var">bexp</span></span> encodings.  We'll continue doing so
    throughout the chapter.) 
+
 <div class="paragraph"> </div>
 
- To get us warmed up for what's coming, here are two simple
-    facts about Hoare triples. 
+   To get us warmed up for what's coming, here are two simple
+   facts about Hoare triples. 
 </div>
 <div class="code code-tight">
 
@@ -455,7 +445,7 @@ Since we'll be working a lot with Hoare triples, it's useful to
 </div>
 
 <div class="doc">
-<a name="lab407"></a><h1 class="section">Proof Rules</h1>
+<a name="lab410"></a><h1 class="section">Proof Rules</h1>
 
 <div class="paragraph"> </div>
 
@@ -476,7 +466,7 @@ Since we'll be working a lot with Hoare triples, it's useful to
 </div>
 
 <div class="doc">
-<a name="lab408"></a><h2 class="section">Assignment</h2>
+<a name="lab411"></a><h2 class="section">Assignment</h2>
 
 <div class="paragraph"> </div>
 
@@ -692,9 +682,6 @@ That is, <span class="inlinecode"><span class="id" type="var">P</span></span> <s
 
 <div class="paragraph"> </div>
 
-
-<div class="paragraph"> </div>
-
  Now we can give the precise proof rule for assignment:
 <center><table class="infrule">
 <tr class="infruleassumption">
@@ -748,7 +735,7 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<a name="lab409"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_examples)</h4>
+<a name="lab412"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_examples)</h4>
  Translate these informal Hoare triples...
 
 <div class="paragraph"> </div>
@@ -774,10 +761,10 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab410"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_wrong)</h4>
+<a name="lab413"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_wrong)</h4>
  The assignment rule looks backward to almost everyone the first
     time they see it.  If it still seems puzzling, it may help
     to think a little about alternative "forward" rules.  Here is a
@@ -808,10 +795,10 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab411"></a><h4 class="section">Exercise: 3 stars, advanced (hoare_asgn_fwd)</h4>
+<a name="lab414"></a><h4 class="section">Exercise: 3 stars, advanced (hoare_asgn_fwd)</h4>
  However, by using an auxiliary variable <span class="inlinecode"><span class="id" type="var">m</span></span> to remember the 
     original value of <span class="inlinecode"><span class="id" type="var">X</span></span> we can define a Hoare rule for assignment 
     that does, intuitively, "work forwards" rather than backwards.
@@ -864,10 +851,10 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab412"></a><h4 class="section">Exercise: 2 stars, advanced (hoare_asgn_fwd_exists)</h4>
+<a name="lab415"></a><h4 class="section">Exercise: 2 stars, advanced (hoare_asgn_fwd_exists)</h4>
  Another way to define a forward rule for assignment is to
     existentially quantify over the previous value of the assigned
     variable.
@@ -915,7 +902,7 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -923,7 +910,7 @@ Here's a first formal proof using this rule.
 </div>
 
 <div class="doc">
-<a name="lab413"></a><h2 class="section">Consequence</h2>
+<a name="lab416"></a><h2 class="section">Consequence</h2>
 
 <div class="paragraph"> </div>
 
@@ -1063,8 +1050,7 @@ For example, we can use the first consequence rule like this:
 <div class="paragraph"> </div>
 
 </div>
-    Or, formally...
-
+    Or, formally... 
 </div>
 <div class="code code-tight">
 
@@ -1129,7 +1115,7 @@ Finally, for convenience in some proofs, we can state a combined
 </div>
 
 <div class="doc">
-<a name="lab414"></a><h2 class="section">Digression: The <span class="inlinecode"><span class="id" type="tactic">eapply</span></span> Tactic</h2>
+<a name="lab417"></a><h2 class="section">Digression: The <span class="inlinecode"><span class="id" type="tactic">eapply</span></span> Tactic</h2>
 
 <div class="paragraph"> </div>
 
@@ -1246,8 +1232,7 @@ Doing <span class="inlinecode"><span class="id" type="tactic">apply</span></span
 
 </div>
     In this case there is an easy fix: doing <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> <span class="inlinecode"><span class="id" type="var">HP</span></span> <i>before</i>
-    doing <span class="inlinecode"><span class="id" type="tactic">eapply</span></span> <span class="inlinecode"><span class="id" type="var">HQ</span></span>.
-
+    doing <span class="inlinecode"><span class="id" type="tactic">eapply</span></span> <span class="inlinecode"><span class="id" type="var">HQ</span></span>. 
 </div>
 <div class="code code-tight">
 
@@ -1295,7 +1280,7 @@ The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> 
 </div>
 
 <div class="doc">
-<a name="lab415"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_examples_2)</h4>
+<a name="lab418"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_examples_2)</h4>
  Translate these informal Hoare triples...
 
 <div class="paragraph"> </div>
@@ -1317,7 +1302,7 @@ The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> 
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1325,7 +1310,7 @@ The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> 
 </div>
 
 <div class="doc">
-<a name="lab416"></a><h2 class="section">Skip</h2>
+<a name="lab419"></a><h2 class="section">Skip</h2>
 
 <div class="paragraph"> </div>
 
@@ -1362,7 +1347,7 @@ The <span class="inlinecode"><span class="id" type="tactic">apply</span></span> 
 </div>
 
 <div class="doc">
-<a name="lab417"></a><h2 class="section">Sequencing</h2>
+<a name="lab420"></a><h2 class="section">Sequencing</h2>
 
 <div class="paragraph"> </div>
 
@@ -1465,7 +1450,7 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
     example. 
 <div class="paragraph"> </div>
 
-<a name="lab418"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_example4)</h4>
+<a name="lab421"></a><h4 class="section">Exercise: 2 stars (hoare_asgn_example4)</h4>
  Translate this "decorated program" into a formal proof:
 
 <div class="paragraph"> </div>
@@ -1494,10 +1479,10 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab419"></a><h4 class="section">Exercise: 3 stars (swap_exercise)</h4>
+<a name="lab422"></a><h4 class="section">Exercise: 3 stars (swap_exercise)</h4>
  Write an Imp program <span class="inlinecode"><span class="id" type="var">c</span></span> that swaps the values of <span class="inlinecode"><span class="id" type="var">X</span></span> and <span class="inlinecode"><span class="id" type="var">Y</span></span> and
     show that it satisfies the following specification:
 
@@ -1526,10 +1511,10 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab420"></a><h4 class="section">Exercise: 3 stars (hoarestate1)</h4>
+<a name="lab423"></a><h4 class="section">Exercise: 3 stars (hoarestate1)</h4>
  Explain why the following proposition can't be proven:
 
 <div class="paragraph"> </div>
@@ -1551,7 +1536,7 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -1559,7 +1544,7 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
 </div>
 
 <div class="doc">
-<a name="lab421"></a><h2 class="section">Conditionals</h2>
+<a name="lab424"></a><h2 class="section">Conditionals</h2>
 
 <div class="paragraph"> </div>
 
@@ -1608,12 +1593,12 @@ We typically use <span class="inlinecode"><span class="id" type="var">hoare_seq<
 <div class="paragraph"> </div>
 
  Fortunately, we can say something more precise.  In the
-   "then" branch, we know that the boolean expression <span class="inlinecode"><span class="id" type="var">b</span></span> evaluates to
-   <span class="inlinecode"><span class="id" type="var">true</span></span>, and in the "else" branch, we know it evaluates to <span class="inlinecode"><span class="id" type="var">false</span></span>.
-   Making this information available in the premises of the rule gives
-   us more information to work with when reasoning about the behavior
-   of <span class="inlinecode"><span class="id" type="var">c<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">c<sub>2</sub></span></span> (i.e., the reasons why they establish the
-   postcondition <span class="inlinecode"><span class="id" type="var">Q</span></span>). 
+    "then" branch, we know that the boolean expression <span class="inlinecode"><span class="id" type="var">b</span></span> evaluates to
+    <span class="inlinecode"><span class="id" type="var">true</span></span>, and in the "else" branch, we know it evaluates to <span class="inlinecode"><span class="id" type="var">false</span></span>.
+    Making this information available in the premises of the rule gives
+    us more information to work with when reasoning about the behavior
+    of <span class="inlinecode"><span class="id" type="var">c<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">c<sub>2</sub></span></span> (i.e., the reasons why they establish the
+    postcondition <span class="inlinecode"><span class="id" type="var">Q</span></span>). 
 <div class="paragraph"> </div>
 
 <center><table class="infrule">
@@ -1714,7 +1699,10 @@ Now we can formalize the Hoare proof rule for conditionals
 </div>
 
 <div class="doc">
-<a name="lab422"></a><h3 class="section">Example</h3>
+<a name="lab425"></a><h3 class="section">Example</h3>
+
+<div class="paragraph"> </div>
+
  Here is a formal proof that the program we used to motivate the
     rule satisfies the specification we gave. 
 </div>
@@ -1750,7 +1738,7 @@ Now we can formalize the Hoare proof rule for conditionals
 </div>
 
 <div class="doc">
-<a name="lab423"></a><h4 class="section">Exercise: 2 stars (if_minus_plus)</h4>
+<a name="lab426"></a><h4 class="section">Exercise: 2 stars (if_minus_plus)</h4>
  Prove the following hoare triple using <span class="inlinecode"><span class="id" type="var">hoare_if</span></span>: 
 </div>
 <div class="code code-tight">
@@ -1770,11 +1758,11 @@ Now we can formalize the Hoare proof rule for conditionals
 </div>
 
 <div class="doc">
-<a name="lab424"></a><h3 class="section">Exercise: One-sided conditionals</h3>
+<a name="lab427"></a><h3 class="section">Exercise: One-sided conditionals</h3>
 
 <div class="paragraph"> </div>
 
-<a name="lab425"></a><h4 class="section">Exercise: 4 stars (if1_hoare)</h4>
+<a name="lab428"></a><h4 class="section">Exercise: 4 stars (if1_hoare)</h4>
 
 <div class="paragraph"> </div>
 
@@ -1935,151 +1923,7 @@ For full credit, prove formally <span class="inlinecode"><span class="id" type="
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
-</div>
-<div class="code code-tight">
-
-<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-<a name="lab426"></a><h2 class="section">Recap</h2>
-
-<div class="paragraph"> </div>
-
-
-<div class="paragraph"> </div>
-
-Idea: create a <i>domain specific logic</i> for reasoning about properties of Imp programs.
-
-<div class="paragraph"> </div>
-
-<ul class="doclist">
-<li> This hides the low-level details of the semantics of the program
-
-</li>
-<li> Leads to a compositional reasoning process
-
-</li>
-</ul>
-
-<div class="paragraph"> </div>
-
-The basic structure is given by <i>Hoare triples</i> of the form:
-
-<div class="paragraph"> </div>
-
-<div class="code code-tight">
-&nbsp;&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">P</span><span style="letter-spacing:-.4em;">}</span>}&nbsp;<span class="id" type="var">c</span>&nbsp;<span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">Q</span><span style="letter-spacing:-.4em;">}</span>}
-<div class="paragraph"> </div>
-
-</div>
-
-<div class="paragraph"> </div>
-
-<ul class="doclist">
-<li> <span class="inlinecode"><span class="id" type="var">P</span></span> and <span class="inlinecode"><span class="id" type="var">Q</span></span> are properties about the state of the Imp program
-
-</li>
-<li> "If command <span class="inlinecode"><span class="id" type="var">c</span></span> is started in a state satisfying assertion
-        <span class="inlinecode"><span class="id" type="var">P</span></span>, and if <span class="inlinecode"><span class="id" type="var">c</span></span> eventually terminates in some final state,
-        then this final state will satisfy the assertion <span class="inlinecode"><span class="id" type="var">Q</span></span>."
-
-</li>
-</ul>
-
-<div class="paragraph"> </div>
-
- The rules of Hoare Logic (so far): 
-<div class="paragraph"> </div>
-
-
-<div class="paragraph"> </div>
-
-<center><table class="infrule">
-<tr class="infruleassumption">
-  <td class="infrule">&nbsp;&nbsp;</td>
-  <td class="infrulenamecol" rowspan="3">
-    (hoare_asgn) &nbsp;
-  </td></tr>
-<tr class="infrulemiddle">
-  <td class="infrule"><hr /></td>
-</tr>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{Q&nbsp;[X&nbsp;<span style="font-family: arial;">&#8614;</span>&nbsp;a]<span style="letter-spacing:-.4em;">}</span>}&nbsp;X::=a&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-</table></center><center><table class="infrule">
-<tr class="infruleassumption">
-  <td class="infrule">&nbsp;&nbsp;</td>
-  <td class="infrulenamecol" rowspan="3">
-    (hoare_skip) &nbsp;
-  </td></tr>
-<tr class="infrulemiddle">
-  <td class="infrule"><hr /></td>
-</tr>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{&nbsp;P&nbsp;<span style="letter-spacing:-.4em;">}</span>}&nbsp;SKIP&nbsp;<span style="letter-spacing:-.4em;">{</span>{&nbsp;P&nbsp;<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-</table></center><center><table class="infrule">
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{&nbsp;P&nbsp;<span style="letter-spacing:-.4em;">}</span>}&nbsp;c<sub>1</sub>&nbsp;<span style="letter-spacing:-.4em;">{</span>{&nbsp;Q&nbsp;<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{&nbsp;Q&nbsp;<span style="letter-spacing:-.4em;">}</span>}&nbsp;c<sub>2</sub>&nbsp;<span style="letter-spacing:-.4em;">{</span>{&nbsp;R&nbsp;<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td class="infrulenamecol" rowspan="3">
-    (hoare_seq) &nbsp;
-  </td></tr>
-<tr class="infrulemiddle">
-  <td class="infrule"><hr /></td>
-</tr>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{&nbsp;P&nbsp;<span style="letter-spacing:-.4em;">}</span>}&nbsp;c<sub>1</sub>;;c<sub>2</sub>&nbsp;<span style="letter-spacing:-.4em;">{</span>{&nbsp;R&nbsp;<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-</table></center><center><table class="infrule">
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P&nbsp;<span style="font-family: arial;">&and;</span>&nbsp;&nbsp;b<span style="letter-spacing:-.4em;">}</span>}&nbsp;c<sub>1</sub>&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P&nbsp;<span style="font-family: arial;">&and;</span>&nbsp;~b<span style="letter-spacing:-.4em;">}</span>}&nbsp;c<sub>2</sub>&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td class="infrulenamecol" rowspan="3">
-    (hoare_if) &nbsp;
-  </td></tr>
-<tr class="infrulemiddle">
-  <td class="infrule"><hr /></td>
-</tr>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P<span style="letter-spacing:-.4em;">}</span>}&nbsp;IFB&nbsp;b&nbsp;THEN&nbsp;c<sub>1</sub>&nbsp;ELSE&nbsp;c<sub>2</sub>&nbsp;FI&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-</table></center><center><table class="infrule">
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P'<span style="letter-spacing:-.4em;">}</span>}&nbsp;c&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q'<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-<tr class="infruleassumption">
-  <td class="infrule">P&nbsp;<span style="font-family: arial;">&#8702;</span>&nbsp;P'</td>
-  <td></td>
-</td>
-<tr class="infruleassumption">
-  <td class="infrule">Q'&nbsp;<span style="font-family: arial;">&#8702;</span>&nbsp;Q</td>
-  <td class="infrulenamecol" rowspan="3">
-    (hoare_consequence) &nbsp;
-  </td></tr>
-<tr class="infrulemiddle">
-  <td class="infrule"><hr /></td>
-</tr>
-<tr class="infruleassumption">
-  <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P<span style="letter-spacing:-.4em;">}</span>}&nbsp;c&nbsp;<span style="letter-spacing:-.4em;">{</span>{Q<span style="letter-spacing:-.4em;">}</span>}</td>
-  <td></td>
-</td>
-</table></center>
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2087,7 +1931,7 @@ The basic structure is given by <i>Hoare triples</i> of the form:
 </div>
 
 <div class="doc">
-<a name="lab427"></a><h2 class="section">Loops</h2>
+<a name="lab429"></a><h2 class="section">Loops</h2>
 
 <div class="paragraph"> </div>
 
@@ -2136,14 +1980,10 @@ The basic structure is given by <i>Hoare triples</i> of the form:
 
 <div class="paragraph"> </div>
 
-
-<div class="paragraph"> </div>
-
-    But, as we remarked above for the conditional, we know a
+ But, as we remarked above for the conditional, we know a
     little more at the end &mdash; not just <span class="inlinecode"><span class="id" type="var">P</span></span>, but also the fact
     that <span class="inlinecode"><span class="id" type="var">b</span></span> is false in the current state.  So we can enrich the
-    postcondition a little:
-
+    postcondition a little: 
 <div class="paragraph"> </div>
 
 
@@ -2157,10 +1997,7 @@ The basic structure is given by <i>Hoare triples</i> of the form:
 
 <div class="paragraph"> </div>
 
-
-<div class="paragraph"> </div>
-
-    What about the case where the loop body <i>does</i> get executed?
+ What about the case where the loop body <i>does</i> get executed?
     In order to ensure that <span class="inlinecode"><span class="id" type="var">P</span></span> holds when the loop finally
     exits, we certainly need to make sure that the command <span class="inlinecode"><span class="id" type="var">c</span></span>
     guarantees that <span class="inlinecode"><span class="id" type="var">P</span></span> holds whenever <span class="inlinecode"><span class="id" type="var">c</span></span> is finished.
@@ -2168,8 +2005,7 @@ The basic structure is given by <i>Hoare triples</i> of the form:
     execution of <span class="inlinecode"><span class="id" type="var">c</span></span>, and since each execution of <span class="inlinecode"><span class="id" type="var">c</span></span>
     re-establishes <span class="inlinecode"><span class="id" type="var">P</span></span> when it finishes, we can always assume
     that <span class="inlinecode"><span class="id" type="var">P</span></span> holds at the beginning of <span class="inlinecode"><span class="id" type="var">c</span></span>.  This leads us to the
-    following rule:
-
+    following rule: 
 <div class="paragraph"> </div>
 
 <center><table class="infrule">
@@ -2185,15 +2021,13 @@ The basic structure is given by <i>Hoare triples</i> of the form:
   <td class="infrule"><span style="letter-spacing:-.4em;">{</span>{P<span style="letter-spacing:-.4em;">}</span>}&nbsp;WHILE&nbsp;b&nbsp;DO&nbsp;c&nbsp;END&nbsp;<span style="letter-spacing:-.4em;">{</span>{P&nbsp;<span style="font-family: arial;">&and;</span>&nbsp;~b<span style="letter-spacing:-.4em;">}</span>}</td>
   <td></td>
 </td>
-</table></center>
-<div class="paragraph"> </div>
-
-    This is almost the rule we want, but again it can be improved a
+</table></center> This is almost the rule we want, but again it can be improved a
     little: at the beginning of the loop body, we know not only that
     <span class="inlinecode"><span class="id" type="var">P</span></span> holds, but also that the guard <span class="inlinecode"><span class="id" type="var">b</span></span> is true in the current
     state.  This gives us a little more information to use in
     reasoning about <span class="inlinecode"><span class="id" type="var">c</span></span> (showing that it establishes the invariant by
-    the time it finishes).  This gives us the final version of the rule:
+    the time it finishes).  This gives us the final version of the
+    rule:
 
 <div class="paragraph"> </div>
 
@@ -2242,7 +2076,7 @@ The basic structure is given by <i>Hoare triples</i> of the form:
 </div>
 
 <div class="doc">
-    One subtlety in the terminology is that calling some assertion <span class="inlinecode"><span class="id" type="var">P</span></span>
+One subtlety in the terminology is that calling some assertion <span class="inlinecode"><span class="id" type="var">P</span></span>
     a "loop invariant" doesn't just mean that it is preserved by the
     body of the loop in question (i.e., <span class="inlinecode"><span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">P</span><span style="letter-spacing:-.4em;">}</span>}</span> <span class="inlinecode"><span class="id" type="var">c</span></span> <span class="inlinecode"><span style="letter-spacing:-.4em;">{</span>{<span class="id" type="var">P</span><span style="letter-spacing:-.4em;">}</span>}</span>, where <span class="inlinecode"><span class="id" type="var">c</span></span> is
     the loop body), but rather that <span class="inlinecode"><span class="id" type="var">P</span></span> <i>together with the fact that
@@ -2263,8 +2097,7 @@ The basic structure is given by <i>Hoare triples</i> of the form:
 
 </div>
     although it is clearly <i>not</i> preserved by the body of the
-    loop.
-
+    loop. 
 </div>
 <div class="code code-tight">
 
@@ -2342,25 +2175,20 @@ Of course, this result is not surprising if we remember that
 </div>
 
 <div class="doc">
-<a name="lab428"></a><h3 class="section">Exercise: <span class="inlinecode"><span class="id" type="var">REPEAT</span></span></h3>
+<a name="lab430"></a><h3 class="section">Exercise: <span class="inlinecode"><span class="id" type="var">REPEAT</span></span></h3>
 
-</div>
-<div class="code code-space">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="id" type="keyword">Module</span> <a name="RepeatExercise"><span class="id" type="module">RepeatExercise</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-<a name="lab429"></a><h4 class="section">Exercise: 4 stars, advanced (hoare_repeat)</h4>
+<a name="lab431"></a><h4 class="section">Exercise: 4 stars, advanced (hoare_repeat)</h4>
  In this exercise, we'll add a new command to our language of
     commands: <span class="inlinecode"><span class="id" type="var">REPEAT</span></span> c <span class="inlinecode"><span class="id" type="var">UNTIL</span></span> a <span class="inlinecode"><span class="id" type="var">END</span></span>. You will write the
     evaluation rule for <span class="inlinecode"><span class="id" type="tactic">repeat</span></span> and add a new Hoare rule to
     the language for programs involving it. 
 </div>
 <div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Module</span> <a name="RepeatExercise"><span class="id" type="module">RepeatExercise</span></a>.<br/>
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="RepeatExercise.com"><span class="id" type="inductive">com</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
@@ -2524,7 +2352,7 @@ For full credit, make sure (informally) that your rule can be used
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -2532,19 +2360,14 @@ For full credit, make sure (informally) that your rule can be used
 </div>
 
 <div class="doc">
-<a name="lab430"></a><h1 class="section">Summary</h1>
+<a name="lab432"></a><h1 class="section">Summary</h1>
 
 <div class="paragraph"> </div>
 
- Above, we've introduced Hoare Logic as a tool to reasoning
-    about Imp programs. In the reminder of this chapter we will
-    explore a systematic way to use Hoare Logic to prove properties
-    about programs. The rules of Hoare Logic are the following: 
-<div class="paragraph"> </div>
-
-
-<div class="paragraph"> </div>
-
+ So far, we've introduced Hoare Logic as a tool for reasoning about
+    Imp programs.  In the reminder of this chapter we'll explore a
+    systematic way to use Hoare Logic to prove properties about
+    programs. The rules of Hoare Logic are:
 <center><table class="infrule">
 <tr class="infruleassumption">
   <td class="infrule">&nbsp;&nbsp;</td>
@@ -2640,8 +2463,7 @@ For full credit, make sure (informally) that your rule can be used
   <td></td>
 </td>
 </table></center>    In the next chapter, we'll see how these rules are used to prove
-    that programs satisfy specifications of their behavior.
-
+    that programs satisfy specifications of their behavior. 
 </div>
 <div class="code code-tight">
 
@@ -2649,14 +2471,11 @@ For full credit, make sure (informally) that your rule can be used
 </div>
 
 <div class="doc">
-<a name="lab431"></a><h1 class="section">Additional Exercises</h1>
+<a name="lab433"></a><h1 class="section">Additional Exercises</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab432"></a><h4 class="section">Exercise: 3 stars (himp_hoare)</h4>
-
-<div class="paragraph"> </div>
-
+<a name="lab434"></a><h4 class="section">Exercise: 3 stars (himp_hoare)</h4>
  In this exercise, we will derive proof rules for the <span class="inlinecode"><span class="id" type="var">HAVOC</span></span>
     command, which we studied in the last chapter.
 
@@ -2765,7 +2584,7 @@ Complete the Hoare rule for <span class="inlinecode"><span class="id" type="var"
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
   

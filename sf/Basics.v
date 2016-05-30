@@ -1,16 +1,14 @@
-(** * Basics: Functional Programming in Coq *)
+(**` * Basics: Functional Programming in Coq *)
 
-(* IMPORTANT:
+(* REMINDER:
 
-          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-          V  V  V  V  V  V  V  V  V  V  V  V  V  V  V
+          #####################################################
+          ###  PLEASE DO NOT DISTRIBUTE SOLUTIONS PUBLICLY  ###
+          #####################################################
 
-     ===> PLEASE DO NOT DISTRIBUTE SOLUTIONS PUBLICLY <===
+   (See the [Preface] for why.) 
 
-          ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
-          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-
-   (See the [Preface] for why.) *)
+*)
 
 (* [Admitted] is Coq's "escape hatch" that says accept this definition
    without proof.  We use it to mark the 'holes' in the development
@@ -508,10 +506,10 @@ Fixpoint exp (base power : nat) : nat :=
 
 (** **** Exercise: 1 star (factorial)  *)
 (** Recall the standard mathematical factorial function:
-<<
-    factorial(0)  =  1
-    factorial(n)  =  n * factorial(n-1)     (if n>0)
->>
+
+       factorial(0)  =  1
+       factorial(n)  =  n * factorial(n-1)     (if n>0)
+
     Translate this into Coq. *)
 
 Fixpoint factorial (n:nat) : nat :=
@@ -521,7 +519,6 @@ Example test_factorial1:          (factorial 3) = 6.
 (* FILL IN HERE *) Admitted.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
 (* FILL IN HERE *) Admitted.
-
 (** [] *)
 
 (** We can make numerical expressions a little easier to read and
@@ -604,7 +601,6 @@ Example test_blt_nat2:             (blt_nat 2 4) = true.
 (* FILL IN HERE *) Admitted.
 Example test_blt_nat3:             (blt_nat 4 2) = false.
 (* FILL IN HERE *) Admitted.
-
 (** [] *)
 
 (* ###################################################################### *)
@@ -794,7 +790,10 @@ Proof.
     Coq's nice, rigorous, formally checked world! *)
 
 (** We can also use the [rewrite] tactic with a previously proved
-    theorem instead of a hypothesis from the context. *)
+    theorem instead of a hypothesis from the context. If the statement
+    of the previously proved theorem involves quantified variables,
+    as in the example below, Coq tries to instantiate them 
+    by matching with the current goal. *)   
 
 Theorem mult_0_plus : forall n m : nat,
   (0 + n) * m = n * m.
@@ -981,7 +980,9 @@ Qed.
 (** Before closing the chapter, let's mention one final
     convenience.  As you may have noticed, many proofs perform case
     analysis on a variable right after introducing it:
+
        intros x y. destruct y as [|y].
+
     This pattern is so common that Coq provides a shorthand for it: we
     can perform case analysis on a variable when introducing it by
     using an intro pattern instead of a variable name. For instance,
@@ -1021,7 +1022,6 @@ Theorem zero_nbeq_plus_1 : forall n : nat,
   beq_nat 0 (n + 1) = false.
 Proof.
   (* FILL IN HERE *) Admitted.
-
 (** [] *)
 
 (* ###################################################################### *)
@@ -1050,16 +1050,16 @@ Notation "x * y" := (mult x y)
     [*] say that the expression [1+2*3*4] is shorthand for
     [(1+((2*3)*4))]. Coq uses precedence levels from 0 to 100, and
     _left_, _right_, or _no_ associativity.  We will see more examples
-    of this later, e.g., in the [Lists] chapter.
+    of this later, e.g., in the [Lists]
+    chapter.
 
     Each notation symbol is also associated with a _notation scope_.
-    Coq tries to guess what scope you mean from context, so when you
-    write [S(O*O)] it guesses [nat_scope], but when you write the
+    Coq tries to guess what scope is meant from context, so when it
+    sees [S(O*O)] it guesses [nat_scope], but when it sees the
     cartesian product (tuple) type [bool*bool] it guesses
-    [type_scope].  Occasionally, you may have to help it out with
-    percent-notation by writing [(x*y)%nat], and sometimes in Coq's
-    feedback to you it will use [%nat] to indicate what scope a
-    notation is in.
+    [type_scope].  Occasionally, it is necessary to help it out with
+    percent-notation by writing [(x*y)%nat], and sometimes in what Coq
+    prints it will use [%nat] to indicate what scope a notation is in.
 
     Notation scopes also apply to numeral notation ([3], [4], [5],
     etc.), so you may sometimes see [0%nat], which means [O] (the
@@ -1149,9 +1149,11 @@ Proof.
         corresponding to this description of binary numbers.
 
     (Hint: Recall that the definition of [nat] from class,
+
          Inductive nat : Type :=
            | O : nat
            | S : nat -> nat.
+
     says nothing about what [O] and [S] "mean."  It just says "[O] is
     in the set called [nat], and if [n] is in the set then so is [S
     n]."  The interpretation of [O] as zero and [S] as successor/plus
@@ -1174,5 +1176,5 @@ Proof.
 (* FILL IN HERE *)
 (** [] *)
 
-(** $Date: 2016-02-18 18:17:32 -0500 (Thu, 18 Feb 2016) $ *)
+(** $Date: 2016-05-26 16:17:19 -0400 (Thu, 26 May 2016) $ *)
 

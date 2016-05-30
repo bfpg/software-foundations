@@ -1,6 +1,6 @@
 (** * UseAuto: Theory and Practice of Automation in Coq Proofs *)
 
-(* Chapter maintained by Arthur Chargueraud *)
+(* Chapter written and maintained by Arthur Chargueraud *)
 
 (** In a machine-checked proof, every single detail has to be
     justified.  This can result in huge proof scripts. Fortunately,
@@ -480,12 +480,12 @@ Lemma working_of_auto_1 : forall (P : nat->Prop),
 Proof. intros P H1 H2 H3. (* debug *) eauto. Qed.
 
 (** The output message produced by [debug eauto] is as follows.
-<<
+
     depth=5
     depth=4 apply H2
     depth=3 apply H2
     depth=3 exact H1
->>
+
     The depth indicates the value of [n] with which [eauto n] is
     called. The tactics shown in the message indicate that the first
     thing that [eauto] has tried to do is to apply [H2]. The effect of
@@ -516,7 +516,7 @@ Proof. intros P H1 H3 H2. (* debug *) eauto. Qed.
     In turns out that the proof goes through the proof obligation [P 3], 
     even though it is not required to do so. The following tree drawing
     describes all the goals that [eauto] has been going through.
-<<
+
     |5||4||3||2||1||0| -- below, tabulation indicates the depth
 
     [P 2]
@@ -550,7 +550,7 @@ Proof. intros P H1 H3 H2. (* debug *) eauto. Qed.
                 -> [P 1]
              -> [P 0]
                 -> !! Done !!
->>
+
     The first few lines read as follows. To prove [P 2], [eauto 5]
     has first tried to apply [H3], producing the subgoal [P 3].
     To solve it, [eauto 4] has tried again to apply [H3], producing
@@ -613,7 +613,9 @@ Hint Resolve Le.le_refl.
 
     The definition of [auto_star], which determines the meaning of the
     star symbol, can be modified whenever needed. Simply write:
+
        Ltac auto_star ::= a_new_definition.
+
     Observe the use of [::=] instead of [:=], which indicates that the
     tactic is being rebound to a new definition. So, the default
     definition is as follows. *)
@@ -692,24 +694,24 @@ Proof.
     subst st'0.
     apply IHE1_2. assumption.
   (* E_IfTrue *)
-  - (* b1 evaluates to true *)
+  - (* b1 reduces to true *)
     apply IHE1. assumption.
-  - (* b1 evaluates to false (contradiction) *)
+  - (* b1 reduces to false (contradiction) *)
     rewrite H in H5. inversion H5.
   (* E_IfFalse *)
-  - (* b1 evaluates to true (contradiction) *)
+  - (* b1 reduces to true (contradiction) *)
     rewrite H in H5. inversion H5.
-  - (* b1 evaluates to false *)
+  - (* b1 reduces to false *)
       apply IHE1. assumption.
   (* E_WhileEnd *)
-  - (* b1 evaluates to true *)
+  - (* b1 reduces to true *)
     reflexivity.
-  - (* b1 evaluates to false (contradiction) *)
+  - (* b1 reduces to false (contradiction) *)
     rewrite H in H2. inversion H2.
   (* E_WhileLoop *)
-  - (* b1 evaluates to true (contradiction) *)
+  - (* b1 reduces to true (contradiction) *)
     rewrite H in H4. inversion H4.
-  - (* b1 evaluates to false *)
+  - (* b1 reduces to false *)
     assert (st' = st'0) as EQ1.
     { (* Proof of assertion *) apply IHE1_1; assumption. }
     subst st'0.
@@ -1764,7 +1766,7 @@ Lemma omega_demo_3 : forall (x y : nat),
 Proof. intros. omega. Qed.
 
 (** Note: [omega] can prove a goal by contradiction only if its
-    conclusion is reduced [False]. The tactic [omega] always fails
+    conclusion reduces to [False]. The tactic [omega] always fails
     when the conclusion is an arbitrary proposition [P], even though
     [False] implies any proposition [P] (by [ex_falso_quodlibet]). *)
 
@@ -1903,4 +1905,4 @@ Proof. congruence. Qed.
     some investment, however this investment will pay off very quickly.
 *)
 
-(** $Date: 2016-02-17 17:39:13 -0500 (Wed, 17 Feb 2016) $ *)
+(** $Date: 2016-05-24 14:00:08 -0400 (Tue, 24 May 2016) $ *)

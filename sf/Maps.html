@@ -50,7 +50,7 @@
 </div>
 
 <div class="doc">
-<a name="lab230"></a><h1 class="section">The Coq Standard Library</h1>
+<a name="lab233"></a><h1 class="section">The Coq Standard Library</h1>
 
 <div class="paragraph"> </div>
 
@@ -92,13 +92,13 @@ Documentation for the standard library can be found at
 </div>
 
 <div class="doc">
-<a name="lab231"></a><h1 class="section">Identifiers</h1>
+<a name="lab234"></a><h1 class="section">Identifiers</h1>
 
 <div class="paragraph"> </div>
 
  First, we need a type for the keys that we use to index into our
     maps.  For this purpose, we again use the type <span class="inlinecode"><span class="id" type="var">id</span></span> from the
-    <span class="inlinecode"><span class="id" type="var">Lists</span></span> chapter.  To make this chapter self contained, we repeat
+    <a href="Lists.html"><font color="gray">Lists</font></a> chapter.  To make this chapter self contained, we repeat
     its definition here, together with the equality comparison
     function for <span class="inlinecode"><span class="id" type="var">id</span></span>s and its fundamental property. 
 </div>
@@ -189,13 +189,13 @@ This useful variant follows just by rewriting:
 </div>
 
 <div class="doc">
-<a name="lab232"></a><h1 class="section">Total Maps</h1>
+<a name="lab235"></a><h1 class="section">Total Maps</h1>
 
 <div class="paragraph"> </div>
 
  Our main job in this chapter will be to build a definition of
     partial maps that is similar in behavior to the one we saw in the
-    <span class="inlinecode"><span class="id" type="var">Lists</span></span> chapter, plus accompanying lemmas about their behavior.
+    <a href="Lists.html"><font color="gray">Lists</font></a> chapter, plus accompanying lemmas about their behavior.
 
 <div class="paragraph"> </div>
 
@@ -319,11 +319,11 @@ To use maps in later chapters, we'll need several fundamental
     facts about how they behave.  Even if you don't work the following
     exercises, make sure you thoroughly understand the statements of
     the lemmas!  (Some of the proofs require the functional
-    extensionality axiom discussed in the <span class="inlinecode"><span class="id" type="var">Logic</span></span> chapter, which is
+    extensionality axiom discussed in the <a href="Logic.html"><font color="gray">Logic</font></a> chapter, which is
     also included in the standard library.) 
 <div class="paragraph"> </div>
 
-<a name="lab233"></a><h4 class="section">Exercise: 2 stars, optional (t_update_eq)</h4>
+<a name="lab236"></a><h4 class="section">Exercise: 2 stars, optional (t_update_eq)</h4>
  First, if we update a map <span class="inlinecode"><span class="id" type="var">m</span></span> at a key <span class="inlinecode"><span class="id" type="var">x</span></span> with a new value <span class="inlinecode"><span class="id" type="var">v</span></span>
     and then look up <span class="inlinecode"><span class="id" type="var">x</span></span> in the map resulting from the <span class="inlinecode"><span class="id" type="var">update</span></span>, we
     get back <span class="inlinecode"><span class="id" type="var">v</span></span>: 
@@ -338,10 +338,10 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab234"></a><h4 class="section">Exercise: 2 stars, optional (t_update_neq)</h4>
+<a name="lab237"></a><h4 class="section">Exercise: 2 stars, optional (t_update_neq)</h4>
  On the other hand, if we update a map <span class="inlinecode"><span class="id" type="var">m</span></span> at a key <span class="inlinecode"><span class="id" type="var">x<sub>1</sub></span></span> and then
     look up a <i>different</i> key <span class="inlinecode"><span class="id" type="var">x<sub>2</sub></span></span> in the resulting map, we get the
     same result that <span class="inlinecode"><span class="id" type="var">m</span></span> would have given: 
@@ -358,10 +358,10 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab235"></a><h4 class="section">Exercise: 2 stars, optional (t_update_shadow)</h4>
+<a name="lab238"></a><h4 class="section">Exercise: 2 stars, optional (t_update_shadow)</h4>
  If we update a map <span class="inlinecode"><span class="id" type="var">m</span></span> at a key <span class="inlinecode"><span class="id" type="var">x</span></span> with a value <span class="inlinecode"><span class="id" type="var">v<sub>1</sub></span></span> and then
     update again with the same key <span class="inlinecode"><span class="id" type="var">x</span></span> and another value <span class="inlinecode"><span class="id" type="var">v<sub>2</sub></span></span>, the
     resulting map behaves the same (gives the same result when applied
@@ -379,17 +379,17 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  For the final two lemmas about total maps, it's convenient to use
-    the reflection idioms introduced in chapter <span class="inlinecode"><span class="id" type="var">IndProp</span></span>.  We begin
+    the reflection idioms introduced in chapter <a href="IndProp.html"><font color="gray">IndProp</font></a>.  We begin
     by proving a fundamental <i>reflection lemma</i> relating the equality
     proposition on <span class="inlinecode"><span class="id" type="var">id</span></span>s with the boolean function <span class="inlinecode"><span class="id" type="var">beq_id</span></span>. 
 <div class="paragraph"> </div>
 
-<a name="lab236"></a><h4 class="section">Exercise: 2 stars (beq_idP)</h4>
- Use the proof of <span class="inlinecode"><span class="id" type="var">beq_natP</span></span> in chapter <span class="inlinecode"><span class="id" type="var">IndProp</span></span> as a template to
+<a name="lab239"></a><h4 class="section">Exercise: 2 stars (beq_idP)</h4>
+ Use the proof of <span class="inlinecode"><span class="id" type="var">beq_natP</span></span> in chapter <a href="IndProp.html"><font color="gray">IndProp</font></a> as a template to
     prove the following: 
 </div>
 <div class="code code-tight">
@@ -401,7 +401,7 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
  Now, given <span class="inlinecode"><span class="id" type="var">id</span></span>s <span class="inlinecode"><span class="id" type="var">x<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">x<sub>2</sub></span></span>, we can use the <span class="inlinecode"><span class="id" type="tactic">destruct</span></span> <span class="inlinecode">(<span class="id" type="var">beq_idP</span></span>
@@ -410,8 +410,8 @@ To use maps in later chapters, we'll need several fundamental
     sense of <span class="inlinecode">=</span>) of <span class="inlinecode"><span class="id" type="var">x<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">x<sub>2</sub></span></span>. 
 <div class="paragraph"> </div>
 
-<a name="lab237"></a><h4 class="section">Exercise: 2 stars (t_update_same)</h4>
- Using the example in chapter <span class="inlinecode"><span class="id" type="var">IndProp</span></span> as a template, use
+<a name="lab240"></a><h4 class="section">Exercise: 2 stars (t_update_same)</h4>
+ Using the example in chapter <a href="IndProp.html"><font color="gray">IndProp</font></a> as a template, use
     <span class="inlinecode"><span class="id" type="var">beq_idP</span></span> to prove the following theorem, which states that if we
     update a map to assign key <span class="inlinecode"><span class="id" type="var">x</span></span> the same value as it already has in
     <span class="inlinecode"><span class="id" type="var">m</span></span>, then the result is equal to <span class="inlinecode"><span class="id" type="var">m</span></span>: 
@@ -426,10 +426,10 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 <div class="paragraph"> </div>
 
-<a name="lab238"></a><h4 class="section">Exercise: 3 stars, recommended (t_update_permute)</h4>
+<a name="lab241"></a><h4 class="section">Exercise: 3 stars, recommended (t_update_permute)</h4>
  Use <span class="inlinecode"><span class="id" type="var">beq_idP</span></span> to prove one final property of the <span class="inlinecode"><span class="id" type="var">update</span></span>
     function: If we update a map <span class="inlinecode"><span class="id" type="var">m</span></span> at two distinct keys, it doesn't
     matter in which order we do the updates. 
@@ -447,7 +447,7 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<font size=-2>&#9744;</font> 
+<font size=-2 color="rgb(80%,80%,100%)">&#9744;</font> 
 </div>
 <div class="code code-tight">
 
@@ -455,7 +455,7 @@ To use maps in later chapters, we'll need several fundamental
 </div>
 
 <div class="doc">
-<a name="lab239"></a><h1 class="section">Partial maps</h1>
+<a name="lab242"></a><h1 class="section">Partial maps</h1>
 
 <div class="paragraph"> </div>
 

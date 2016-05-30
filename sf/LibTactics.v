@@ -59,16 +59,16 @@ Remove Hints Bool.trans_eq_bool.
 
 
 (* ********************************************************************** *)
-(** * Tools for programming with Ltac *)
+(** * Tools for Programming with Ltac *)
 
 (* ---------------------------------------------------------------------- *)
-(** ** Identity continuation *)
+(** ** Identity Continuation *)
 
 Ltac idcont tt :=
   idtac.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Untyped arguments for tactics *)
+(** ** Untyped Arguments for Tactics *)
 
 (** Any Coq value can be boxed into the type [Boxer]. This is
     useful to use Coq computations for implementing tactics. *)
@@ -78,7 +78,7 @@ Inductive Boxer : Type :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Optional arguments for tactics  *)
+(** ** Optional Arguments for Tactics  *)
 
 (** [ltac_no_arg] is a constant that can be used to simulate
     optional arguments in tactic definitions.
@@ -92,7 +92,7 @@ Inductive ltac_No_arg : Set :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Wildcard arguments for tactics  *)
+(** ** Wildcard Arguments for Tactics  *)
 
 (** [ltac_wild] is a constant that can be used to simulate
     wildcard arguments in tactic definitions. Notation is [__]. *)
@@ -115,7 +115,7 @@ Open Scope ltac_scope.
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Position markers *)
+(** ** Position Markers *)
 
 (** [ltac_Mark] and [ltac_mark] are dummy definitions used as sentinel
     by tactics, to mark a certain position in the context or in the goal. *)
@@ -148,7 +148,7 @@ Ltac intro_until_mark :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** List of arguments for tactics  *)
+(** ** List of Arguments for Tactics  *)
 
 (** A datatype of type [list Boxer] is used to manipulate list of
     Coq values in ltac. Notation is [>> v1 v2 ... vN] for building
@@ -254,7 +254,7 @@ Ltac list_boxer_of E :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Databases of lemmas  *)
+(** ** Databases of Lemmas  *)
 
 (** Use the hint facility to implement a database mapping
     terms to terms. To declare a new database, use a definition:
@@ -296,7 +296,7 @@ Ltac ltac_database_get D T :=
 *)
 
 (* ---------------------------------------------------------------------- *)
-(** ** On-the-fly removal of hypotheses *)
+(** ** On-the-Fly Removal of Hypotheses *)
 
 (** In a list of arguments [>> H1 H2 .. HN] passed to a tactic
     such as [lets] or [applys] or [forwards] or [specializes],
@@ -348,7 +348,7 @@ Ltac fast_rm_inside E :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Numbers as arguments *)
+(** ** Numbers as Arguments *)
 
 (** When tactic takes a natural number as argument, it may be
     parsed either as a natural number or as a relative number.
@@ -402,7 +402,7 @@ Tactic Notation "ltac_pattern" constr(E) "at" constr(K) "in" hyp(H) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Testing tactics *)
+(** ** Testing Tactics *)
 
 (** [show tac] executes a tactic [tac] that produces a result,
     and then display its result. *)
@@ -431,7 +431,7 @@ Tactic Notation "dup" :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Check no evar in goal *)
+(** ** Check No Evar in Goal *)
 
 (* COQ8.4:
 Ltac check_noevar M :=
@@ -453,7 +453,7 @@ Ltac check_noevar_goal := (* todo: imlement using check_noevar *)
   match goal with |- ?G => check_noevar G end.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Helper function for introducing evars *)
+(** ** Helper Function for Introducing Evars *)
 
 (** [with_evar T (fun M => tac)] creates a new evar that can
     be used in the tactic [tac] under the name [M]. *)
@@ -466,7 +466,7 @@ Tactic Notation "with_evar" constr(T) tactic(cont) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Tagging of hypotheses *)
+(** ** Tagging of Hypotheses *)
 
 (** [get_last_hyp tt] is a function that returns the last hypothesis
     at the bottom of the context. It is useful to obtain the default
@@ -478,7 +478,7 @@ Ltac get_last_hyp tt :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Tagging of hypotheses *)
+(** ** More Tagging of Hypotheses *)
 
 (** [ltac_tag_subst] is a specific marker for hypotheses
     which is used to tag hypotheses that are equalities to
@@ -501,7 +501,7 @@ Ltac mark_to_generalize H :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Deconstructing terms *)
+(** ** Deconstructing Terms *)
 
 (** [get_head E] is a tactic that returns the head constant of the
     term [E], ie, when applied to a term of the form [P x1 ... xN]
@@ -543,7 +543,7 @@ Ltac get_fun_arg E :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Action at occurence and action not at occurence *)
+(** ** Action at Occurence and Action Not at Occurence *)
 
 (** [ltac_action_at K of E do Tac] isolates the [K]-th occurence of [E] in the
     goal, setting it in the form [P E] for some named pattern [P],
@@ -574,7 +574,7 @@ Tactic Notation "protects" constr(E) "do" tactic(Tac) "/" :=
   protects E do Tac.
 
 (* ---------------------------------------------------------------------- *)
-(** ** An alias for [eq] *)
+(** ** An Alias for [eq] *)
 
 (** [eq'] is an alias for [eq] to be used for equalities in
     inductive definitions, so that they don't get mixed with
@@ -589,7 +589,7 @@ Notation "x '='' y" := (@eq' _ x y)
 
 
 (* ********************************************************************** *)
-(** * Common tactics for simplifying goals like [intuition] *)
+(** * Common Tactics for Simplifying Goals Like [intuition] *)
 
 Ltac jauto_set_hyps :=
   repeat match goal with H: ?T |- _ => 
@@ -614,7 +614,7 @@ Ltac jauto_set :=
 
 
 (* ********************************************************************** *)
-(** * Backward and forward chaining *)
+(** * Backward and Forward Chaining *)
 
 (* ---------------------------------------------------------------------- *)
 (** ** Application *)
@@ -792,7 +792,7 @@ Tactic Notation "cuts" simple_intropattern(I1)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Instantiation and forward-chaining *)
+(** ** Instantiation and Forward-Chaining *)
 
 (** The instantiation tactics are used to instantiate a lemma [E]
     (whose type is a product) on some arguments. The type of [E] is
@@ -1350,7 +1350,7 @@ Tactic Notation "specializes_vars" hyp(H) :=
   specializes_vars_base H.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Experimental tactics for application *)
+(** ** Experimental Tactics for Application *)
 
 (** [fapply] is a version of [apply] based on [forwards]. *)
 
@@ -1370,7 +1370,7 @@ Tactic Notation "sapply" constr(H) :=
         | fapply H ].
 
 (* ---------------------------------------------------------------------- *)
-(** ** Adding assumptions *)
+(** ** Adding Assumptions *)
 
 (** [lets_simpl H: E] is the same as [lets H: E] excepts that it
     calls [simpl] on the hypothesis H.
@@ -1402,7 +1402,7 @@ Tactic Notation "puts" ":" constr(E) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Application of tautologies *)
+(** ** Application of Tautologies *)
 
 (** [logic E], where [E] is a fact, is equivalent to
     [assert H:E; [tauto | eapply H; clear H]. It is useful for instance
@@ -1417,7 +1417,7 @@ Tactic Notation "logic" constr(E) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Application modulo equalities *)
+(** ** Application Modulo Equalities *)
 
 (** The tactic [equates] replaces a goal of the form
     [P x y z] with a goal of the form [P x ?a z] and a
@@ -1528,7 +1528,7 @@ Tactic Notation "applys_eq" constr(H) constr(n1) constr(n2) constr(n3) constr(n4
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Absurd goals *)
+(** ** Absurd Goals *)
 
 (** [false_goal] replaces any goal by the goal [False]. 
     Contrary to the tactic [false] (below), it does not try to do
@@ -1627,7 +1627,7 @@ Ltac false_neq_self_hyp :=
 
 
 (* ********************************************************************** *)
-(** * Introduction and generalization *)
+(** * Introduction and Generalization *)
 
 (* ---------------------------------------------------------------------- *)
 (** ** Introduction *)
@@ -2263,7 +2263,7 @@ Notation "'nosimpl' t" := (match tt with tt => t end)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Evaluation *)
+(** ** Reduction *)
 
 Tactic Notation "hnfs" := hnf in *.
 
@@ -2353,7 +2353,7 @@ Tactic Notation "subst_eq" constr(E) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Tactics to work with proof irrelevance *)
+(** ** Tactics to Work with Proof Irrelevance *)
 
 Require Import ProofIrrelevance.
 
@@ -2374,7 +2374,7 @@ Tactic Notation "pi_rewrite" constr(E) "in" hyp(H) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Proving equalities *)
+(** ** Proving Equalities *)
 
 (** Note: current implementation only supports up to arity 5 *)
 
@@ -2418,7 +2418,7 @@ Tactic Notation "fequals_rec" :=
 (** * Inversion *)
 
 (* ---------------------------------------------------------------------- *)
-(** ** Basic inversion *)
+(** ** Basic Inversion *)
 
 (** [invert keep H] is same to [inversion H] except that it puts all the
     facts obtained in the goal. The keyword [keep] means that the
@@ -2464,7 +2464,7 @@ Tactic Notation "invert" hyp(H) "as" simple_intropattern(I1)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Inversion with substitution *)
+(** ** Inversion with Substitution *)
 
 (** Our inversion tactics is able to get rid of dependent equalities
     generated by [inversion], using proof irrelevance. *)
@@ -2628,7 +2628,7 @@ Tactic Notation "lets_inverts" constr(E) "as" simple_intropattern(I1)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Injection with substitution *)
+(** ** Injection with Substitution *)
 
 (** Underlying implementation of [injects] *)
 
@@ -2675,7 +2675,7 @@ Tactic Notation "inject" hyp(H) "as" ident(X1) ident(X2) ident(X3)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Inversion and injection with substitution --rough implementation *)
+(** ** Inversion and Injection with Substitution --rough implementation *)
 
 (** The tactics [inversions] and [injections] provided in this section
     are similar to [inverts] and [injects] except that they perform
@@ -2719,7 +2719,7 @@ Tactic Notation "injections" "keep" hyp(H) :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Case analysis *)
+(** ** Case Analysis *)
 
 (** [cases] is similar to [case_eq E] except that it generates the
     equality in the context and not in the goal, and generates the
@@ -3036,7 +3036,7 @@ Tactic Notation "abstracts" tactic(tac) :=
 
 
 (* ********************************************************************** *)
-(** * Decidable equality *)
+(** * Decidable Equality *)
 
 (** [decides_equality] is the same as [decide equality] excepts that it
     is able to unfold definitions at head of the current goal. *)
@@ -3379,7 +3379,7 @@ Tactic Notation "unpack" constr(H) :=
 
 
 (* ********************************************************************** *)
-(** * Tactics to prove typeclass instances *)
+(** * Tactics to Prove Typeclass Instances *)
 
 (** [typeclass] is an automation tactic specialized for finding
     typeclass instances. *)
@@ -3396,11 +3396,11 @@ Tactic Notation "solve_typeclass" :=
 
 
 (* ********************************************************************** *)
-(** * Tactics to invoke automation *)
+(** * Tactics to Invoke Automation *)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Definitions for parsing compatibility *)
+(** ** Definitions for Parsing Compatibility *)
 
 Tactic Notation "f_equal" :=
   f_equal.
@@ -3419,7 +3419,7 @@ Tactic Notation "left" :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** [hint] to add hints local to a lemma *)
+(** ** [hint] to Add Hints Local to a Lemma *)
 
 (** [hint E] adds [E] as an hypothesis so that automation can use it.
     Syntax [hint E1,..,EN] is available *)
@@ -3435,7 +3435,7 @@ Tactic Notation "hint" constr(E1) "," constr(E2) "," constr(E3) "," constr(E4) :
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** [jauto], a new automation tactics *)
+(** ** [jauto], a New Automation Tactic *)
 
 (** [jauto] is better at [intuition eauto] because it can open existentials
     from the context. In the same time, [jauto] can be faster than
@@ -3457,7 +3457,7 @@ Tactic Notation "iauto" := try solve [intuition eauto].
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Definitions of automation tactics *)
+(** ** Definitions of Automation Tactics *)
 
 (** The two following tactics defined the default behaviour of
     "light automation" and "strong automation". These tactics
@@ -3530,7 +3530,7 @@ Tactic Notation "dauto" :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Parsing for light automation *)
+(** ** Parsing for Light Automation *)
 
 (** Any tactic followed by the symbol [~] will have [auto_tilde] called
     on all of its subgoals. Three exceptions:
@@ -3910,7 +3910,7 @@ Tactic Notation "exists" "~" constr(T1) constr(T2) constr(T3) constr(T4)
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Parsing for strong automation *)
+(** ** Parsing for Strong Automation *)
 
 (** Any tactic followed by the symbol [*] will have [auto*] called
     on all of its subgoals. The exceptions to these rules are the
@@ -4294,10 +4294,10 @@ Tactic Notation "exists" "*" constr(T1) constr(T2) constr(T3) constr(T4)
 
 
 (* ********************************************************************** *)
-(** * Tactics to sort out the proof context *)
+(** * Tactics to Sort Out the Proof Context *)
 
 (* ---------------------------------------------------------------------- *)
-(** ** Hiding hypotheses *)
+(** ** Hiding Hypotheses *)
 
 (* Implementation *)
 
@@ -4430,7 +4430,7 @@ Tactic Notation "show_unfold" constr(R1) "," constr(R2) :=
   unfold R1, R2; show_def.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Sorting hypotheses *)
+(** ** Sorting Hypotheses *)
 
 (** [sort] sorts out hypotheses from the context by moving all the
     propositions (hypotheses of type Prop) to the bottom of the context. *)
@@ -4446,7 +4446,7 @@ Tactic Notation "sort" :=
 
 
 (* ---------------------------------------------------------------------- *)
-(** ** Clearing hypotheses *)
+(** ** Clearing Hypotheses *)
 
 (** [clears X1 ... XN] is a variation on [clear] which clears
     the variables [X1]..[XN] as well as all the hypotheses which
@@ -4554,10 +4554,10 @@ Tactic Notation "clears_last" constr(N) :=
 
 
 (* ********************************************************************** *)
-(** * Tactics for development purposes *)
+(** * Tactics for Development Purposes *)
 
 (* ---------------------------------------------------------------------- *)
-(** ** Skipping subgoals *)
+(** ** Skipping Subgoals *)
 
 (** DEPRECATED: the new "admit" tactics now works fine.
 
@@ -4705,7 +4705,7 @@ Tactic Notation "skip_induction" constr(E) "as" simple_intropattern(I) :=
 
 
 (* ********************************************************************** *)
-(** * Compatibility with standard library *)
+(** * Compatibility with Standard Library *)
 
 (** The module [Program] contains definitions that conflict with the
     current module. If you import [Program], either directly or indirectly
@@ -4722,283 +4722,4 @@ End LibTacticsCompatibility.
 
 Open Scope nat_scope.
 
-
-
-
-(* ********************************************************************** *)
-(** * Additional notations for Coq *)
-
-(* ---------------------------------------------------------------------- *)
-(** ** N-ary Existentials --TODO: DEPRECATED, Coq now supports it. *)
-
-(** [exists T1 ... TN, P] is a shorthand for 
-    [exists T1, ..., exists TN, P]. Note that
-    [Coq.Program.Syntax] already defines exists
-    for arity up to 4. *)
-
-(* SF DOES NOT NEED
-Notation "'exists' x1 ',' P" :=
-  (exists x1, P)
-  (at level 200, x1 ident, 
-   right associativity) : type_scope. 
-Notation "'exists' x1 x2 ',' P" :=
-  (exists x1, exists x2, P)
-  (at level 200, x1 ident, x2 ident, 
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 ',' P" :=
-  (exists x1, exists x2, exists x3, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, 
-   right associativity) : type_scope. 
-Notation "'exists' x1 x2 x3 x4 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, 
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 x6 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, exists x6, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   x6 ident,
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 x6 x7 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, exists x6, 
-   exists x7, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   x6 ident, x7 ident,
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 x6 x7 x8 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, exists x6, 
-   exists x7, exists x8, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   x6 ident, x7 ident, x8 ident,
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 x6 x7 x8 x9 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, exists x6, 
-   exists x7, exists x8, exists x9, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   x6 ident, x7 ident, x8 ident, x9 ident,
-   right associativity) : type_scope.  
-Notation "'exists' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 ',' P" :=
-  (exists x1, exists x2, exists x3, exists x4, exists x5, exists x6, 
-   exists x7, exists x8, exists x9, exists x10, P)
-  (at level 200, x1 ident, x2 ident, x3 ident, x4 ident, x5 ident,
-   x6 ident, x7 ident, x8 ident, x9 ident, x10 ident,
-   right associativity) : type_scope.  
-
-*)
-
-(* ---------------------------------------------------------------------- *)
-(** ** ['let] bindings (EXPERIMENTAL). *)
-
-(** The syntax ['let x := v in e] has the same meaning as [let x := v in e]
-    except that the binding is implemented using a beta-redex that is not
-    reduced automatically by [simpl]. The ['let] construct therefore makes
-    it possible to simplify or push to the context let-bindings one by one. *)
-
-(** Definition of ['let] *)
-
-Definition let_binding (A B:Type) (v:A) (K:A->B) := K v.
-
-Notation "''let' x ':=' v 'in' e" := (let_binding v (fun x => e))
-  (at level 69, x ident, right associativity,
-  format "'[v' '[' ''let'  x  ':='  v  'in' ']'  '/'  '[' e ']' ']'")
-  : let_scope.
-
-Notation "''let' x ':' A ':=' v 'in' e" := (let_binding (v:A) (fun x:A => e))
-  (at level 69, x ident, right associativity,
-  format "'[v' '[' ''let'  x  ':'  A  ':='  v  'in' ']'  '/'  '[' e ']' ']'")
-  : let_scope.
-
-Global Open Scope let_scope.
-
-Lemma let_binding_unfold : forall (A B:Type) (v:A) (K:A->B),
-  let_binding v K = K v.
-Proof using. reflexivity. Qed.
-
-Ltac let_get_fresh_binding_name K :=
-  match K with (fun x => _) => let y := fresh x in y end.
-
-(** [let_simpl] finds the first occurence of a ['let] binding and 
-    substitutes it. *)
-
-Tactic Notation "let_simpl" "in" hyp(H) :=
-  match type of H with context [ let_binding ?v ?K ] =>
-     changes (let_binding v K) with (K v) in H
-  end.
-
-Tactic Notation "let_simpl" :=
-  match goal with
-  | |- context [ let_binding ?v ?K ] =>
-     changes (let_binding v K) with (K v)
-  | H: context [ let_binding ?v ?K ] |- _ => 
-     let_simpl in H
-  end.
-
-Tactic Notation "let_simpl" constr(v) "in" hyp(H) :=
-  repeat match type of H with context [ let_binding v ?K ] =>
-     changes (let_binding v K) with (K v) in H
-  end.
-
-Tactic Notation "let_simpl" constr(v) :=
-  repeat match goal with
-  | |- context [ let_binding v ?K ] =>
-     changes (let_binding v K) with (K v)
-  | H: context [ let_binding v ?K ] |- _ => 
-     let_simpl v in H
-  end.
-
-(** [let_name] finds the first occurence of a ['let] binding and 
-    moves this binding to the proof context. *)
-
-Tactic Notation "let_name" "in" hyp(H) :=
-  match type of H with context [ let_binding ?v ?K ] =>
-     let x := let_get_fresh_binding_name K in
-     set_eq x: v in H;
-     let_simpl in H
-  end.
-
-Tactic Notation "let_name" "in" hyp(H) "as" ident(x) :=
-  match type of H with context [ let_binding ?v ?K ] =>
-     set_eq x: v in H;
-     let_simpl in H
-  end.
-
-Tactic Notation "let_name" :=
-  match goal with
-  | |- context [ let_binding ?v ?K ] =>
-     let x := let_get_fresh_binding_name K in
-     set_eq x: v;
-     let_simpl
-  | H: context [ let_binding ?v ?K ] |- _ => 
-     let_name in H
-  end.
-
-Tactic Notation "let_name" "as" ident(x) :=
-  match goal with
-  | |- context [ let_binding ?v ?K ] =>
-     set_eq x: v;
-     let_simpl
-  | H: context [ let_binding ?v ?K ] |- _ => 
-     let_name in H as x
-  end.
-
-(** [let_name_all] finds the first occurence of a ['let] binding,
-    moves this binding to the proof context, and further simplify
-    all the other ['let] bindings that are binding the same value. 
-    (See LibFixDemos for a practical motivation.) *)
-
-Tactic Notation "let_name_all" "in" hyp(H) :=
-  match type of H with context [ let_binding ?v ?K ] =>
-     let x := let_get_fresh_binding_name K in
-     set_eq x: v in H;
-     let_simpl x in H
-  end.
-
-Tactic Notation "let_name_all" "in" hyp(H) "as" ident(x) :=
-  match type of H with context [ let_binding ?v ?K ] =>
-     set_eq x: v in H;
-     let_simpl x in H
-  end.
-
-Tactic Notation "let_name_all" :=
-  match goal with
-  | |- context [ let_binding ?v ?K ] =>
-     let x := let_get_fresh_binding_name K in
-     set_eq x: v;
-     let_simpl x
-  | H: context [ let_binding ?v ?K ] |- _ => 
-     let_name_all in H
-  end.
-
-Tactic Notation "let_name_all" "as" ident(x) :=
-  match goal with
-  | |- context [ let_binding ?v ?K ] =>
-     set_eq x: v;
-     let_simpl x
-  | H: context [ let_binding ?v ?K ] |- _ => 
-     let_name_all in H as x
-  end.
-
-
-(* ---------------------------------------------------------------------- *)
-(* Bugfix for [f_equal] and [fequals]; only supports up to arity 5 *)
-
-Section FuncEq.
-Variables (A1 A2 A3 A4 A5 B : Type).
-
-Lemma func_eq_1 : forall (f:A1->B) x1 y1,
-  x1 = y1 -> 
-  f x1 = f y1.
-Proof. intros. subst~. Qed.
-
-Lemma func_eq_2 : forall (f:A1->A2->B) x1 y1 x2 y2,
-  x1 = y1 -> x2 = y2 -> 
-  f x1 x2 = f y1 y2.
-Proof. intros. subst~. Qed.
-
-Lemma func_eq_3 : forall (f:A1->A2->A3->B) x1 y1 x2 y2 x3 y3,
-  x1 = y1 -> x2 = y2 -> x3 = y3 -> 
-  f x1 x2 x3 = f y1 y2 y3.
-Proof. intros. subst~. Qed.
-
-Lemma func_eq_4 : forall (f:A1->A2->A3->A4->B) x1 y1 x2 y2 x3 y3 x4 y4,
-  x1 = y1 -> x2 = y2 -> x3 = y3 -> x4 = y4 -> 
-  f x1 x2 x3 x4 = f y1 y2 y3 y4.
-Proof. intros. subst~. Qed.
-
-Lemma func_eq_5 : forall (f:A1->A2->A3->A4->A5->B) x1 y1 x2 y2 x3 y3 x4 y4 x5 y5,
-  x1 = y1 -> x2 = y2 -> x3 = y3 -> x4 = y4 -> x5 = y5 -> 
-  f x1 x2 x3 x4 x5 = f y1 y2 y3 y4 y5.
-Proof. intros. subst~. Qed.
-
-End FuncEq.
-
-Ltac f_equal_fixed :=
-  try (
-    first 
-    [ apply func_eq_1
-    | apply func_eq_2
-    | apply func_eq_3
-    | apply func_eq_4
-    | apply func_eq_5 ]; 
-    try reflexivity).
-  
-
-Ltac fequal_base ::=
-  let go := f_equal_fixed; [ fequal_base | ] in
-  match goal with
-  | |- (_,_,_) = (_,_,_) => go
-  | |- (_,_,_,_) = (_,_,_,_) => go
-  | |- (_,_,_,_,_) = (_,_,_,_,_) => go
-  | |- (_,_,_,_,_,_) = (_,_,_,_,_,_) => go
-  | |- _ => f_equal_fixed
-  end.
-
-
-(* ---------------------------------------------------------------------- *)
-(* Bugfix for [autorewrite in *], which is currently inefficient *)
-
-(** Generalize all propositions into the goal *) 
-
-Ltac generalize_all_prop :=
-  repeat match goal with H: ?T |- _ =>
-    match type of T with Prop =>
-      generalizes H
-    end end.
-
-(** Work around for inefficiency bug of [autorewrite in *].
-  Usage, e.g.:
-  [Tactic Notation "rew_list" "in" "*" :=
-     autorewrite_in_star_patch 
-       ltac:(fun tt => autorewrite with rew_list)]. *) 
-
-Ltac autorewrite_in_star_patch cont := 
-  generalize ltac_mark;
-  generalize_all_prop;
-  cont tt;
-  intro_until_mark.
-
-
-
+(** $Date: 2016-05-24 14:00:08 -0400 (Tue, 24 May 2016) $ *)

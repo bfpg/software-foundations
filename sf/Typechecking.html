@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link href="coqdoc.css" rel="stylesheet" type="text/css"/>
-<title>Typechecking</title>
+<title>Typechecking: A Typechecker for STLC</title>
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="main.js"></script>
 </head>
@@ -18,30 +18,16 @@
 
 <div id="main">
 
-<h1 class="libtitle">Typechecking</h1>
+<h1 class="libtitle">Typechecking<span class="subtitle">A Typechecker for STLC</span></h1>
 
 <div class="code code-tight">
 </div>
 
 <div class="doc">
-<a name="lab686"></a><h1 class="section">MoreStlc: A Typechecker for STLC</h1>
 
-</div>
-<div class="code code-space">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Bool.Bool.html#"><span class="id" type="library">Coq.Bool.Bool</span></a>.<br/>
-
-<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="SfLib.html#"><span class="id" type="library">SfLib</span></a>.<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
-<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Stlc.html#"><span class="id" type="library">Stlc</span></a>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-The <span class="inlinecode"><span class="id" type="var">has_type</span></span> relation of the STLC defines what it means for a
+ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> relation of the STLC defines what it means for a
     term to belong to a type (in some context).  But it doesn't, by
     itself, tell us how to <i>check</i> whether or not a term is well
     typed.
@@ -53,9 +39,16 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
     straightforward to translate the typing rules into clauses of a
     typechecking <i>function</i> that takes a term and a context and either
     returns the term's type or else signals that the term is not
-    typable. 
+    typable.  This short chapter constructs such a function and proves
+    it correct. 
 </div>
 <div class="code code-tight">
+
+<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Bool.Bool.html#"><span class="id" type="library">Coq.Bool.Bool</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="SfLib.html#"><span class="id" type="library">SfLib</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Maps.html#"><span class="id" type="library">Maps</span></a>.<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="Stlc.html#"><span class="id" type="library">Stlc</span></a>.<br/>
 
 <br/>
 <span class="id" type="keyword">Module</span> <a name="STLCChecker"><span class="id" type="module">STLCChecker</span></a>.<br/>
@@ -97,14 +90,19 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 <br/>
 <span class="id" type="keyword">Lemma</span> <a name="STLCChecker.beq_ty_refl"><span class="id" type="lemma">beq_ty_refl</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">T<sub>1</sub></span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Typechecking.html#STLCChecker.beq_ty"><span class="id" type="definition">beq_ty</span></a> <a class="idref" href="Typechecking.html#T<sub>1</sub>"><span class="id" type="variable">T<sub>1</sub></span></a> <a class="idref" href="Typechecking.html#T<sub>1</sub>"><span class="id" type="variable">T<sub>1</sub></span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#true"><span class="id" type="constructor">true</span></a>.<br/>
+<div class="togglescript" id="proofcontrol1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')"><span class="show"></span></div>
+<div class="proofscript" id="proof1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')">
 <span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">T<sub>1</sub></span>. <span class="id" type="tactic">induction</span> <span class="id" type="var">T<sub>1</sub></span>; <span class="id" type="tactic">simpl</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">reflexivity</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">IHT1_1</span>. <span class="id" type="tactic">rewrite</span> <span class="id" type="var">IHT1_2</span>. <span class="id" type="tactic">reflexivity</span>. <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">Lemma</span> <a name="STLCChecker.beq_ty__eq"><span class="id" type="lemma">beq_ty__eq</span></a> : <span style="font-family: arial;">&forall;</span><span class="id" type="var">T<sub>1</sub></span> <span class="id" type="var">T<sub>2</sub></span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Typechecking.html#STLCChecker.beq_ty"><span class="id" type="definition">beq_ty</span></a> <a class="idref" href="Typechecking.html#T<sub>1</sub>"><span class="id" type="variable">T<sub>1</sub></span></a> <a class="idref" href="Typechecking.html#T<sub>2</sub>"><span class="id" type="variable">T<sub>2</sub></span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#true"><span class="id" type="constructor">true</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Typechecking.html#T<sub>1</sub>"><span class="id" type="variable">T<sub>1</sub></span></a> = <a class="idref" href="Typechecking.html#T<sub>2</sub>"><span class="id" type="variable">T<sub>2</sub></span></a>.<br/>
+<div class="togglescript" id="proofcontrol2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')"><span class="show"></span></div>
+<div class="proofscript" id="proof2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">auto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">T<sub>1</sub></span>. <span class="id" type="tactic">induction</span> <span class="id" type="var">T<sub>1</sub></span>; <span class="id" type="tactic">intros</span> <span class="id" type="var">T<sub>2</sub></span> <span class="id" type="var">Hbeq</span>; <span class="id" type="tactic">destruct</span> <span class="id" type="var">T<sub>2</sub></span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">Hbeq</span>.<br/>
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T<sub>1</sub>=TBool&nbsp;*)</span><br/>
@@ -112,6 +110,7 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T<sub>1</sub>=TArrow&nbsp;T1_1&nbsp;T1_2&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <a class="idref" href="http://coq.inria.fr/library/Coq.Bool.Bool.html#andb_true_iff"><span class="id" type="lemma">andb_true_iff</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>0</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>0</sub></span> <span class="id" type="keyword">as</span> [<span class="id" type="var">Hbeq1</span> <span class="id" type="var">Hbeq2</span>].<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">IHT1_1</span> <span class="id" type="keyword">in</span> <span class="id" type="var">Hbeq1</span>. <span class="id" type="tactic">apply</span> <span class="id" type="var">IHT1_2</span> <span class="id" type="keyword">in</span> <span class="id" type="var">Hbeq2</span>. <span class="id" type="tactic">subst</span>... <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 </div>
@@ -121,14 +120,14 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 
 <div class="paragraph"> </div>
 
- Now here's the typechecker.  It works by walking over the
-    structure of the given term, returning either <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span> or <span class="inlinecode"><span class="id" type="var">None</span></span>.
-    Each time we make a recursive call to find out the types of the
-    subterms, we need to pattern-match on the results to make sure
-    that they are not <span class="inlinecode"><span class="id" type="var">None</span></span>.  Also, in the <span class="inlinecode"><span class="id" type="var">tapp</span></span> case, we use
-    pattern matching to extract the left- and right-hand sides of the
-    function's arrow type (and fail if the type of the function is not
-    <span class="inlinecode"><span class="id" type="var">TArrow</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span> for some <span class="inlinecode"><span class="id" type="var">T<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">T<sub>2</sub></span></span>). 
+ The typechecker works by walking over the structure of the given
+    term, returning either <span class="inlinecode"><span class="id" type="var">Some</span></span> <span class="inlinecode"><span class="id" type="var">T</span></span> or <span class="inlinecode"><span class="id" type="var">None</span></span>.  Each time we make a
+    recursive call to find out the types of the subterms, we need to
+    pattern-match on the results to make sure that they are not
+    <span class="inlinecode"><span class="id" type="var">None</span></span>.  Also, in the <span class="inlinecode"><span class="id" type="var">tapp</span></span> case, we use pattern matching to
+    extract the left- and right-hand sides of the function's arrow
+    type (and fail if the type of the function is not <span class="inlinecode"><span class="id" type="var">TArrow</span></span> <span class="inlinecode"><span class="id" type="var">T<sub>11</sub></span></span> <span class="inlinecode"><span class="id" type="var">T<sub>12</sub></span></span>
+    for some <span class="inlinecode"><span class="id" type="var">T<sub>1</sub></span></span> and <span class="inlinecode"><span class="id" type="var">T<sub>2</sub></span></span>). 
 </div>
 <div class="code code-tight">
 
@@ -166,8 +165,8 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 
 <div class="paragraph"> </div>
 
- To verify that this typechecking algorithm is the correct one, we
-    show that it is <i>sound</i> and <i>complete</i> for the original <span class="inlinecode"><span class="id" type="var">has_type</span></span>
+ To verify that this typechecking algorithm is correct, we show
+    that it is <i>sound</i> and <i>complete</i> for the original <span class="inlinecode"><span class="id" type="var">has_type</span></span>
     relation &mdash; that is, <span class="inlinecode"><span class="id" type="var">type_check</span></span> and <span class="inlinecode"><span class="id" type="var">has_type</span></span> define the same
     partial function. 
 </div>
@@ -176,6 +175,8 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 <br/>
 <span class="id" type="keyword">Theorem</span> <a name="STLCChecker.type_checking_sound"><span class="id" type="lemma">type_checking_sound</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Typechecking.html#STLCChecker.type_check"><span class="id" type="definition">type_check</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Typechecking.html#t"><span class="id" type="variable">t</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Typechecking.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Stlc.html#STLC.has_type"><span class="id" type="inductive">has_type</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Typechecking.html#t"><span class="id" type="variable">t</span></a> <a class="idref" href="Typechecking.html#T"><span class="id" type="variable">T</span></a>.<br/>
+<div class="togglescript" id="proofcontrol3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')"><span class="show"></span></div>
+<div class="proofscript" id="proof3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">eauto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span>. <span class="id" type="tactic">generalize</span> <span class="id" type="tactic">dependent</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">t</span>; <span class="id" type="tactic">intros</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">T</span> <span class="id" type="var">Htc</span>; <span class="id" type="tactic">inversion</span> <span class="id" type="var">Htc</span>.<br/>
@@ -211,10 +212,13 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <a class="idref" href="Typechecking.html#STLCChecker.beq_ty__eq"><span class="id" type="lemma">beq_ty__eq</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">Heqb</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>0</sub></span>. <span class="id" type="tactic">subst</span>. <span class="id" type="tactic">subst</span>...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">Theorem</span> <a name="STLCChecker.type_checking_complete"><span class="id" type="lemma">type_checking_complete</span></a> : <span style="font-family: arial;">&forall;</span><span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Stlc.html#STLC.has_type"><span class="id" type="inductive">has_type</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Typechecking.html#t"><span class="id" type="variable">t</span></a> <a class="idref" href="Typechecking.html#T"><span class="id" type="variable">T</span></a> <span style="font-family: arial;">&rarr;</span> <a class="idref" href="Typechecking.html#STLCChecker.type_check"><span class="id" type="definition">type_check</span></a> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <a class="idref" href="Typechecking.html#t"><span class="id" type="variable">t</span></a> = <a class="idref" href="http://coq.inria.fr/library/Coq.Init.Datatypes.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="Typechecking.html#T"><span class="id" type="variable">T</span></a>.<br/>
+<div class="togglescript" id="proofcontrol4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')"><span class="show"></span></div>
+<div class="proofscript" id="proof4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')">
 <span class="id" type="keyword">Proof</span> <span class="id" type="keyword">with</span> <span class="id" type="tactic">auto</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span style="font-family: serif; font-size:85%;">&Gamma;</span> <span class="id" type="var">t</span> <span class="id" type="var">T</span> <span class="id" type="var">Hty</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="tactic">induction</span> <span class="id" type="var">Hty</span>; <span class="id" type="tactic">simpl</span>.<br/>
@@ -228,6 +232,7 @@ The <span class="inlinecode"><span class="id" type="var">has_type</span></span> 
 &nbsp;&nbsp;- <span class="comment">(*&nbsp;T_If&nbsp;*)</span> <span class="id" type="tactic">rewrite</span> <span class="id" type="var">IHHty1</span>. <span class="id" type="tactic">rewrite</span> <span class="id" type="var">IHHty2</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">IHHty3</span>. <span class="id" type="tactic">rewrite</span> (<a class="idref" href="Typechecking.html#STLCChecker.beq_ty_refl"><span class="id" type="lemma">beq_ty_refl</span></a> <span class="id" type="var">T</span>)...<br/>
 <span class="id" type="keyword">Qed</span>.<br/>
+</div>
 
 <br/>
 <span class="id" type="keyword">End</span> <a class="idref" href="Typechecking.html#STLCChecker"><span class="id" type="module">STLCChecker</span></a>.<br/>

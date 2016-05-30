@@ -29,7 +29,7 @@
 <div class="code code-tight">
 
 <br/>
-<span class="comment">(*&nbsp;Chapter&nbsp;maintained&nbsp;by&nbsp;Arthur&nbsp;Chargueraud&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;Chapter&nbsp;written&nbsp;and&nbsp;maintained&nbsp;by&nbsp;Arthur&nbsp;Chargueraud&nbsp;*)</span><br/>
 
 <br/>
 </div>
@@ -81,7 +81,7 @@ In a machine-checked proof, every single detail has to be
 </div>
 
 <div class="doc">
-<a name="lab892"></a><h1 class="section">Basic Features of Proof Search</h1>
+<a name="lab888"></a><h1 class="section">Basic Features of Proof Search</h1>
 
 <div class="paragraph"> </div>
 
@@ -105,7 +105,7 @@ In a machine-checked proof, every single detail has to be
 </div>
 
 <div class="doc">
-<a name="lab893"></a><h2 class="section">Strength of Proof Search</h2>
+<a name="lab889"></a><h2 class="section">Strength of Proof Search</h2>
 
 <div class="paragraph"> </div>
 
@@ -150,7 +150,7 @@ In a machine-checked proof, every single detail has to be
 </div>
 
 <div class="doc">
-<a name="lab894"></a><h2 class="section">Basics</h2>
+<a name="lab890"></a><h2 class="section">Basics</h2>
 
 <div class="paragraph"> </div>
 
@@ -243,7 +243,7 @@ If we are interested to see which proof <span class="inlinecode"><span class="id
 </div>
 
 <div class="doc">
-<a name="lab895"></a><h2 class="section">Conjunctions</h2>
+<a name="lab891"></a><h2 class="section">Conjunctions</h2>
 
 <div class="paragraph"> </div>
 
@@ -358,7 +358,7 @@ This situation is slightly disappointing, since automation is
 </div>
 
 <div class="doc">
-<a name="lab896"></a><h2 class="section">Disjunctions</h2>
+<a name="lab892"></a><h2 class="section">Disjunctions</h2>
 
 <div class="paragraph"> </div>
 
@@ -422,7 +422,7 @@ However, the ability of <span class="inlinecode"><span class="id" type="var">iau
 </div>
 
 <div class="doc">
-<a name="lab897"></a><h2 class="section">Existentials</h2>
+<a name="lab893"></a><h2 class="section">Existentials</h2>
 
 <div class="paragraph"> </div>
 
@@ -470,7 +470,7 @@ A major strength of <span class="inlinecode"><span class="id" type="var">jauto</
 </div>
 
 <div class="doc">
-<a name="lab898"></a><h2 class="section">Negation</h2>
+<a name="lab894"></a><h2 class="section">Negation</h2>
 
 <div class="paragraph"> </div>
 
@@ -519,7 +519,7 @@ We will come back later on to the behavior of proof search with
 </div>
 
 <div class="doc">
-<a name="lab899"></a><h2 class="section">Equalities</h2>
+<a name="lab895"></a><h2 class="section">Equalities</h2>
 
 <div class="paragraph"> </div>
 
@@ -550,7 +550,7 @@ To automate more advanced reasoning on equalities, one should
 </div>
 
 <div class="doc">
-<a name="lab900"></a><h1 class="section">How Proof Search Works</h1>
+<a name="lab896"></a><h1 class="section">How Proof Search Works</h1>
 
 </div>
 <div class="code code-space">
@@ -559,7 +559,7 @@ To automate more advanced reasoning on equalities, one should
 </div>
 
 <div class="doc">
-<a name="lab901"></a><h2 class="section">Search Depth</h2>
+<a name="lab897"></a><h2 class="section">Search Depth</h2>
 
 <div class="paragraph"> </div>
 
@@ -709,7 +709,7 @@ Because <span class="inlinecode"><span class="id" type="tactic">auto</span></spa
 </div>
 
 <div class="doc">
-<a name="lab902"></a><h2 class="section">Backtracking</h2>
+<a name="lab898"></a><h2 class="section">Backtracking</h2>
 
 <div class="paragraph"> </div>
 
@@ -859,7 +859,7 @@ This time, the output message suggests that the proof search
 </div>
 
 <div class="doc">
-<a name="lab903"></a><h2 class="section">Adding Hints</h2>
+<a name="lab899"></a><h2 class="section">Adding Hints</h2>
 
 <div class="paragraph"> </div>
 
@@ -913,7 +913,7 @@ A convenient shorthand for adding all the constructors of an
 </div>
 
 <div class="doc">
-<a name="lab904"></a><h2 class="section">Integration of Automation in Tactics</h2>
+<a name="lab900"></a><h2 class="section">Integration of Automation in Tactics</h2>
 
 <div class="paragraph"> </div>
 
@@ -1007,7 +1007,7 @@ In the examples that follow, only <span class="inlinecode"><span class="id" type
 </div>
 
 <div class="doc">
-<a name="lab905"></a><h1 class="section">Examples of Use of Automation</h1>
+<a name="lab901"></a><h1 class="section">Examples of Use of Automation</h1>
 
 <div class="paragraph"> </div>
 
@@ -1021,7 +1021,7 @@ In the examples that follow, only <span class="inlinecode"><span class="id" type
 </div>
 
 <div class="doc">
-<a name="lab906"></a><h2 class="section">Determinism</h2>
+<a name="lab902"></a><h2 class="section">Determinism</h2>
 
 </div>
 <div class="code code-space">
@@ -1056,24 +1056,24 @@ Recall the original proof of the determinism lemma for the IMP
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">subst</span> <span class="id" type="var">st'0</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">IHE1_2</span>. <span class="id" type="tactic">assumption</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;E_IfTrue&nbsp;*)</span><br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;true&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;true&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">IHE1</span>. <span class="id" type="tactic">assumption</span>.<br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;false&nbsp;(contradiction)&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;false&nbsp;(contradiction)&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>5</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>5</sub></span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;E_IfFalse&nbsp;*)</span><br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;true&nbsp;(contradiction)&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;true&nbsp;(contradiction)&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>5</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>5</sub></span>.<br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;false&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;false&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">apply</span> <span class="id" type="var">IHE1</span>. <span class="id" type="tactic">assumption</span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;E_WhileEnd&nbsp;*)</span><br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;true&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;true&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">reflexivity</span>.<br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;false&nbsp;(contradiction)&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;false&nbsp;(contradiction)&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>2</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>2</sub></span>.<br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;E_WhileLoop&nbsp;*)</span><br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;true&nbsp;(contradiction)&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;true&nbsp;(contradiction)&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">rewrite</span> <span class="id" type="var">H</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H<sub>4</sub></span>. <span class="id" type="tactic">inversion</span> <span class="id" type="var">H<sub>4</sub></span>.<br/>
-&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;evaluates&nbsp;to&nbsp;false&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;b<sub>1</sub>&nbsp;reduces&nbsp;to&nbsp;false&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">assert</span> (<span class="id" type="var">st'</span> = <span class="id" type="var">st'0</span>) <span class="id" type="keyword">as</span> <span class="id" type="var">EQ<sub>1</sub></span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;{ <span class="comment">(*&nbsp;Proof&nbsp;of&nbsp;assertion&nbsp;*)</span> <span class="id" type="tactic">apply</span> <span class="id" type="var">IHE1_1</span>; <span class="id" type="tactic">assumption</span>. }<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">subst</span> <span class="id" type="var">st'0</span>.<br/>
@@ -1236,7 +1236,7 @@ To polish the proof script, it remains to factorize the calls
 </div>
 
 <div class="doc">
-<a name="lab907"></a><h2 class="section">Preservation for STLC</h2>
+<a name="lab903"></a><h2 class="section">Preservation for STLC</h2>
 
 </div>
 <div class="code code-space">
@@ -1310,7 +1310,7 @@ Exercise: rewrite this proof using tactics from <span class="inlinecode"><span c
 </div>
 
 <div class="doc">
-<a name="lab908"></a><h2 class="section">Progress for STLC</h2>
+<a name="lab904"></a><h2 class="section">Progress for STLC</h2>
 
 <div class="paragraph"> </div>
 
@@ -1370,7 +1370,7 @@ Exercise: optimize the above proof.
 </div>
 
 <div class="doc">
-<a name="lab909"></a><h2 class="section">BigStep and SmallStep</h2>
+<a name="lab905"></a><h2 class="section">BigStep and SmallStep</h2>
 
 </div>
 <div class="code code-space">
@@ -1490,7 +1490,7 @@ Exercise: prove the lemma <span class="inlinecode"><span class="id" type="var">m
 </div>
 
 <div class="doc">
-<a name="lab910"></a><h2 class="section">Preservation for STLCRef</h2>
+<a name="lab906"></a><h2 class="section">Preservation for STLCRef</h2>
 
 </div>
 <div class="code code-space">
@@ -1766,7 +1766,7 @@ The optimized proof of preservation is summarized next.
 </div>
 
 <div class="doc">
-<a name="lab911"></a><h2 class="section">Progress for STLCRef</h2>
+<a name="lab907"></a><h2 class="section">Progress for STLCRef</h2>
 
 <div class="paragraph"> </div>
 
@@ -1814,7 +1814,7 @@ The optimized proof of preservation is summarized next.
 </div>
 
 <div class="doc">
-<a name="lab912"></a><h2 class="section">Subtyping</h2>
+<a name="lab908"></a><h2 class="section">Subtyping</h2>
 
 </div>
 <div class="code code-space">
@@ -1895,7 +1895,7 @@ The lemma <span class="inlinecode"><span class="id" type="var">substitution_pres
 </div>
 
 <div class="doc">
-<a name="lab913"></a><h1 class="section">Advanced Topics in Proof Search</h1>
+<a name="lab909"></a><h1 class="section">Advanced Topics in Proof Search</h1>
 
 </div>
 <div class="code code-space">
@@ -1904,7 +1904,7 @@ The lemma <span class="inlinecode"><span class="id" type="var">substitution_pres
 </div>
 
 <div class="doc">
-<a name="lab914"></a><h2 class="section">Stating Lemmas in the Right Way</h2>
+<a name="lab910"></a><h2 class="section">Stating Lemmas in the Right Way</h2>
 
 <div class="paragraph"> </div>
 
@@ -1978,7 +1978,7 @@ It is very important to understand that the hypothesis <span class="inlinecode">
 </div>
 
 <div class="doc">
-<a name="lab915"></a><h2 class="section">Unfolding of Definitions During Proof-Search</h2>
+<a name="lab911"></a><h2 class="section">Unfolding of Definitions During Proof-Search</h2>
 
 <div class="paragraph"> </div>
 
@@ -2094,7 +2094,7 @@ There is actually one exception to the previous rule: a constant
 </div>
 
 <div class="doc">
-<a name="lab916"></a><h2 class="section">Automation for Proving Absurd Goals</h2>
+<a name="lab912"></a><h2 class="section">Automation for Proving Absurd Goals</h2>
 
 <div class="paragraph"> </div>
 
@@ -2291,7 +2291,7 @@ In the above example, <span class="inlinecode"><span class="id" type="var">false
 </div>
 
 <div class="doc">
-<a name="lab917"></a><h2 class="section">Automation for Transitivity Lemmas</h2>
+<a name="lab913"></a><h2 class="section">Automation for Transitivity Lemmas</h2>
 
 <div class="paragraph"> </div>
 
@@ -2516,7 +2516,7 @@ We may also check that the new external hint does not suffer from the
 </div>
 
 <div class="doc">
-<a name="lab918"></a><h1 class="section">Decision Procedures</h1>
+<a name="lab914"></a><h1 class="section">Decision Procedures</h1>
 
 <div class="paragraph"> </div>
 
@@ -2536,7 +2536,7 @@ We may also check that the new external hint does not suffer from the
 </div>
 
 <div class="doc">
-<a name="lab919"></a><h2 class="section">Omega</h2>
+<a name="lab915"></a><h2 class="section">Omega</h2>
 
 <div class="paragraph"> </div>
 
@@ -2603,7 +2603,7 @@ One can proof <span class="inlinecode"><span class="id" type="var">False</span><
 
 <div class="doc">
 Note: <span class="inlinecode"><span class="id" type="tactic">omega</span></span> can prove a goal by contradiction only if its
-    conclusion is reduced <span class="inlinecode"><span class="id" type="var">False</span></span>. The tactic <span class="inlinecode"><span class="id" type="tactic">omega</span></span> always fails
+    conclusion reduces to <span class="inlinecode"><span class="id" type="var">False</span></span>. The tactic <span class="inlinecode"><span class="id" type="tactic">omega</span></span> always fails
     when the conclusion is an arbitrary proposition <span class="inlinecode"><span class="id" type="var">P</span></span>, even though
     <span class="inlinecode"><span class="id" type="var">False</span></span> implies any proposition <span class="inlinecode"><span class="id" type="var">P</span></span> (by <span class="inlinecode"><span class="id" type="var">ex_falso_quodlibet</span></span>). 
 </div>
@@ -2624,7 +2624,7 @@ Note: <span class="inlinecode"><span class="id" type="tactic">omega</span></span
 </div>
 
 <div class="doc">
-<a name="lab920"></a><h2 class="section">Ring</h2>
+<a name="lab916"></a><h2 class="section">Ring</h2>
 
 <div class="paragraph"> </div>
 
@@ -2655,7 +2655,7 @@ Note: <span class="inlinecode"><span class="id" type="tactic">omega</span></span
 </div>
 
 <div class="doc">
-<a name="lab921"></a><h2 class="section">Congruence</h2>
+<a name="lab917"></a><h2 class="section">Congruence</h2>
 
 <div class="paragraph"> </div>
 
@@ -2742,7 +2742,7 @@ One of the strengths of <span class="inlinecode"><span class="id" type="tactic">
 </div>
 
 <div class="doc">
-<a name="lab922"></a><h1 class="section">Summary</h1>
+<a name="lab918"></a><h1 class="section">Summary</h1>
 
 <div class="paragraph"> </div>
 
